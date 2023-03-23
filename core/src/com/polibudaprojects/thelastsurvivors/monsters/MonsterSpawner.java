@@ -2,11 +2,8 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
-import com.polibudaprojects.thelastsurvivors.monsters.types.MawFlower;
-import com.polibudaprojects.thelastsurvivors.monsters.types.Naga;
-import com.polibudaprojects.thelastsurvivors.monsters.types.Scarecrow;
+import com.polibudaprojects.thelastsurvivors.monsters.phases.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +12,19 @@ import java.util.Random;
 
 public class MonsterSpawner {
 
-    public static final float RADIUS = 400f;
-    public static final long INTERVAL = 2000000000;
+    public static final float SPAWN_RADIUS = 400f;
     private final List<Monster> monsters = new ArrayList<>();
+    private final List<Phase> phases = new ArrayList<>();
     private final DemoPlayer player;
-    private final Random rand = new Random();
-    private long lastSpawnTime;
+    private float phaseTimer = 0f;
+    private int currentPhase = 0;
 
     public MonsterSpawner(DemoPlayer player) {
         this.player = player;
+        phases.add(new EasyPhase());
+        phases.add(new MediumPhase());
+        phases.add(new HardPhase());
+        phases.add(new InfinitePhase());
     }
 
     public void draw(SpriteBatch batch) {
@@ -33,6 +34,12 @@ public class MonsterSpawner {
     }
 
     public void update(float deltaTime) {
+        updateMonsters(deltaTime);
+        updatePhase();
+        phaseTimer += deltaTime;
+    }
+
+    private void updateMonsters(float deltaTime) {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
@@ -41,34 +48,31 @@ public class MonsterSpawner {
                 iter.remove();
             }
         }
-        if (TimeUtils.nanoTime() - lastSpawnTime > INTERVAL) {
+    }
+
+    private void updatePhase() {
+        if (getCurrentPhase().hasPhaseEnded(phaseTimer)) {
+            startNextPhase();
+            phaseTimer = 0f;
+        }
+
+        if (getCurrentPhase().shouldSpawn()) {
             spawn();
         }
     }
 
     private void spawn() {
-        // TODO to będzie jeszcze ulepszone
-        monsters.add(MonsterFactory.getMonster(
-                MawFlower.class,
-                getSpawnPosition()
-        ).orElseThrow(() -> new RuntimeException("Can not spawn monster")));
-
-        monsters.add(MonsterFactory.getMonster(
-                Scarecrow.class,
-                getSpawnPosition()
-        ).orElseThrow(() -> new RuntimeException("Can not spawn monster")));
-
-        monsters.add(MonsterFactory.getMonster(
-                Naga.class,
-                getSpawnPosition()
-        ).orElseThrow(() -> new RuntimeException("Can not spawn monster")));
-        lastSpawnTime = TimeUtils.nanoTime();
+        Monster spawnedMonster = getCurrentPhase().spawn(player.getPosition());
+        monsters.add(spawnedMonster);
     }
 
-    private Vector2 getSpawnPosition() {
-        double randomAngle = rand.nextDouble() * 2. * Math.PI;
-        float x = (float) (player.getPosition().x + RADIUS * Math.cos(randomAngle));
-        float y = (float) (player.getPosition().y + RADIUS * Math.sin(randomAngle));
-        return new Vector2(x, y);
+    private Phase getCurrentPhase() {
+        return phases.get(currentPhase);
+    }
+
+    private void startNextPhase() {
+        if (currentPhase < phases.size() - 1) {
+            currentPhase++;
+        }
     }
 }
