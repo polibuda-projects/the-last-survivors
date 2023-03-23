@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterSpawner;
 
 public class PlayState extends State {
@@ -46,6 +47,7 @@ public class PlayState extends State {
 
     @Override
     public void dispose() {
+        MonsterFactory.dispose();
     }
 
 }
