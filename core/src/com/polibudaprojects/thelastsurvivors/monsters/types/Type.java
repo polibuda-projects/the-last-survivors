@@ -42,4 +42,8 @@ public abstract class Type {
     public int getMaxHealth() {
         return maxHealth;
     }
+
+    public void dispose() {
+        texture.dispose();
+    }
 }
