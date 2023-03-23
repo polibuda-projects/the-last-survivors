@@ -1,24 +1,19 @@
 package com.polibudaprojects.thelastsurvivors;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.States.StartState;
 import com.polibudaprojects.thelastsurvivors.States.StatesManager;
 
 public class GameMain extends ApplicationAdapter {
     SpriteBatch batch;
-    Texture img;
-    DemoPlayer demoPlayer;
     private StatesManager gsm;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        img = new Texture("demo.png");
-        demoPlayer = new DemoPlayer(img);
         gsm = new StatesManager();
         gsm.push(new StartState(gsm));
     }
