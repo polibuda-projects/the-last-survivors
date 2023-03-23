@@ -41,4 +41,8 @@ public class DemoPlayer {
         sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
     }
+
+    public Vector2 getPosition() {
+        return position;
+    }
 }
