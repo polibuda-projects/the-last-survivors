@@ -41,10 +41,11 @@ public class MonsterManager {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
-            monster.update(deltaTime, player.getPosition());
             if (monster.isDead()) {
                 iter.remove();
+                continue;
             }
+            monster.update(deltaTime, player.getPosition());
             monster.attackIfPossible(player);
         }
     }
