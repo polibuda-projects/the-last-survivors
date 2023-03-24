@@ -45,4 +45,10 @@ public class DemoPlayer {
     public Vector2 getPosition() {
         return position;
     }
+
+    public Vector2 getCenterPosition() {
+        float centerX = position.x + sprite.getWidth() / 2f;
+        float centerY = position.y + sprite.getHeight() / 2f;
+        return new Vector2(centerX, centerY);
+    }
 }

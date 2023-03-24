@@ -8,14 +8,14 @@ import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 import java.util.Random;
 
-import static com.polibudaprojects.thelastsurvivors.monsters.MonsterSpawner.SPAWN_RADIUS;
+import static com.polibudaprojects.thelastsurvivors.monsters.MonsterManager.SPAWN_RADIUS;
 
 public abstract class Phase {
 
     protected final Random rand = new Random();
     protected final float duration;
     protected final long interval;
-    protected long lastSpawnTime = 0;
+    protected long lastSpawnTime;
 
     public Phase(float duration, long interval) {
         this.duration = duration;
@@ -27,11 +27,11 @@ public abstract class Phase {
     }
 
     public boolean shouldSpawn() {
-        return TimeUtils.nanoTime() - lastSpawnTime > interval;
+        return TimeUtils.millis() - lastSpawnTime > interval;
     }
 
     public Monster spawn(Vector2 playerPosition) {
-        lastSpawnTime = TimeUtils.nanoTime();
+        lastSpawnTime = TimeUtils.millis();
         return MonsterFactory.getMonster(
                 getSpawnedMonsterType(),
                 getSpawnPosition(playerPosition)

@@ -1,16 +1,14 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
 
-public class MonsterSpawner {
+public class MonsterManager {
 
     public static final float SPAWN_RADIUS = 400f;
     private final List<Monster> monsters = new ArrayList<>();
@@ -19,7 +17,7 @@ public class MonsterSpawner {
     private float phaseTimer = 0f;
     private int currentPhase = 0;
 
-    public MonsterSpawner(DemoPlayer player) {
+    public MonsterManager(DemoPlayer player) {
         this.player = player;
         phases.add(new EasyPhase());
         phases.add(new MediumPhase());
@@ -47,6 +45,7 @@ public class MonsterSpawner {
             if (monster.isDead()) {
                 iter.remove();
             }
+            monster.attackIfPossible(player);
         }
     }
 

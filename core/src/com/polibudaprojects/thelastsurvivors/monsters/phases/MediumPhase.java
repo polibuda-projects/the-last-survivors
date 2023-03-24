@@ -9,7 +9,7 @@ public class MediumPhase extends Phase {
     public MediumPhase() {
         super(
                 30,
-                500000000L
+                500L
         );
     }
 

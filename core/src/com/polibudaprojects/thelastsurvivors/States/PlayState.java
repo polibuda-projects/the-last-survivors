@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
-import com.polibudaprojects.thelastsurvivors.monsters.MonsterSpawner;
+import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 
 public class PlayState extends State {
 
-    private final MonsterSpawner spawner;
+    private final MonsterManager monsterManager;
     Texture img;
     private DemoPlayer demoPlayer;
     private Texture bg;
@@ -18,7 +18,7 @@ public class PlayState extends State {
         super(gsm);
         img = new Texture("demo.png");
         demoPlayer = new DemoPlayer(img);
-        spawner = new MonsterSpawner(demoPlayer);
+        monsterManager = new MonsterManager(demoPlayer);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         bg = new Texture("background.png");
     }
@@ -32,7 +32,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         demoPlayer.update(dt);
-        spawner.update(dt);
+        monsterManager.update(dt);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class PlayState extends State {
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(img, demoPlayer.position.x, demoPlayer.position.y);
-        spawner.draw(sb);
+        monsterManager.draw(sb);
         sb.end();
     }
 
