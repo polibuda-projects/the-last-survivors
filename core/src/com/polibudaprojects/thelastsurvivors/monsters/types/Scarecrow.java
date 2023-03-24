@@ -7,7 +7,7 @@ public class Scarecrow extends Type {
     public Scarecrow() {
         super(
                 new Texture("monster2.png"),
-                "Maw Flower",
+                "Scarecrow",
                 100f,
                 40f,
                 10,
