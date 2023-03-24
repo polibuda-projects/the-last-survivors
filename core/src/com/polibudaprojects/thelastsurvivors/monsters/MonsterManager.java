@@ -45,6 +45,7 @@ public class MonsterManager {
             if (monster.isDead()) {
                 iter.remove();
             }
+            monster.attackIfPossible(player);
         }
     }
 

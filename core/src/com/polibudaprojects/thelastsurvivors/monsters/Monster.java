@@ -3,15 +3,18 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.polibudaprojects.thelastsurvivors.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 public class Monster {
 
+    private static final long ATTACK_INTERVAL = 1000L;
     private final Type type;
     private final Vector2 position;
     private final Sprite sprite;
     private int health;
-    private boolean dead = false;
+    private long lastAttackTime;
 
     public Monster(Type type, Vector2 position) {
         this.type = type;
@@ -43,14 +46,23 @@ public class Monster {
         sprite.draw(batch);
     }
 
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            dead = true;
+    public void attackIfPossible(DemoPlayer player) {
+        if (canAttack(player)) {
+            System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
+            lastAttackTime = TimeUtils.millis();
         }
     }
 
+    private boolean canAttack(DemoPlayer player) {
+        return TimeUtils.millis() - lastAttackTime > ATTACK_INTERVAL &&
+                sprite.getBoundingRectangle().contains(player.getCenterPosition());
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+    }
+
     public boolean isDead() {
-        return dead;
+        return health <= 0;
     }
 }
