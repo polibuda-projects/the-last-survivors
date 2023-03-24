@@ -53,7 +53,8 @@ public class Monster {
     }
 
     private boolean canAttack(DemoPlayer player) {
-        return TimeUtils.millis() - lastAttackTime > type.getAttackInterval() &&
+        return !isDead() &&
+                TimeUtils.millis() - lastAttackTime > type.getAttackInterval() &&
                 sprite.getBoundingRectangle().contains(player.getCenterPosition());
     }
 
