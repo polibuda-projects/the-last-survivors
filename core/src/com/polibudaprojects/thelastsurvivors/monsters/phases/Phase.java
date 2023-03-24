@@ -8,7 +8,7 @@ import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 import java.util.Random;
 
-import static com.polibudaprojects.thelastsurvivors.monsters.MonsterSpawner.SPAWN_RADIUS;
+import static com.polibudaprojects.thelastsurvivors.monsters.MonsterManager.SPAWN_RADIUS;
 
 public abstract class Phase {
 
