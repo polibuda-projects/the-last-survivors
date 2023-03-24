@@ -9,7 +9,6 @@ import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 public class Monster {
 
-    private static final long ATTACK_INTERVAL = 1000L;
     private final Type type;
     private final Vector2 position;
     private final Sprite sprite;
@@ -54,7 +53,7 @@ public class Monster {
     }
 
     private boolean canAttack(DemoPlayer player) {
-        return TimeUtils.millis() - lastAttackTime > ATTACK_INTERVAL &&
+        return TimeUtils.millis() - lastAttackTime > type.getAttackInterval() &&
                 sprite.getBoundingRectangle().contains(player.getCenterPosition());
     }
 

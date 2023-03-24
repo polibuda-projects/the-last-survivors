@@ -11,6 +11,7 @@ public abstract class Type {
     private final float speed;
     private final int damage;
     private final int maxHealth;
+    private final long attackInterval;
 
     public Type(Texture texture, String name, float spriteSize, float speed, int damage, int maxHealth) {
         this.texture = texture;
@@ -19,6 +20,7 @@ public abstract class Type {
         this.speed = speed;
         this.damage = damage;
         this.maxHealth = maxHealth;
+        this.attackInterval = 1000L;
     }
 
     public Sprite getNewSprite() {
@@ -41,6 +43,10 @@ public abstract class Type {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public long getAttackInterval() {
+        return attackInterval;
     }
 
     public void dispose() {
