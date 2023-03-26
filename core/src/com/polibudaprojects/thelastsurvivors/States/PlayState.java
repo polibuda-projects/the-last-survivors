@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
+
+import java.nio.file.Paths;
 
 public class PlayState extends State {
 
@@ -13,6 +16,7 @@ public class PlayState extends State {
     Texture img;
     private DemoPlayer demoPlayer;
     private Texture bg;
+    private BackgroundMusic backgroundMusic;
 
     public PlayState(StatesManager gsm) {
         super(gsm);
@@ -21,6 +25,7 @@ public class PlayState extends State {
         monsterManager = new MonsterManager(demoPlayer);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         bg = new Texture("background.png");
+        backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
     }
 
     @Override
@@ -40,7 +45,7 @@ public class PlayState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
-        sb.draw(img, demoPlayer.position.x, demoPlayer.position.y);
+        sb.draw(img, demoPlayer.position.x, demoPlayer.position.y);;
         monsterManager.draw(sb);
         sb.end();
     }
