@@ -2,7 +2,6 @@ package com.polibudaprojects.thelastsurvivors.Music;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 import java.nio.file.Path;

@@ -3,6 +3,9 @@ package com.polibudaprojects.thelastsurvivors.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.polibudaprojects.thelastsurvivors.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
@@ -14,9 +17,11 @@ public class PlayState extends State {
 
     private final MonsterManager monsterManager;
     Texture img;
-    private DemoPlayer demoPlayer;
+    private final DemoPlayer demoPlayer;
     private Texture bg;
     private BackgroundMusic backgroundMusic;
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
 
     public PlayState(StatesManager gsm) {
         super(gsm);
@@ -26,6 +31,8 @@ public class PlayState extends State {
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         bg = new Texture("background.png");
         backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
+        tiledMap = new TmxMapLoader().load("example.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override

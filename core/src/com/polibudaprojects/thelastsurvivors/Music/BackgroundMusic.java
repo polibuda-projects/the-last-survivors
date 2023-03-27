@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 public class BackgroundMusic extends ApplicationAdapter {
 
-    private Music backgroundMusic;
+    private final Music backgroundMusic;
 
     public BackgroundMusic(Path path) {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(String.valueOf(path)));
@@ -16,14 +16,6 @@ public class BackgroundMusic extends ApplicationAdapter {
         backgroundMusic.setVolume(0.8f);
         backgroundMusic.play();
     }
-
-//    @Override
-//    public void create() {
-//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/BackgroundTheLastSurvivors.mp3"));
-//        backgroundMusic.setLooping(true);
-//        backgroundMusic.setVolume(0.8f);
-//        backgroundMusic.play();
-//    }
 
     @Override
     public void dispose() {
