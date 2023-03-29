@@ -48,6 +48,7 @@ public class Monster {
     public void attackIfPossible(DemoPlayer player) {
         if (canAttack(player)) {
             System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
+            player.takeDamage(type.getDamage());
             lastAttackTime = TimeUtils.millis();
         }
     }

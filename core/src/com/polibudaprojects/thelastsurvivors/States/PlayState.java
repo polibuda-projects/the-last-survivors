@@ -19,27 +19,24 @@ public class PlayState extends State {
     private final MonsterManager monsterManager;
     Texture img;
     private final DemoPlayer demoPlayer;
-    private Texture bg;
-    private BackgroundMusic backgroundMusic;
-    private TiledMap tiledMap;
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private final Texture bg;
 
-     SpriteBatch batch;
+    SpriteBatch batch;
 
-     TextureRegion region;
+    TextureRegion region;
 
     public PlayState(StatesManager gsm) {
         super(gsm);
         batch = new SpriteBatch();
         img = new Texture("player.png");
-        region = new TextureRegion(img,0,0,144,80);
+        region = new TextureRegion(img, 0, 0, 144, 80);
         demoPlayer = new DemoPlayer();
         monsterManager = new MonsterManager(demoPlayer);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         bg = new Texture("background.png");
-        backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
-        tiledMap = new TmxMapLoader().load("example.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
+        TiledMap tiledMap = new TmxMapLoader().load("example.tmx");
+        OrthogonalTiledMapRenderer tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override
@@ -52,6 +49,9 @@ public class PlayState extends State {
         handleInput();
         demoPlayer.update(dt);
         monsterManager.update(dt);
+        if (demoPlayer.dead) {
+            gsm.set(new EndState(gsm));
+        }
     }
 
     @Override
