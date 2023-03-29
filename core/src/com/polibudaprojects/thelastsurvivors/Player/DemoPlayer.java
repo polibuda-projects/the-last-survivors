@@ -19,10 +19,10 @@ public class DemoPlayer {
     public State previousState;
 
     public boolean defaultAttack = true;
-    private Animation playerFirstAttack;
-    private Animation playerSecondAttack;
+    private final Animation playerFirstAttack;
+    private final Animation playerSecondAttack;
 
-    private Animation playerDeath;
+    private final Animation playerDeath;
     private float stateTimer;
     private boolean runningRight = true;
 
@@ -132,7 +132,7 @@ public class DemoPlayer {
 
         switch(currentState){
             case DEAD:
-                region = (TextureRegion) playerDeath.getKeyFrame(stateTimer, true);;
+                region = (TextureRegion) playerDeath.getKeyFrame(stateTimer, true);
                 break;
             case ATTACKING_SPEC:
                 region = (TextureRegion) playerSecondAttack.getKeyFrame(stateTimer, true);
@@ -149,7 +149,6 @@ public class DemoPlayer {
     }
 
     public State getState(){
-        System.out.println(defaultAttack);
         if(isDead()){
             return State.DEAD;
         }
