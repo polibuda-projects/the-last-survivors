@@ -12,25 +12,27 @@ import com.badlogic.gdx.utils.Array;
 
 public class DemoPlayer {
     public enum State {
-        DEAD, ATTACKING_DEF,ATTACKING_SPEC;
+        DEAD, STANDING, RUNNING;
     }
 
     public State currentState;
     public State previousState;
-
-    public boolean defaultAttack = true;
-    private final Animation playerFirstAttack;
-    private final Animation playerSecondAttack;
+    private final Animation playerRunning;
 
     private final Animation playerDeath;
     private float stateTimer;
     private boolean runningRight = true;
 
+    public boolean dead;
     public Vector2 position;
     public Sprite sprite;
-    public float speed = 100f;
+    public float speed = 150f;
 
-    private int health = 1000;
+    public int health = 60;
+
+    private final int score = 0;
+
+    private int counter = 0;
 
     Texture img = new Texture("player.png");
 
@@ -44,36 +46,19 @@ public class DemoPlayer {
                 (Gdx.graphics.getWidth() - sprite.getWidth()) / 2f,
                 (Gdx.graphics.getHeight() - sprite.getHeight()) / 2f
         );
-        currentState = State.ATTACKING_DEF;
-        previousState = State.ATTACKING_DEF;
+        currentState = State.STANDING;
+        previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
+        dead = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
-        for (int i = 1; i < 5; i++) {
-            frames.add(new TextureRegion(img, i * 144, 720, 144, 80));
-        }
-        for (int i = 1; i < 4; i++) {
-            frames.add(new TextureRegion(img, i * 144, 880, 144, 80));
+
+        for (int i = 1; i < 8; i++) {
+            frames.add(new TextureRegion(img, i * 144, 80, 144, 80));
         }
 
-        for (int i = 1; i < 5; i++) {
-            frames.add(new TextureRegion(img, i * 144, 960, 144, 80));
-        }
-
-        for (int i = 1; i < 5; i++) {
-            frames.add(new TextureRegion(img, i * 144,1280 , 144, 80));
-        }
-
-
-        playerFirstAttack = new Animation(0.2f, frames);
-        frames.clear();
-
-        for (int i = 1; i < 16; i++) {
-            frames.add(new TextureRegion(img, i * 144, 1520, 144, 80));
-        }
-
-        playerSecondAttack = new Animation(0.1f, frames);
+        playerRunning = new Animation(0.3f, frames);
         frames.clear();
 
 
@@ -88,19 +73,19 @@ public class DemoPlayer {
 
     public void update(float deltaTime) {
         sprite.setRegion(getFrame(deltaTime));
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) && !(currentState == State.DEAD)) {
             position.y += deltaTime * speed;
             sprite.setRegion(getFrame(deltaTime));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) && !(currentState == State.DEAD)) {
             position.y -= deltaTime * speed;
             sprite.setRegion(getFrame(deltaTime));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(currentState == State.DEAD)) {
             position.x -= deltaTime * speed;
             sprite.setRegion(getFrame(deltaTime));
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(currentState == State.DEAD)) {
             position.x += deltaTime * speed;
             sprite.setRegion(getFrame(deltaTime));
         }
@@ -111,12 +96,12 @@ public class DemoPlayer {
             runningRight = true;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-            defaultAttack = false;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            defaultAttack = true;
+        if (isDead() && currentState == State.DEAD) {
+            sprite.setRegion(getFrame(deltaTime));
+            counter = counter + 1;
+            if (counter == 128) {
+                dead = true;
+            }
         }
     }
 
@@ -130,15 +115,15 @@ public class DemoPlayer {
 
         currentState = getState();
 
-        switch(currentState){
+        switch (currentState) {
             case DEAD:
                 region = (TextureRegion) playerDeath.getKeyFrame(stateTimer, true);
                 break;
-            case ATTACKING_SPEC:
-                region = (TextureRegion) playerSecondAttack.getKeyFrame(stateTimer, true);
+            case RUNNING:
+                region = (TextureRegion) playerRunning.getKeyFrame(stateTimer, true);
                 break;
             default:
-                region = (TextureRegion) playerFirstAttack.getKeyFrame(stateTimer, true);
+                region = playerStand;
                 break;
         }
 
@@ -148,15 +133,13 @@ public class DemoPlayer {
         return region;
     }
 
-    public State getState(){
-        if(isDead()){
+    public State getState() {
+        if (isDead()) {
             return State.DEAD;
-        }
-        else if(!defaultAttack){
-            return State.ATTACKING_SPEC;
-        }
-        else{
-            return State.ATTACKING_DEF;
+        } else if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ||(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))  ||(Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) ||(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) ) {
+            return State.RUNNING;
+        } else {
+            return State.STANDING;
         }
     }
 
