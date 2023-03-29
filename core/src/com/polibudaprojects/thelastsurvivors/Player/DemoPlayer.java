@@ -149,7 +149,6 @@ public class DemoPlayer {
     }
 
     public State getState(){
-        System.out.println(defaultAttack);
         if(isDead()){
             return State.DEAD;
         }
