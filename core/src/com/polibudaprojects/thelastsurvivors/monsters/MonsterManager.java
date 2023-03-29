@@ -1,7 +1,7 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.polibudaprojects.thelastsurvivors.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.*;
 
 import java.util.ArrayList;

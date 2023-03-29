@@ -3,10 +3,11 @@ package com.polibudaprojects.thelastsurvivors.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.polibudaprojects.thelastsurvivors.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
@@ -23,10 +24,16 @@ public class PlayState extends State {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
 
+     SpriteBatch batch;
+
+     TextureRegion region;
+
     public PlayState(StatesManager gsm) {
         super(gsm);
-        img = new Texture("demo.png");
-        demoPlayer = new DemoPlayer(img);
+        batch = new SpriteBatch();
+        img = new Texture("player.png");
+        region = new TextureRegion(img,0,0,144,80);
+        demoPlayer = new DemoPlayer();
         monsterManager = new MonsterManager(demoPlayer);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         bg = new Texture("background.png");
@@ -52,7 +59,7 @@ public class PlayState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
-        sb.draw(img, demoPlayer.position.x, demoPlayer.position.y);;
+        demoPlayer.draw(sb);
         monsterManager.draw(sb);
         sb.end();
     }
