@@ -17,18 +17,26 @@ public class DemoPlayer {
 
     public State currentState;
     public State previousState;
+
+    private float timer;
+
+    private int level = 1;
+
+    private float regenTimer;
     private final Animation playerRunning;
 
     private final Animation playerDeath;
     private float stateTimer;
     private boolean runningRight = true;
 
+    private int hpRegen = 20;
+
     public boolean dead;
     public Vector2 position;
     public Sprite sprite;
     public float speed = 150f;
-
-    public int health = 60;
+    public int maxHealth = 100;
+    public int currentHealth = 100;
 
     private final int score = 0;
 
@@ -39,6 +47,7 @@ public class DemoPlayer {
     TextureRegion playerStand;
 
     public DemoPlayer() {
+        timer = 0.0f;
         playerStand = new TextureRegion(img, 0, 0, 144, 80);
         sprite = new Sprite(playerStand);
         sprite.setSize(180f, 100f);
@@ -73,6 +82,34 @@ public class DemoPlayer {
 
     public void update(float deltaTime) {
         sprite.setRegion(getFrame(deltaTime));
+        timer += deltaTime;
+        regenTimer += deltaTime;
+        int seconds = (int) timer;
+        int hours = seconds / 3600;
+        int minutes = (seconds - (hours * 3600)) / 60;
+        if (minutes > 5 && level==1) {
+            maxHealth = 300;
+            hpRegen = 40;
+            level = 2;
+            currentHealth += 100;
+            System.out.println("Max HP increased to 300");
+            System.out.println("HP Regen increased to 40");
+        }
+        if (minutes > 10 && level==2){
+            maxHealth = 700;
+            hpRegen = 60;
+            level = 3;
+            currentHealth += 300;
+            System.out.println("Max HP increased to 700");
+            System.out.println("HP Regen increased to 60");
+        }
+        int regenSec = (int) regenTimer;
+        regenSec = regenSec % 60;
+        if(regenSec >= 40  && currentHealth<maxHealth){
+            regenTimer = 0.0f;
+            currentHealth += hpRegen;
+            System.out.println("Regenerate " + hpRegen + " HP");
+        }
         if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) && !(currentState == State.DEAD)) {
             position.y += deltaTime * speed;
             sprite.setRegion(getFrame(deltaTime));
@@ -136,7 +173,7 @@ public class DemoPlayer {
     public State getState() {
         if (isDead()) {
             return State.DEAD;
-        } else if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ||(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))  ||(Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) ||(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) ) {
+        } else if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) || (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
             return State.RUNNING;
         } else {
             return State.STANDING;
@@ -159,6 +196,14 @@ public class DemoPlayer {
         return position;
     }
 
+    public float getPositionX() {
+        return position.x;
+    }
+
+    public float getPositionY() {
+        return position.y;
+    }
+
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
@@ -166,11 +211,16 @@ public class DemoPlayer {
     }
 
     public void takeDamage(int damage) {
-        health -= damage;
+        if((currentHealth-damage)<0){
+            currentHealth = 0;
+        }
+        else{
+            currentHealth -= damage;
+        }
     }
 
 
     public boolean isDead() {
-        return health <= 0;
+        return currentHealth <= 0;
     }
 }
