@@ -1,7 +1,9 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
@@ -12,17 +14,21 @@ public class Monster {
     private final Type type;
     private final Vector2 position;
     private final Sprite sprite;
-    private int health;
+    private Animation<TextureRegion> animation;
+    private float animationTime = 0f;
     private long lastAttackTime;
+    private int health;
 
     public Monster(Type type, Vector2 position) {
         this.type = type;
         this.position = position;
         this.sprite = type.getNewSprite();
         this.health = type.getMaxHealth();
+        this.animation = type.getWalkAnimation();
     }
 
     public void update(float deltaTime, Vector2 playerPosition) {
+        updateAnimation(deltaTime);
         //TODO znaleźć lepszy sposób, aby potwór poruszał sie dokładnie w lini prostej do gracza
         if (position.y < playerPosition.y) {
             position.y += deltaTime * type.getSpeed();
@@ -45,10 +51,24 @@ public class Monster {
         sprite.draw(batch);
     }
 
+    private void updateAnimation(float deltaTime) {
+        animationTime += deltaTime;
+        if (animation.isAnimationFinished(animationTime)) {
+            animation = type.getWalkAnimation();
+        }
+        sprite.setRegion(animation.getKeyFrame(animationTime));
+    }
+
+    private void replaceAnimation(Animation<TextureRegion> type) {
+        animation = type;
+        animationTime = 0f;
+    }
+
     public void attackIfPossible(DemoPlayer player) {
         if (canAttack(player)) {
             System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
             player.takeDamage(type.getDamage());
+            replaceAnimation(type.getAttackAnimation());
             lastAttackTime = TimeUtils.millis();
         }
     }
@@ -60,6 +80,7 @@ public class Monster {
     }
 
     public void takeDamage(int damage) {
+        replaceAnimation(type.getHitAnimation());
         health -= damage;
     }
 

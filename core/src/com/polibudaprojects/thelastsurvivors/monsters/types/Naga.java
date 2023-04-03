@@ -1,12 +1,10 @@
 package com.polibudaprojects.thelastsurvivors.monsters.types;
 
-import com.badlogic.gdx.graphics.Texture;
-
 public class Naga extends Type {
 
     public Naga() {
         super(
-                new Texture("monster3.png"),
+                "assets/monsters/naga.atlas",
                 "Naga",
                 100f,
                 30f,
