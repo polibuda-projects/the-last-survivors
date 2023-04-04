@@ -11,83 +11,108 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class DemoPlayer {
-    public enum State {
-        DEAD, STANDING, RUNNING;
-    }
-
-    public State currentState;
-    public State previousState;
 
     private float timer;
 
     private int level = 1;
 
     private float regenTimer;
-    private final Animation playerRunning;
 
-    private final Animation playerDeath;
-    private float stateTimer;
-    private boolean runningRight = true;
+    private final Animation<TextureRegion> playerDeath;
+    private final Animation<TextureRegion> playerRunning;
+    private final Animation<TextureRegion> playerStanding;
+
+    private final Animation<TextureRegion> playerHpRegen;
+
+    private final Animation<TextureRegion> playerHit;
+    private boolean runningRight;
 
     private int hpRegen = 20;
 
-    public boolean dead;
-    public Vector2 position;
-    public Sprite sprite;
-    public float speed = 150f;
-    public int maxHealth = 100;
-    public int currentHealth = 100;
+    private final Vector2 position;
+    private final Sprite sprite;
+    private int maxHealth = 100;
+    private int currentHealth = 100;
 
     private final int score = 0;
 
-    private int counter = 0;
+    private float animationTime = 0f;
 
-    Texture img = new Texture("player.png");
+    private Animation<TextureRegion> animation;
 
-    TextureRegion playerStand;
+    private boolean animationEnded;
+
+    private boolean hit;
+
+    private boolean gameOver;
+
+    private boolean hpRestored;
 
     public DemoPlayer() {
         timer = 0.0f;
-        playerStand = new TextureRegion(img, 0, 0, 144, 80);
+        Texture img = new Texture("player.png");
+        TextureRegion playerStand = new TextureRegion(img, 0, 0, 144, 80);
         sprite = new Sprite(playerStand);
         sprite.setSize(180f, 100f);
         position = new Vector2(
                 (Gdx.graphics.getWidth() - sprite.getWidth()) / 2f,
                 (Gdx.graphics.getHeight() - sprite.getHeight()) / 2f
         );
-        currentState = State.STANDING;
-        previousState = State.STANDING;
-        stateTimer = 0;
         runningRight = true;
-        dead = false;
 
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        Array<TextureRegion> frames = new Array<>();
 
-        for (int i = 1; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
+            frames.add(new TextureRegion(img, i * 144, 0, 144, 80));
+        }
+
+        this.playerStanding = new Animation<>(0.3f, frames, Animation.PlayMode.LOOP);
+        frames.clear();
+
+        for (int i = 0; i < 8; i++) {
             frames.add(new TextureRegion(img, i * 144, 80, 144, 80));
         }
 
-        playerRunning = new Animation(0.3f, frames);
+        this.playerRunning = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
+        frames.clear();
+
+        for (int i = 0; i < 5; i++) {
+            frames.add(new TextureRegion(img, i * 144, 1840, 144, 80));
+        }
+
+        this.playerHit = new Animation<>(0.15f, frames, Animation.PlayMode.NORMAL);
         frames.clear();
 
 
-        for (int i = 1; i < 12; i++) {
+        for (int i = 0; i < 12; i++) {
             frames.add(new TextureRegion(img, i * 144, 1920, 144, 80));
         }
 
-        playerDeath = new Animation(0.4f, frames);
+        this.playerDeath = new Animation<>(0.4f, frames, Animation.PlayMode.NORMAL);
         frames.clear();
 
+        for (int i = 0; i < 6; i++) {
+            frames.add(new TextureRegion(img, i * 144, 1600, 144, 80));
+        }
+
+        for (int i = 6; i < 8; i++) {
+            frames.add(new TextureRegion(img, i * 144, 1040, 144, 80));
+        }
+
+        this.playerHpRegen = new Animation<>(0.25f, frames, Animation.PlayMode.NORMAL);
+        frames.clear();
+
+        animation = this.playerStanding;
     }
 
     public void update(float deltaTime) {
-        sprite.setRegion(getFrame(deltaTime));
+        updateAnimation(deltaTime);
         timer += deltaTime;
         regenTimer += deltaTime;
         int seconds = (int) timer;
         int hours = seconds / 3600;
         int minutes = (seconds - (hours * 3600)) / 60;
-        if (minutes > 5 && level==1) {
+        if (minutes > 5 && level == 1) {
             maxHealth = 300;
             hpRegen = 40;
             level = 2;
@@ -95,7 +120,7 @@ public class DemoPlayer {
             System.out.println("Max HP increased to 300");
             System.out.println("HP Regen increased to 40");
         }
-        if (minutes > 10 && level==2){
+        if (minutes > 10 && level == 2) {
             maxHealth = 700;
             hpRegen = 60;
             level = 3;
@@ -105,80 +130,35 @@ public class DemoPlayer {
         }
         int regenSec = (int) regenTimer;
         regenSec = regenSec % 60;
-        if(regenSec >= 40  && currentHealth<maxHealth){
+        if (regenSec >= 40 && currentHealth < maxHealth) {
             regenTimer = 0.0f;
             currentHealth += hpRegen;
+            hpRestored = true;
             System.out.println("Regenerate " + hpRegen + " HP");
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) && !(currentState == State.DEAD)) {
-            position.y += deltaTime * speed;
-            sprite.setRegion(getFrame(deltaTime));
-        }
-        if ((Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) && !(currentState == State.DEAD)) {
-            position.y -= deltaTime * speed;
-            sprite.setRegion(getFrame(deltaTime));
-        }
-        if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(currentState == State.DEAD)) {
-            position.x -= deltaTime * speed;
-            sprite.setRegion(getFrame(deltaTime));
-        }
-        if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(currentState == State.DEAD)) {
-            position.x += deltaTime * speed;
-            sprite.setRegion(getFrame(deltaTime));
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            runningRight = false;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-            runningRight = true;
-        }
-
-        if (isDead() && currentState == State.DEAD) {
-            sprite.setRegion(getFrame(deltaTime));
-            counter = counter + 1;
-            if (counter == 128) {
-                dead = true;
+        float speed = 150f;
+        if (!isDead() && !isHiT()) {
+            if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
+                position.y += deltaTime * speed;
+            }
+            if ((Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
+                position.y -= deltaTime * speed;
+            }
+            if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+                position.x -= deltaTime * speed;
+            }
+            if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+                position.x += deltaTime * speed;
+            }
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D))) {
+                runningRight = false;
+            }
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) || (Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A))) {
+                runningRight = true;
             }
         }
     }
 
-    public TextureRegion getFrame(float dt) {
-        if (runningRight && sprite.isFlipX()) {
-            sprite.setFlip(false, false);
-        } else if (!runningRight && !sprite.isFlipX()) {
-            sprite.setFlip(true, false);
-        }
-        TextureRegion region;
-
-        currentState = getState();
-
-        switch (currentState) {
-            case DEAD:
-                region = (TextureRegion) playerDeath.getKeyFrame(stateTimer, true);
-                break;
-            case RUNNING:
-                region = (TextureRegion) playerRunning.getKeyFrame(stateTimer, true);
-                break;
-            default:
-                region = playerStand;
-                break;
-        }
-
-        stateTimer = currentState == previousState ? stateTimer + dt : 0;
-        previousState = currentState;
-
-        return region;
-    }
-
-    public State getState() {
-        if (isDead()) {
-            return State.DEAD;
-        } else if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) || (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
-            return State.RUNNING;
-        } else {
-            return State.STANDING;
-        }
-    }
 
     public void draw(SpriteBatch batch) {
         update(Gdx.graphics.getDeltaTime());
@@ -196,14 +176,6 @@ public class DemoPlayer {
         return position;
     }
 
-    public float getPositionX() {
-        return position.x;
-    }
-
-    public float getPositionY() {
-        return position.y;
-    }
-
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
@@ -211,10 +183,10 @@ public class DemoPlayer {
     }
 
     public void takeDamage(int damage) {
-        if((currentHealth-damage)<0){
+        if ((currentHealth - damage) < 0) {
             currentHealth = 0;
-        }
-        else{
+        } else {
+            hit = true;
             currentHealth -= damage;
         }
     }
@@ -222,5 +194,86 @@ public class DemoPlayer {
 
     public boolean isDead() {
         return currentHealth <= 0;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public boolean isHiT() {
+        return hit;
+    }
+
+    public boolean isHpRestored() {
+        return hpRestored;
+    }
+
+
+    private void updateAnimation(float deltaTime) {
+        animationTime += deltaTime;
+        if (animationEnded && animation == getPlayerDeath()) {
+            if (animationTime >= 4.8f) {
+                gameOver = true;
+            }
+
+        } else if (animationEnded && animation == getPlayerHit()) {
+            if (animationTime >= 0.75f) {
+                hit = false;
+                animationEnded = false;
+            }
+        } else if (animationEnded && animation == getPlayerHpRegen()) {
+            if (animationTime >= 2.0f) {
+                hpRestored = false;
+                animationEnded = false;
+            }
+        } else {
+            if (((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) || (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) && !isDead() && !isHiT() && !isHpRestored()) {
+                animation = this.getPlayerRunning();
+            } else if (isDead()) {
+                animation = this.getPlayerDeath();
+                animationTime = 0f;
+                animationEnded = true;
+
+            } else if (isHiT()) {
+                animation = this.getPlayerHit();
+                animationTime = 0f;
+                animationEnded = true;
+            } else if (isHpRestored()) {
+                animation = this.getPlayerHpRegen();
+                animationTime = 0f;
+                animationEnded = true;
+            } else {
+                animation = this.getPlayerStanding();
+            }
+        }
+        sprite.setRegion(animation.getKeyFrame(animationTime));
+    }
+
+    public Animation<TextureRegion> getPlayerDeath() {
+        return playerDeath;
+    }
+
+    public Animation<TextureRegion> getPlayerRunning() {
+        return playerRunning;
+    }
+
+    public Animation<TextureRegion> getPlayerStanding() {
+        return playerStanding;
+    }
+
+    public Animation<TextureRegion> getPlayerHpRegen() {
+        return playerHpRegen;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public Animation<TextureRegion> getPlayerHit() {
+        return playerHit;
     }
 }
