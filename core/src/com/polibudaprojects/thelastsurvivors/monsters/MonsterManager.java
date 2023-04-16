@@ -1,8 +1,10 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.*;
+import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,14 @@ public class MonsterManager {
             }
             monster.update(deltaTime, player.getPosition());
             monster.attackIfPossible(player);
+
+            for (Weapon weapon : player.getWeapons()) {
+                if (Intersector.overlaps(monster.sprite.getBoundingRectangle(), weapon.getHitbox())) {
+                    if (weapon.canAttack()) {
+                        monster.takeDamage(weapon.getDamage(), weapon);
+                    }
+                }
+            }
         }
     }
 

@@ -8,16 +8,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
+import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
+import java.util.HashMap;
 
 public class Monster {
 
     private final Type type;
     private final Vector2 position;
-    private final Sprite sprite;
+    public final Sprite sprite;
     private Animation<TextureRegion> animation;
     private float animationTime = 0f;
     private long lastAttackTime;
     private int health;
+
+    public HashMap<Weapon, Long> wasHitBy = new HashMap<>();
 
     public Monster(Type type, Vector2 position) {
         this.type = type;
@@ -79,9 +83,16 @@ public class Monster {
                 sprite.getBoundingRectangle().contains(player.getCenterPosition());
     }
 
-    public void takeDamage(int damage) {
-        replaceAnimation(type.getHitAnimation());
-        health -= damage;
+    public void takeDamage(int damage, Weapon weapon) {
+        if (!wasHitBy.containsKey(weapon)) {
+            wasHitBy.put(weapon, TimeUtils.millis());
+            replaceAnimation(type.getHitAnimation());
+            health -= damage;
+        } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
+            replaceAnimation(type.getHitAnimation());
+            health -= damage;
+            wasHitBy.replace(weapon, TimeUtils.millis());
+        }
     }
 
     public boolean isDead() {
