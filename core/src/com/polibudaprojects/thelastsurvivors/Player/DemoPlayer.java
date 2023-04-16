@@ -276,13 +276,4 @@ public class DemoPlayer {
     public Animation<TextureRegion> getPlayerHit() {
         return playerHit;
     }
-
-    public float getX() {
-        return position.x;
-    }
-
-    public float getY() {
-        return position.y;
-    }
-
 }
