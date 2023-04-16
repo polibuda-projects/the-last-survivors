@@ -9,8 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.polibudaprojects.thelastsurvivors.weapons.Sword;
+import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
+
+import java.util.ArrayList;
 
 public class DemoPlayer {
+    private final ArrayList<Weapon> weapons = new ArrayList<>();
 
     private float timer;
 
@@ -31,6 +36,7 @@ public class DemoPlayer {
 
     private final Vector2 position;
     private final Sprite sprite;
+
     private int maxHealth = 100;
     private int currentHealth = 100;
 
@@ -103,6 +109,8 @@ public class DemoPlayer {
         frames.clear();
 
         animation = this.playerStanding;
+
+        this.weapons.add(new Sword(this));
     }
 
     public void update(float deltaTime) {
@@ -157,6 +165,9 @@ public class DemoPlayer {
                 runningRight = true;
             }
         }
+        for (Weapon weapon : weapons) {
+            weapon.update(deltaTime);
+        }
     }
 
 
@@ -170,6 +181,9 @@ public class DemoPlayer {
         sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
 
+        for (Weapon weapon : weapons) {
+            weapon.draw(batch);
+        }
     }
 
     public Vector2 getPosition() {
@@ -275,5 +289,13 @@ public class DemoPlayer {
 
     public Animation<TextureRegion> getPlayerHit() {
         return playerHit;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public boolean isRunningRight() {
+        return runningRight;
     }
 }
