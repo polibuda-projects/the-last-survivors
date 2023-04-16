@@ -298,4 +298,13 @@ public class DemoPlayer {
     public boolean isRunningRight() {
         return runningRight;
     }
+
+    public float getX() {
+        return position.x;
+    }
+
+    public float getY() {
+        return position.y;
+    }
+
 }
