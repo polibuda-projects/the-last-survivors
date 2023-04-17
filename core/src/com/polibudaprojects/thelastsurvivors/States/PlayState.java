@@ -27,7 +27,7 @@ public class PlayState extends State {
     public PlayState(StatesManager gsm) {
 
         super(gsm);
-        infiniteTiledMap = new InfiniteTiledMap("map/game2dEX.tmx", 3, 3);
+        infiniteTiledMap = new InfiniteTiledMap("map/game-map.tmx", 3, 3);
 
         //Game Background
 //        backgroundPng = new Texture("background.png");
