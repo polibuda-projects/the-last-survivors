@@ -35,6 +35,7 @@ public class DemoPlayer {
     private int hpRegen = 20;
 
     private final Vector2 position;
+
     private final Sprite sprite;
 
     private int maxHealth = 100;
@@ -61,9 +62,10 @@ public class DemoPlayer {
         sprite = new Sprite(playerStand);
         sprite.setSize(180f, 100f);
         position = new Vector2(
-                (Gdx.graphics.getWidth() - sprite.getWidth()) / 2f,
-                (Gdx.graphics.getHeight() - sprite.getHeight()) / 2f
+                230,
+                190
         );
+
         runningRight = true;
 
         Array<TextureRegion> frames = new Array<>();
@@ -115,6 +117,7 @@ public class DemoPlayer {
 
     public void update(float deltaTime) {
         updateAnimation(deltaTime);
+
         timer += deltaTime;
         regenTimer += deltaTime;
         int seconds = (int) timer;
@@ -140,7 +143,12 @@ public class DemoPlayer {
         regenSec = regenSec % 60;
         if (regenSec >= 40 && currentHealth < maxHealth) {
             regenTimer = 0.0f;
-            currentHealth += hpRegen;
+            if((currentHealth+hpRegen)>maxHealth){
+                currentHealth = maxHealth;
+            }
+            else{
+                currentHealth += hpRegen;
+            }
             hpRestored = true;
             System.out.println("Regenerate " + hpRegen + " HP");
         }
@@ -158,10 +166,10 @@ public class DemoPlayer {
             if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                 position.x += deltaTime * speed;
             }
-            if ((Gdx.input.isKeyJustPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D))) {
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                 runningRight = false;
             }
-            if ((Gdx.input.isKeyJustPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) || (Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A))) {
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) || (Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) || (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
                 runningRight = true;
             }
         }
