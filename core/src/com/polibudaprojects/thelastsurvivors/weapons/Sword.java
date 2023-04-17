@@ -42,14 +42,17 @@ public class Sword implements Weapon {
 
     @Override
     public void draw(SpriteBatch sb) {
-        sprite.setPosition(position.x, position.y);
-        sprite.setRegion(animation.getKeyFrame(animationTime));
-        if (player.isRunningRight() && sprite.isFlipX()) {
-            sprite.setFlip(false, false);
-        } else if (!player.isRunningRight() && !sprite.isFlipX()) {
-            sprite.setFlip(true, false);
+        if(player.getCurrentHealth()>0){
+            sprite.setPosition(position.x, position.y);
+            sprite.setRegion(animation.getKeyFrame(animationTime));
+            if (player.isRunningRight() && sprite.isFlipX()) {
+                sprite.setFlip(false, false);
+            } else if (!player.isRunningRight() && !sprite.isFlipX()) {
+                sprite.setFlip(true, false);
+            }
+            sprite.draw(sb);
         }
-        sprite.draw(sb);
+
     }
 
     @Override

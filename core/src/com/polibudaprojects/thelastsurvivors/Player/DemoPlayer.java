@@ -103,11 +103,7 @@ public class DemoPlayer {
             frames.add(new TextureRegion(img, i * 144, 1600, 144, 80));
         }
 
-        for (int i = 6; i < 8; i++) {
-            frames.add(new TextureRegion(img, i * 144, 1040, 144, 80));
-        }
-
-        this.playerHpRegen = new Animation<>(0.25f, frames, Animation.PlayMode.NORMAL);
+        this.playerHpRegen = new Animation<>(0.3f, frames, Animation.PlayMode.NORMAL);
         frames.clear();
 
         animation = this.playerStanding;
