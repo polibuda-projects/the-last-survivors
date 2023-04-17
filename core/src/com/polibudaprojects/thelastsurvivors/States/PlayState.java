@@ -23,19 +23,21 @@ public class PlayState extends State {
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
 
+
     public PlayState(StatesManager gsm) {
 
         super(gsm);
         infiniteTiledMap = new InfiniteTiledMap("map/game2dEX.tmx", 3, 3);
+
+        //Game Background
+//        backgroundPng = new Texture("background.png");
+
         //Player Stats Background
         Texture playerStatsPng = new Texture("playerHub.png");
         playerStats = new TextureRegion(playerStatsPng, 0, 0, 300, 82);
 
         //Player Portrait
         playerPortraitPng = new Texture("portrait.png");
-
-        //Game Background
-//        backgroundPng = new Texture("background.png");
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
@@ -57,7 +59,7 @@ public class PlayState extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        infiniteTiledMap.update(cam, demoPlayer.getX(), demoPlayer.getY());
+        infiniteTiledMap.update(cam, demoPlayer.getX()+90, demoPlayer.getY()+50);
         demoPlayer.update(dt);
         monsterManager.update(dt);
         if (demoPlayer.isGameOver()) {
@@ -75,9 +77,10 @@ public class PlayState extends State {
 //        sb.draw(backgroundPng, cam.position.x - (cam.viewportWidth / 2), 0);
         demoPlayer.draw(sb);
         monsterManager.draw(sb);
-        sb.draw(playerStats,10,0);
-        sb.draw(playerPortraitPng,25,27);
+        sb.draw(playerStats,cam.position.x-310,cam.position.y-240);
+        sb.draw(playerPortraitPng,cam.position.x-295,cam.position.y-213);
         sb.end();
+
 
 
         //HP BAR
