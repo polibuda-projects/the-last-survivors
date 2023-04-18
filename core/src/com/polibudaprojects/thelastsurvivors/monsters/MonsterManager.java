@@ -43,7 +43,7 @@ public class MonsterManager {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
-            if (monster.isDead()) {
+            if (monster.shouldBeRemoved()) {
                 iter.remove();
                 continue;
             }

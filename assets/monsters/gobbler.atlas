@@ -1,6 +1,6 @@
 
 gobbler.png
-size: 256, 128
+size: 512, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -60,79 +60,114 @@ attack
   orig: 32, 32
   offset: 0, 0
   index: 8
-hit
+die
   rotate: false
   xy: 104, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-hit
+die
   rotate: false
   xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-hit
+die
   rotate: false
   xy: 104, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-walk
+die
   rotate: false
   xy: 138, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
-walk
+  index: 4
+die
   rotate: false
   xy: 104, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-walk
+  index: 5
+hit
   rotate: false
   xy: 138, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+hit
+  rotate: false
+  xy: 172, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+hit
+  rotate: false
+  xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 walk
   rotate: false
-  xy: 172, 70
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-walk
-  rotate: false
-  xy: 138, 2
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-walk
-  rotate: false
   xy: 172, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 6
+  index: 1
 walk
   rotate: false
   xy: 206, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 7
+  index: 2
 walk
   rotate: false
   xy: 172, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+walk
+  rotate: false
+  xy: 206, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+walk
+  rotate: false
+  xy: 240, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+walk
+  rotate: false
+  xy: 206, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+walk
+  rotate: false
+  xy: 240, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+walk
+  rotate: false
+  xy: 274, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

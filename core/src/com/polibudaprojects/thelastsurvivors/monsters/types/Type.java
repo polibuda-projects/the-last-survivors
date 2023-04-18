@@ -17,6 +17,7 @@ public abstract class Type {
     private final Animation<TextureRegion> walkAnimation;
     private final Animation<TextureRegion> attackAnimation;
     private final Animation<TextureRegion> hitAnimation;
+    private final Animation<TextureRegion> dieAnimation;
 
     public Type(String textureAtlasPath, String name, float spriteSize, float speed, int damage, int maxHealth) {
         this.textureAtlas = new TextureAtlas(textureAtlasPath);
@@ -29,6 +30,7 @@ public abstract class Type {
         this.walkAnimation = new Animation<>(0.066f, textureAtlas.findRegions("walk"), Animation.PlayMode.LOOP);
         this.attackAnimation = new Animation<>(0.066f, textureAtlas.findRegions("attack"), Animation.PlayMode.NORMAL);
         this.hitAnimation = new Animation<>(0.066f, textureAtlas.findRegions("hit"), Animation.PlayMode.NORMAL);
+        this.dieAnimation = new Animation<>(0.066f, textureAtlas.findRegions("die"), Animation.PlayMode.NORMAL);
     }
 
     public Sprite getNewSprite() {
@@ -67,6 +69,10 @@ public abstract class Type {
 
     public Animation<TextureRegion> getHitAnimation() {
         return hitAnimation;
+    }
+
+    public Animation<TextureRegion> getDieAnimation() {
+        return dieAnimation;
     }
 
     public void dispose() {
