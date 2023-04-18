@@ -14,9 +14,13 @@ import java.util.HashMap;
 
 public class Monster {
 
+    private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
+    private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
+
+    public final Sprite sprite;
     private final Type type;
     private final Vector2 position;
-    public final Sprite sprite;
+    private Vector2 velocity;
     private Animation<TextureRegion> animation;
     private float animationTime = 0f;
     private long lastAttackTime;
@@ -27,6 +31,7 @@ public class Monster {
     public Monster(Type type, Vector2 position) {
         this.type = type;
         this.position = position;
+        this.velocity = new Vector2();
         this.sprite = type.getNewSprite();
         this.health = type.getMaxHealth();
         this.animation = type.getWalkAnimation();
@@ -34,26 +39,27 @@ public class Monster {
 
     public void update(float deltaTime, Vector2 playerPosition) {
         updateAnimation(deltaTime);
-        sprite.setFlip(position.x > playerPosition.x, false);
-        if (!isDead()) {
-            //TODO znaleźć lepszy sposób, aby potwór poruszał sie dokładnie w lini prostej do gracza
-            if (position.y < playerPosition.y) {
-                position.y += deltaTime * type.getSpeed();
+        if (!isDead() && !canReach(playerPosition)) {
+            timeSinceLastVelocityUpdate += deltaTime;
+            if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
+                updateVelocity(playerPosition);
+                timeSinceLastVelocityUpdate = 0f;
             }
-            if (position.y > playerPosition.y) {
-                position.y -= deltaTime * type.getSpeed();
-            }
-            if (position.x < playerPosition.x) {
-                position.x += deltaTime * type.getSpeed();
-            }
-            if (position.x > playerPosition.x) {
-                position.x -= deltaTime * type.getSpeed();
-            }
+            position.mulAdd(velocity, deltaTime);
         }
+    }
+
+    private void updateVelocity(Vector2 playerPosition) {
+        Vector2 direction = new Vector2(
+                playerPosition.x - position.x - sprite.getWidth() / 2f,
+                playerPosition.y - position.y - sprite.getHeight() / 2f
+        );
+        velocity = direction.nor().scl(type.getSpeed());
     }
 
     public void draw(SpriteBatch batch) {
         sprite.setPosition(position.x, position.y);
+        sprite.setFlip(velocity.x < 0, false);
         sprite.draw(batch);
     }
 
@@ -82,7 +88,11 @@ public class Monster {
     private boolean canAttack(DemoPlayer player) {
         return !isDead() &&
                 TimeUtils.millis() - lastAttackTime > type.getAttackInterval() &&
-                sprite.getBoundingRectangle().contains(player.getCenterPosition());
+                canReach(player.getCenterPosition());
+    }
+
+    private boolean canReach(Vector2 playerPosition) {
+        return sprite.getBoundingRectangle().contains(playerPosition);
     }
 
     public void takeDamage(int damage, Weapon weapon) {

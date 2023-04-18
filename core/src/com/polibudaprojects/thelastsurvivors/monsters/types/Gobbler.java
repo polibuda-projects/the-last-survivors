@@ -7,7 +7,7 @@ public class Gobbler extends Type {
                 "assets/monsters/gobbler.atlas",
                 "Gobbler",
                 100f,
-                25f,
+                35f,
                 7,
                 20
         );
