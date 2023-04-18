@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
+
 import java.util.HashMap;
 
 public class Monster {
@@ -33,20 +34,21 @@ public class Monster {
 
     public void update(float deltaTime, Vector2 playerPosition) {
         updateAnimation(deltaTime);
-        //TODO znaleźć lepszy sposób, aby potwór poruszał sie dokładnie w lini prostej do gracza
-        if (position.y < playerPosition.y) {
-            position.y += deltaTime * type.getSpeed();
-        }
-        if (position.y > playerPosition.y) {
-            position.y -= deltaTime * type.getSpeed();
-        }
-        if (position.x < playerPosition.x) {
-            position.x += deltaTime * type.getSpeed();
-            sprite.setFlip(false, false);
-        }
-        if (position.x > playerPosition.x) {
-            position.x -= deltaTime * type.getSpeed();
-            sprite.setFlip(true, false);
+        sprite.setFlip(position.x > playerPosition.x, false);
+        if (!isDead()) {
+            //TODO znaleźć lepszy sposób, aby potwór poruszał sie dokładnie w lini prostej do gracza
+            if (position.y < playerPosition.y) {
+                position.y += deltaTime * type.getSpeed();
+            }
+            if (position.y > playerPosition.y) {
+                position.y -= deltaTime * type.getSpeed();
+            }
+            if (position.x < playerPosition.x) {
+                position.x += deltaTime * type.getSpeed();
+            }
+            if (position.x > playerPosition.x) {
+                position.x -= deltaTime * type.getSpeed();
+            }
         }
     }
 
@@ -57,7 +59,7 @@ public class Monster {
 
     private void updateAnimation(float deltaTime) {
         animationTime += deltaTime;
-        if (animation.isAnimationFinished(animationTime)) {
+        if (animation.isAnimationFinished(animationTime) && !isDead()) {
             animation = type.getWalkAnimation();
         }
         sprite.setRegion(animation.getKeyFrame(animationTime));
@@ -84,18 +86,28 @@ public class Monster {
     }
 
     public void takeDamage(int damage, Weapon weapon) {
-        if (!wasHitBy.containsKey(weapon)) {
-            wasHitBy.put(weapon, TimeUtils.millis());
-            replaceAnimation(type.getHitAnimation());
-            health -= damage;
-        } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
-            replaceAnimation(type.getHitAnimation());
-            health -= damage;
-            wasHitBy.replace(weapon, TimeUtils.millis());
+        // TODO może lepiej to częściowo przenieść do weapon.canAttack(Monster monster)? Tu powinno być tylko zadanie obrażeń
+        if (!isDead()) {
+            if (!wasHitBy.containsKey(weapon)) {
+                wasHitBy.put(weapon, TimeUtils.millis());
+                replaceAnimation(type.getHitAnimation());
+                health -= damage;
+            } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
+                replaceAnimation(type.getHitAnimation());
+                health -= damage;
+                wasHitBy.replace(weapon, TimeUtils.millis());
+            }
+            if (isDead()) {
+                replaceAnimation(type.getDieAnimation());
+            }
         }
     }
 
     public boolean isDead() {
         return health <= 0;
+    }
+
+    public boolean shouldBeRemoved() {
+        return isDead() && animation.isAnimationFinished(animationTime);
     }
 }
