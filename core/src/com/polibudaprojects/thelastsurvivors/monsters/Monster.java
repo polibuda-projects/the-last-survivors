@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
@@ -17,7 +18,7 @@ public class Monster {
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
     private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
 
-    public final Sprite sprite;
+    private final Sprite sprite;
     private final Type type;
     private final Vector2 position;
     private Vector2 velocity;
@@ -119,5 +120,9 @@ public class Monster {
 
     public boolean shouldBeRemoved() {
         return isDead() && animation.isAnimationFinished(animationTime);
+    }
+
+    public Rectangle getBoundingRectangle() {
+        return sprite.getBoundingRectangle();
     }
 }
