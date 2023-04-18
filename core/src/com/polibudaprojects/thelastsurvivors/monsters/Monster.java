@@ -34,6 +34,7 @@ public class Monster {
 
     public void update(float deltaTime, Vector2 playerPosition) {
         updateAnimation(deltaTime);
+        sprite.setFlip(position.x > playerPosition.x, false);
         if (!isDead()) {
             //TODO znaleźć lepszy sposób, aby potwór poruszał sie dokładnie w lini prostej do gracza
             if (position.y < playerPosition.y) {
@@ -44,11 +45,9 @@ public class Monster {
             }
             if (position.x < playerPosition.x) {
                 position.x += deltaTime * type.getSpeed();
-                sprite.setFlip(false, false);
             }
             if (position.x > playerPosition.x) {
                 position.x -= deltaTime * type.getSpeed();
-                sprite.setFlip(true, false);
             }
         }
     }

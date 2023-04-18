@@ -47,7 +47,7 @@ public class MonsterManager {
                 iter.remove();
                 continue;
             }
-            monster.update(deltaTime, player.getPosition());
+            monster.update(deltaTime, player.getCenterPosition());
             monster.attackIfPossible(player);
 
             for (Weapon weapon : player.getWeapons()) {
