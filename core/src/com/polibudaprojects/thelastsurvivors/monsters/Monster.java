@@ -13,8 +13,11 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.HashMap;
 
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_MAX;
+
 public class Monster {
 
+    private static final float MAX_DISTANCE_TO_PLAYER = SPAWN_RADIUS_MAX;
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
     private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
 
@@ -118,8 +121,12 @@ public class Monster {
         return health <= 0;
     }
 
-    public boolean shouldBeRemoved() {
+    public boolean isDeathAnimationFinished() {
         return isDead() && animation.isAnimationFinished(animationTime);
+    }
+
+    public boolean hasExceededMaxDistance(Vector2 playerPosition) {
+        return position.dst(playerPosition) > MAX_DISTANCE_TO_PLAYER;
     }
 
     public Rectangle getBoundingRectangle() {

@@ -12,19 +12,12 @@ import java.util.ListIterator;
 
 public class MonsterManager {
 
-    public static final float SPAWN_RADIUS = 400f;
     private final List<Monster> monsters = new ArrayList<>();
-    private final List<Phase> phases = new ArrayList<>();
+    private final PhaseManager phaseManager = new PhaseManager();
     private final DemoPlayer player;
-    private float phaseTimer = 0f;
-    private int currentPhase = 0;
 
     public MonsterManager(DemoPlayer player) {
         this.player = player;
-        phases.add(new EasyPhase());
-        phases.add(new MediumPhase());
-        phases.add(new HardPhase());
-        phases.add(new InfinitePhase());
     }
 
     public void draw(SpriteBatch batch) {
@@ -35,15 +28,18 @@ public class MonsterManager {
 
     public void update(float deltaTime) {
         updateMonsters(deltaTime);
-        updatePhase();
-        phaseTimer += deltaTime;
+        phaseManager.update(deltaTime);
+
+        if(phaseManager.shouldSpawn()){
+            monsters.addAll(phaseManager.getSpawnedMonsters(player.getPosition()));
+        }
     }
 
     private void updateMonsters(float deltaTime) {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
-            if (monster.shouldBeRemoved()) {
+            if (shouldBeRemoved(monster)) {
                 iter.remove();
                 continue;
             }
@@ -60,29 +56,7 @@ public class MonsterManager {
         }
     }
 
-    private void updatePhase() {
-        if (getCurrentPhase().hasPhaseEnded(phaseTimer)) {
-            startNextPhase();
-            phaseTimer = 0f;
-        }
-
-        if (getCurrentPhase().shouldSpawn()) {
-            spawn();
-        }
-    }
-
-    private void spawn() {
-        Monster spawnedMonster = getCurrentPhase().spawn(player.getPosition());
-        monsters.add(spawnedMonster);
-    }
-
-    private Phase getCurrentPhase() {
-        return phases.get(currentPhase);
-    }
-
-    private void startNextPhase() {
-        if (currentPhase < phases.size() - 1) {
-            currentPhase++;
-        }
+    private boolean shouldBeRemoved(Monster monster) {
+        return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getPosition());
     }
 }

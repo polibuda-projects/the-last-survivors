@@ -3,7 +3,6 @@ package com.polibudaprojects.thelastsurvivors.monsters.phases;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Gobbler;
 import com.polibudaprojects.thelastsurvivors.monsters.types.MawFlower;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Scarecrow;
-import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 public class MediumPhase extends Phase {
 
@@ -15,14 +14,14 @@ public class MediumPhase extends Phase {
     }
 
     @Override
-    protected Class<? extends Type> getSpawnedMonsterType() {
+    protected TypeAndCount getMonsterTypeAndCountToSpawn() {
         switch (rand.nextInt(4)) {
             case 0:
-                return Scarecrow.class;
+                return TypeAndCount.of(Scarecrow.class, rand.nextInt(1, 4));
             case 1:
-                return Gobbler.class;
+                return TypeAndCount.of(Gobbler.class, rand.nextInt(3, 6));
             default:
-                return MawFlower.class;
+                return TypeAndCount.of(MawFlower.class, rand.nextInt(5, 15));
         }
     }
 }
