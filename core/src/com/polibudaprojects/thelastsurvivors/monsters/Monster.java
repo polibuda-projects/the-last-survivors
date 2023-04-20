@@ -43,7 +43,7 @@ public class Monster {
 
     public void update(float deltaTime, Vector2 playerPosition) {
         updateAnimation(deltaTime);
-        if (!isDead() && !canReach(playerPosition)) {
+        if (!isDead()) {
             timeSinceLastVelocityUpdate += deltaTime;
             if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
                 updateVelocity(playerPosition);
@@ -101,20 +101,27 @@ public class Monster {
 
     public void takeDamage(int damage, Weapon weapon) {
         // TODO może lepiej to częściowo przenieść do weapon.canAttack(Monster monster)? Tu powinno być tylko zadanie obrażeń
+        // TODO można przekać tylko weapon i pobrać damage z weapon
         if (!isDead()) {
             if (!wasHitBy.containsKey(weapon)) {
                 wasHitBy.put(weapon, TimeUtils.millis());
                 replaceAnimation(type.getHitAnimation());
                 health -= damage;
+                applyKnockback(-0.8f);
             } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
                 replaceAnimation(type.getHitAnimation());
                 health -= damage;
                 wasHitBy.replace(weapon, TimeUtils.millis());
+                applyKnockback(-0.8f);
             }
             if (isDead()) {
                 replaceAnimation(type.getDieAnimation());
             }
         }
+    }
+
+    private void applyKnockback(float knockback) {
+        position.mulAdd(velocity, knockback);
     }
 
     public boolean isDead() {
