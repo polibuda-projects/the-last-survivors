@@ -106,15 +106,21 @@ public class Monster {
                 wasHitBy.put(weapon, TimeUtils.millis());
                 replaceAnimation(type.getHitAnimation());
                 health -= damage;
+                applyKnockback(-0.8f);
             } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
                 replaceAnimation(type.getHitAnimation());
                 health -= damage;
                 wasHitBy.replace(weapon, TimeUtils.millis());
+                applyKnockback(-0.8f);
             }
             if (isDead()) {
                 replaceAnimation(type.getDieAnimation());
             }
         }
+    }
+
+    private void applyKnockback(float knockback) {
+        position.mulAdd(velocity, knockback);
     }
 
     public boolean isDead() {
