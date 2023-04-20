@@ -7,12 +7,12 @@ public class EasyPhase extends Phase {
     public EasyPhase() {
         super(
                 30,
-                1000L
+                1500L
         );
     }
 
     @Override
     protected TypeAndCount getMonsterTypeAndCountToSpawn() {
-        return TypeAndCount.of(MawFlower.class, rand.nextInt(5, 10));
+        return TypeAndCount.of(MawFlower.class, 5 + rand.nextInt(5));
     }
 }
