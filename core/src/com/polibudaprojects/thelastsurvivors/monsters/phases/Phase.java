@@ -11,8 +11,8 @@ import java.util.Random;
 
 public abstract class Phase {
 
-    public static final float SPAWN_RADIUS_MIN = 500f;
-    public static final float SPAWN_RADIUS_MAX = 700f;
+    public static final int SPAWN_RADIUS_MIN = 500;
+    public static final int SPAWN_RADIUS_MAX = 700;
     protected final Random rand = new Random();
     protected final float duration;
     protected final long interval;
@@ -54,9 +54,10 @@ public abstract class Phase {
         double randomAngle = rand.nextDouble();
         for (int i = 0; i < monstersCount; i++) {
             double angle = (randomAngle + i) * angleInterval;
+            int radius = SPAWN_RADIUS_MIN + rand.nextInt(SPAWN_RADIUS_MAX - SPAWN_RADIUS_MIN);
             spawnPositions[i] = new Vector2(
-                    (float) (playerPosition.x + rand.nextFloat(SPAWN_RADIUS_MIN, SPAWN_RADIUS_MAX) * Math.cos(angle)),
-                    (float) (playerPosition.y + rand.nextFloat(SPAWN_RADIUS_MIN, SPAWN_RADIUS_MAX) * Math.sin(angle))
+                    (float) (playerPosition.x + radius * Math.cos(angle)),
+                    (float) (playerPosition.y + radius * Math.sin(angle))
             );
         }
         return spawnPositions;
