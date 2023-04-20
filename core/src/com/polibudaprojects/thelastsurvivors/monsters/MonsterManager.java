@@ -13,17 +13,11 @@ import java.util.ListIterator;
 public class MonsterManager {
 
     private final List<Monster> monsters = new ArrayList<>();
-    private final List<Phase> phases = new ArrayList<>();
+    private final PhaseManager phaseManager = new PhaseManager();
     private final DemoPlayer player;
-    private float phaseTimer = 0f;
-    private int currentPhase = 0;
 
     public MonsterManager(DemoPlayer player) {
         this.player = player;
-        phases.add(new EasyPhase());
-        phases.add(new MediumPhase());
-        phases.add(new HardPhase());
-        phases.add(new InfinitePhase());
     }
 
     public void draw(SpriteBatch batch) {
@@ -34,8 +28,11 @@ public class MonsterManager {
 
     public void update(float deltaTime) {
         updateMonsters(deltaTime);
-        updatePhase();
-        phaseTimer += deltaTime;
+        phaseManager.update(deltaTime);
+
+        if(phaseManager.shouldSpawn()){
+            monsters.addAll(phaseManager.getSpawnedMonsters(player.getPosition()));
+        }
     }
 
     private void updateMonsters(float deltaTime) {
@@ -61,26 +58,5 @@ public class MonsterManager {
 
     private boolean shouldBeRemoved(Monster monster) {
         return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getPosition());
-    }
-
-    private void updatePhase() {
-        if (getCurrentPhase().hasPhaseEnded(phaseTimer)) {
-            startNextPhase();
-            phaseTimer = 0f;
-        }
-
-        if (getCurrentPhase().shouldSpawn()) {
-            monsters.addAll(getCurrentPhase().getSpawnedMonsters(player.getPosition()));
-        }
-    }
-
-    private Phase getCurrentPhase() {
-        return phases.get(currentPhase);
-    }
-
-    private void startNextPhase() {
-        if (currentPhase < phases.size() - 1) {
-            currentPhase++;
-        }
     }
 }
