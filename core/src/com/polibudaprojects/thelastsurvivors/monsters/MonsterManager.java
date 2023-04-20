@@ -43,7 +43,7 @@ public class MonsterManager {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
-            if (monster.shouldBeRemoved()) {
+            if (shouldBeRemoved(monster)) {
                 iter.remove();
                 continue;
             }
@@ -58,6 +58,10 @@ public class MonsterManager {
                 }
             }
         }
+    }
+
+    private boolean shouldBeRemoved(Monster monster) {
+        return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getCenterPosition());
     }
 
     private void updatePhase() {
