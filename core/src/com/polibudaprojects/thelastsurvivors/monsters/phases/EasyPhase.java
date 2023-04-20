@@ -7,7 +7,7 @@ public class EasyPhase extends Phase {
     public EasyPhase() {
         super(
                 30,
-                1000L
+                1500L
         );
     }
 

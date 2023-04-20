@@ -10,7 +10,7 @@ public class InfinitePhase extends Phase {
     public InfinitePhase() {
         super(
                 0,
-                100L
+                200L
         );
     }
 
