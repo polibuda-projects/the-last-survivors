@@ -13,9 +13,11 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.HashMap;
 
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_MAX;
+
 public class Monster {
 
-    private static final float MAX_DISTANCE_TO_PLAYER = 800f;
+    private static final float MAX_DISTANCE_TO_PLAYER = SPAWN_RADIUS_MAX;
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
     private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
 

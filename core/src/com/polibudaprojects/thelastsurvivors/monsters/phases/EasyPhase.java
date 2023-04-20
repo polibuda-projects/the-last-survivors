@@ -1,7 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
 import com.polibudaprojects.thelastsurvivors.monsters.types.MawFlower;
-import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 
 public class EasyPhase extends Phase {
 
@@ -13,7 +12,7 @@ public class EasyPhase extends Phase {
     }
 
     @Override
-    protected Class<? extends Type> getSpawnedMonsterType() {
-        return MawFlower.class;
+    protected TypeAndCount getMonsterTypeAndCountToSpawn() {
+        return TypeAndCount.of(MawFlower.class, rand.nextInt(5, 10));
     }
 }

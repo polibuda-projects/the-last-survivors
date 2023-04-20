@@ -12,7 +12,6 @@ import java.util.ListIterator;
 
 public class MonsterManager {
 
-    public static final float SPAWN_RADIUS = 400f;
     private final List<Monster> monsters = new ArrayList<>();
     private final List<Phase> phases = new ArrayList<>();
     private final DemoPlayer player;
@@ -61,7 +60,7 @@ public class MonsterManager {
     }
 
     private boolean shouldBeRemoved(Monster monster) {
-        return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getCenterPosition());
+        return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getPosition());
     }
 
     private void updatePhase() {
@@ -71,13 +70,8 @@ public class MonsterManager {
         }
 
         if (getCurrentPhase().shouldSpawn()) {
-            spawn();
+            monsters.addAll(getCurrentPhase().getSpawnedMonsters(player.getPosition()));
         }
-    }
-
-    private void spawn() {
-        Monster spawnedMonster = getCurrentPhase().spawn(player.getPosition());
-        monsters.add(spawnedMonster);
     }
 
     private Phase getCurrentPhase() {
