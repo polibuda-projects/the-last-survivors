@@ -13,23 +13,32 @@ public class InfiniteTiledMap {
     private int mapHeight;
     private int gridWidth;
     private int gridHeight;
+    private float zoomLevel;
+    private CollisionDetector collisionDetector;
 
-    public InfiniteTiledMap(String mapFileName, int gridWidth, int gridHeight) {
+    public InfiniteTiledMap(String mapFileName, int gridWidth, int gridHeight, float zoomLevel) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
+        this.zoomLevel = zoomLevel;
         renderers = new TiledMapRenderer[gridWidth][gridHeight];
         maps = new TiledMap[gridWidth][gridHeight];
 
         TmxMapLoader loader = new TmxMapLoader();
+        TiledMap tiledMap = loader.load(mapFileName);
+        collisionDetector = new CollisionDetector(tiledMap);
 
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                maps[i][j] = loader.load(mapFileName);
+                maps[i][j] = tiledMap;
                 renderers[i][j] = new OrthogonalTiledMapRenderer(maps[i][j]);
                 mapWidth = (int) maps[i][j].getProperties().get("width", Integer.class) * (int) maps[i][j].getProperties().get("tilewidth", Integer.class);
                 mapHeight = (int) maps[i][j].getProperties().get("height", Integer.class) * (int) maps[i][j].getProperties().get("tileheight", Integer.class);
             }
         }
+    }
+
+    public TiledMap getTiledMap() {
+        return maps[0][0];
     }
 
     public void update(OrthographicCamera cam, float playerX, float playerY) {
@@ -41,9 +50,16 @@ public class InfiniteTiledMap {
     }
 
     public void render(OrthographicCamera cam) {
+        OrthographicCamera mapCamera = new OrthographicCamera(cam.viewportWidth, cam.viewportHeight);
+        mapCamera.zoom = zoomLevel;
+        float adjustedX = cam.position.x - (cam.viewportWidth * (zoomLevel - 1) / 2);
+        float adjustedY = cam.position.y - (cam.viewportHeight * (zoomLevel - 1) / 2);
+        mapCamera.position.set(adjustedX, adjustedY, 0);
+        mapCamera.update();
+
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                renderers[i][j].setView(cam);
+                renderers[i][j].setView(mapCamera);
                 renderers[i][j].render();
             }
         }

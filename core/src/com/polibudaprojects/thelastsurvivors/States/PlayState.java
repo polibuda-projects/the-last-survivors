@@ -3,9 +3,13 @@ package com.polibudaprojects.thelastsurvivors.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
+import com.polibudaprojects.thelastsurvivors.map.CollisionDetector;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
@@ -18,19 +22,17 @@ public class PlayState extends State {
     private final ShapeRenderer shapeRenderer;
     private final MonsterManager monsterManager;
     private final DemoPlayer demoPlayer;
-//    private final Texture backgroundPng;
-
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
+    private GameTimer gameTimer;
 
 
     public PlayState(StatesManager gsm) {
 
         super(gsm);
-        infiniteTiledMap = new InfiniteTiledMap("map/game-map.tmx", 3, 3);
 
-        //Game Background
-//        backgroundPng = new Texture("background.png");
+        //Map
+        infiniteTiledMap = new InfiniteTiledMap("map/game-dev1.tmx", 3, 3, 0.5f); // original view = 1f
 
         //Player Stats Background
         Texture playerStatsPng = new Texture("playerHub.png");
@@ -41,7 +43,6 @@ public class PlayState extends State {
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
-
         demoPlayer = new DemoPlayer();
         monsterManager = new MonsterManager(demoPlayer);
 
@@ -49,7 +50,12 @@ public class PlayState extends State {
 
         BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
 
+        BitmapFont timerFont = new BitmapFont();
+        float timeRemaining = 30 * 60;
+        gameTimer = new GameTimer(timeRemaining, timerFont);
+
     }
+
 
     @Override
     public void handleInput() {
@@ -62,7 +68,8 @@ public class PlayState extends State {
         infiniteTiledMap.update(cam, demoPlayer.getX()+90, demoPlayer.getY()+50);
         demoPlayer.update(dt);
         monsterManager.update(dt);
-        if (demoPlayer.isGameOver()) {
+        gameTimer.update(dt);
+        if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
             gsm.set(new EndState(gsm));
         }
     }
@@ -74,12 +81,14 @@ public class PlayState extends State {
 
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-//        sb.draw(backgroundPng, cam.position.x - (cam.viewportWidth / 2), 0);
         demoPlayer.draw(sb);
         monsterManager.draw(sb);
         sb.draw(playerStats,cam.position.x-310,cam.position.y-240);
         sb.draw(playerPortraitPng,cam.position.x-295,cam.position.y-213);
         sb.end();
+
+        //HUD
+        gameTimer.render(sb);
 
 
 
