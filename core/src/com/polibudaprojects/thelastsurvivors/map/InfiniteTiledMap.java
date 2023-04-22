@@ -52,8 +52,8 @@ public class InfiniteTiledMap {
     public void render(OrthographicCamera cam) {
         OrthographicCamera mapCamera = new OrthographicCamera(cam.viewportWidth, cam.viewportHeight);
         mapCamera.zoom = zoomLevel;
-        float adjustedX = cam.position.x - (cam.viewportWidth * (zoomLevel - 1) / 2);
-        float adjustedY = cam.position.y - (cam.viewportHeight * (zoomLevel - 1) / 2);
+        float adjustedX = (cam.position.x - (cam.viewportWidth / 2)) * zoomLevel;
+        float adjustedY = (cam.position.y - (cam.viewportHeight / 2)) * zoomLevel;
         mapCamera.position.set(adjustedX, adjustedY, 0);
         mapCamera.update();
 
