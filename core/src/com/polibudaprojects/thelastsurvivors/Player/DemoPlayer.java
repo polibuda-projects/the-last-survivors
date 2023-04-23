@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
 import com.polibudaprojects.thelastsurvivors.weapons.Sword;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
@@ -31,6 +32,7 @@ public class DemoPlayer {
 
     private final Animation<TextureRegion> playerHit;
     private boolean runningRight;
+    private int lastInput;
 
     private int hpRegen = 20;
 
@@ -109,6 +111,7 @@ public class DemoPlayer {
         animation = this.playerStanding;
 
         this.weapons.add(new Sword(this));
+        this.weapons.add(new FireWand(this));
     }
 
     public void update(float deltaTime) {
@@ -139,10 +142,9 @@ public class DemoPlayer {
         regenSec = regenSec % 60;
         if (regenSec >= 40 && currentHealth < maxHealth) {
             regenTimer = 0.0f;
-            if((currentHealth+hpRegen)>maxHealth){
+            if ((currentHealth + hpRegen) > maxHealth) {
                 currentHealth = maxHealth;
-            }
-            else{
+            } else {
                 currentHealth += hpRegen;
             }
             hpRestored = true;
@@ -152,15 +154,19 @@ public class DemoPlayer {
         if (!isDead() && !isHiT()) {
             if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                 position.y += deltaTime * speed;
+                lastInput = 0;
             }
             if ((Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))) {
                 position.y -= deltaTime * speed;
+                lastInput = 1;
             }
             if ((Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
                 position.x -= deltaTime * speed;
+                lastInput = 2;
             }
             if ((Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                 position.x += deltaTime * speed;
+                lastInput = 3;
             }
             if ((Gdx.input.isKeyJustPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)) || (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
                 runningRight = false;
@@ -197,6 +203,7 @@ public class DemoPlayer {
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
+        //Todo fix memory leak
         return new Vector2(centerX, centerY);
     }
 
@@ -311,4 +318,7 @@ public class DemoPlayer {
         return position.y;
     }
 
+    public int getLastInput() {
+        return lastInput;
+    }
 }

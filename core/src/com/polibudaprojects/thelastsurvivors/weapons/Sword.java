@@ -5,21 +5,27 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 public class Sword implements Weapon {
     private int damage = 5;
-    private final long cooldown = 1000L;
+    private long cooldown = 1000L;
     private long lastAttackTime;
     private final Sprite sprite;
-    private Animation<TextureRegion> animation;
+    private final Animation<TextureRegion> animation;
     private Vector2 position;
     private float animationTime = 0f;
-    private DemoPlayer player;
+    private final DemoPlayer player;
+
+    private final Rectangle hitboxRight;
+    private final Rectangle hitboxLeft;
+    public int animationCount;
 
     public Sword(DemoPlayer player) {
         this.player = player;
@@ -32,17 +38,20 @@ public class Sword implements Weapon {
 
         Array<TextureRegion> frames = new Array<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             frames.add(new TextureRegion(img, i * 144, 880, 144, 80));
         }
         this.animation = new Animation<>(0.3f, frames, Animation.PlayMode.NORMAL);
 
         lastAttackTime = 0L;
+        hitboxRight = new Rectangle(player.getCenterPosition().x, player.getCenterPosition().y, 30, 20);
+        hitboxLeft = new Rectangle(player.getCenterPosition().x - 30, player.getCenterPosition().y, 30, 20);
+        animationCount = 0;
     }
 
     @Override
     public void draw(SpriteBatch sb) {
-        if(player.getCurrentHealth()>0){
+        if (player.getCurrentHealth() > 0) {
             sprite.setPosition(position.x, position.y);
             sprite.setRegion(animation.getKeyFrame(animationTime));
             if (player.isRunningRight() && sprite.isFlipX()) {
@@ -63,15 +72,15 @@ public class Sword implements Weapon {
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
             lastAttackTime = TimeUtils.millis();
             animationTime = 0;
+            animationCount += 1;
         }
     }
 
-    @Override
     public Rectangle getHitbox() {
         if (player.isRunningRight()) {
-            return new Rectangle(player.getCenterPosition().x, player.getCenterPosition().y, 25, 20);
+            return hitboxRight.setPosition(player.getCenterPosition());
         } else {
-            return new Rectangle(player.getCenterPosition().x - 25, player.getCenterPosition().y, 25, 20);
+            return hitboxLeft.setPosition(player.getCenterPosition().x - 30, player.getCenterPosition().y);
         }
     }
 
@@ -81,12 +90,30 @@ public class Sword implements Weapon {
     }
 
     @Override
-    public boolean canAttack() {
-        return !animation.isAnimationFinished(animationTime);
+    public boolean canAttack(Monster monster) {
+        if (Intersector.overlaps(monster.getBoundingRectangle(), this.getHitbox())) {
+            if (animationTime > 1.2f) {
+                return false;
+            } else {
+                if (!animation.isAnimationFinished(animationTime)) {
+                    if (!monster.wasHitBy.containsKey(this)) {
+                        monster.wasHitBy.put(this, animationCount);
+                        return true;
+                    } else if (monster.wasHitBy.get(this) < animationCount) {
+                        monster.wasHitBy.replace(this, animationCount);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
-    @Override
-    public long getAttackInterval() {
-        return (long) ((animation.getAnimationDuration() * 1000) - animationTime);
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setCooldown(long cooldown) {
+        this.cooldown = cooldown;
     }
 }
