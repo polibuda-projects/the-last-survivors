@@ -8,8 +8,9 @@ public class MediumPhase extends Phase {
 
     public MediumPhase() {
         super(
-                30,
-                800L
+                30f,
+                800L,
+                30
         );
     }
 

@@ -1,18 +1,21 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
-import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PhaseManager {
 
+    private final DemoPlayer player;
     private final List<Phase> phases = new ArrayList<>();
     private float phaseTimer = 0f;
     private int currentPhase = 0;
 
-    public PhaseManager() {
+    public PhaseManager(DemoPlayer player) {
+        this.player = player;
         phases.add(new EasyPhase());
         phases.add(new MediumPhase());
         phases.add(new HardPhase());
@@ -21,18 +24,34 @@ public class PhaseManager {
 
     public void update(float deltaTime) {
         phaseTimer += deltaTime;
-        if (phases.get(currentPhase).hasPhaseEnded(phaseTimer)) {
+        if (getCurrentPhase().hasPhaseEnded(phaseTimer)) {
             startNextPhase();
             phaseTimer = 0f;
         }
     }
 
     public boolean shouldSpawn() {
-        return phases.get(currentPhase).shouldSpawn();
+        return getCurrentPhase().shouldSpawn();
     }
 
-    public List<Monster> getSpawnedMonsters(Vector2 playerPosition) {
-        return phases.get(currentPhase).getSpawnedMonsters(playerPosition);
+    public void spawnMonsters(List<Monster> monsters) {
+        List<Monster> spawnedMonsters = getSpawnedMonsters();
+        int numberOfMonstersToRemove = monsters.size() + spawnedMonsters.size() - getCurrentPhase().getMaxCount();
+
+        if (numberOfMonstersToRemove > 0) {
+            Collections.shuffle(spawnedMonsters);
+            spawnedMonsters.subList(0, numberOfMonstersToRemove).clear();
+        }
+
+        monsters.addAll(spawnedMonsters);
+    }
+
+    private Phase getCurrentPhase() {
+        return phases.get(currentPhase);
+    }
+
+    private List<Monster> getSpawnedMonsters() {
+        return getCurrentPhase().getSpawnedMonsters(player.getPosition());
     }
 
     private void startNextPhase() {

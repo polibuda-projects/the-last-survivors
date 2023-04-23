@@ -9,8 +9,9 @@ public class InfinitePhase extends Phase {
 
     public InfinitePhase() {
         super(
-                0,
-                200L
+                0f,
+                200L,
+                100
         );
     }
 
