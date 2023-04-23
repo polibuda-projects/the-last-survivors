@@ -27,6 +27,8 @@ public class Sword implements Weapon {
     private final Rectangle hitboxLeft;
     public int animationCount;
 
+    private int level = 1;
+
     public Sword(DemoPlayer player) {
         this.player = player;
 
@@ -67,8 +69,12 @@ public class Sword implements Weapon {
     @Override
     public void update(float dt) {
         position = player.getPosition();
+        if (level < player.getLevel()) {
+            level = player.getLevel();
+            setDamage(getDamage() + 4);
+            setCooldown(getCooldown() - 70L);
+        }
         animationTime += dt;
-
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
             lastAttackTime = TimeUtils.millis();
             animationTime = 0;
@@ -115,6 +121,10 @@ public class Sword implements Weapon {
 
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public long getCooldown() {
+        return cooldown;
     }
 
     @Override

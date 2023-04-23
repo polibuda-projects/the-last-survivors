@@ -115,7 +115,7 @@ public class DemoPlayer {
     public void update(float deltaTime) {
         updateAnimation(deltaTime);
         regenTimer += deltaTime;
-        if (score >= maxScore && !(level >= 30)) {
+        if (score >= maxScore && !(level >= 12)) {
             maxHealth += 30;
             currentHealth += 10;
             hpRegen += 5;
@@ -162,7 +162,12 @@ public class DemoPlayer {
             }
         }
         for (Weapon weapon : weapons) {
-            weapon.update(deltaTime);
+            if (level < 2) {
+                weapon.update(deltaTime);
+                break;
+            } else {
+                weapon.update(deltaTime);
+            }
         }
     }
 
@@ -323,5 +328,9 @@ public class DemoPlayer {
 
     public int getMaxScore() {
         return maxScore;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
