@@ -7,8 +7,7 @@ public class CollisionDetector {
     private TiledMapTileLayer obstacleLayer;
 
     public CollisionDetector(TiledMap tiledMap) {
-        obstacleLayer = (TiledMapTileLayer) tiledMap.getLayers().get("trees");
-        System.out.println(obstacleLayer.getWidth() + " " + obstacleLayer.getHeight());
+        obstacleLayer = (TiledMapTileLayer) tiledMap.getLayers().get("obstacle");
     }
 
     public boolean isCellBlocked(float x, float y) {

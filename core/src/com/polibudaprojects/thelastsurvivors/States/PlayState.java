@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
 import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
@@ -21,6 +22,7 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
 
 public class PlayState extends State {
     private final InfiniteTiledMap infiniteTiledMap;
@@ -42,6 +44,10 @@ public class PlayState extends State {
     private final Rectangle resumeBtnRectangle;
     public static int monstersKilled;
     public static int totalDamage;
+    private final SoundFx soundFx;
+    private final Random random;
+    private float soundEffectDelay;
+    private float elapsedTimeSinceLastSoundEffect;
 
 
     public PlayState(StatesManager gsm) {
@@ -88,6 +94,15 @@ public class PlayState extends State {
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
         monstersKilled = 0;
         totalDamage = 0;
+
+        soundFx = new SoundFx();
+        soundFx.loadSound("sound1", Paths.get("music/brains.wav"));
+        soundFx.loadSound("sound2", Paths.get("music/groan.wav"));
+        soundFx.loadSound("sound3", Paths.get("music/rar.wav"));
+
+        random = new Random();
+        soundEffectDelay = 3.0f;
+        elapsedTimeSinceLastSoundEffect = 0.0f;
     }
 
 
@@ -120,6 +135,16 @@ public class PlayState extends State {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
                 isPaused = true;
                 justPressed = true;
+            }
+
+            elapsedTimeSinceLastSoundEffect += dt;
+
+            if (elapsedTimeSinceLastSoundEffect >= soundEffectDelay) {
+                if (random.nextInt(100) < 1) {
+                    int soundToPlay = random.nextInt(3) + 1;
+                    soundFx.playSound("sound" + soundToPlay);
+                    elapsedTimeSinceLastSoundEffect = 0.0f;
+                }
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {

@@ -50,7 +50,7 @@ public class XP {
 
     public void addXP(DemoPlayer player) {
         if (canReach(player.getCenterPosition())) {
-            player.setScore(player.getScore() + 3);
+            player.setScore(player.getScore() + 10);
             taken = true;
         }
     }
