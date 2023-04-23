@@ -98,7 +98,7 @@ public class PlayState extends State {
             demoPlayer.update(dt);
             monsterManager.update(dt);
             gameTimer.update(dt);
-            gameTimer.updatePosition(demoPlayer.getX() + 90, demoPlayer.getY() + 280);
+            gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight()/2f + cam.position.y - 10f);
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
                 gsm.set(new EndState(gsm, monstersKilled, gameTimer.getTimeRemaining(), totalDamage));
             }
