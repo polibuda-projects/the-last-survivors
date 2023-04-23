@@ -321,4 +321,8 @@ public class DemoPlayer {
     public int getLastInput() {
         return lastInput;
     }
+
+    public int getHpRegen() {
+        return hpRegen;
+    }
 }
