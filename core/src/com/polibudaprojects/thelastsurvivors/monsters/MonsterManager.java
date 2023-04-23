@@ -2,6 +2,7 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
@@ -12,6 +13,7 @@ import java.util.ListIterator;
 public class MonsterManager {
 
     private final List<Monster> monsters = new ArrayList<>();
+    private final List<XP> xps = new ArrayList<>();
     private final PhaseManager phaseManager;
     private final DemoPlayer player;
 
@@ -39,7 +41,13 @@ public class MonsterManager {
         ListIterator<Monster> iter = monsters.listIterator();
         while (iter.hasNext()) {
             Monster monster = iter.next();
-            if (shouldBeRemoved(monster)) {
+            if (shouldBeRemovedWithXP(monster)) {
+                XP xp = new XP(player, monster.getPosition());
+                xps.add(xp);
+                iter.remove();
+                continue;
+            }
+            if (shouldBeRemovedWithOutXP(monster)) {
                 iter.remove();
                 continue;
             }
@@ -54,7 +62,15 @@ public class MonsterManager {
         }
     }
 
-    private boolean shouldBeRemoved(Monster monster) {
-        return monster.isDeathAnimationFinished() || monster.hasExceededMaxDistance(player.getPosition());
+    private boolean shouldBeRemovedWithXP(Monster monster) {
+        return monster.isDeathAnimationFinished();
+    }
+
+    private boolean shouldBeRemovedWithOutXP(Monster monster) {
+        return monster.hasExceededMaxDistance(player.getPosition());
+    }
+
+    public List<XP> getXps() {
+        return xps;
     }
 }
