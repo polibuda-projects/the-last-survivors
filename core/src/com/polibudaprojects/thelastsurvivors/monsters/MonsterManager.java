@@ -3,7 +3,7 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
-import com.polibudaprojects.thelastsurvivors.monsters.phases.*;
+import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -13,11 +13,12 @@ import java.util.ListIterator;
 public class MonsterManager {
 
     private final List<Monster> monsters = new ArrayList<>();
-    private final PhaseManager phaseManager = new PhaseManager();
+    private final PhaseManager phaseManager;
     private final DemoPlayer player;
 
     public MonsterManager(DemoPlayer player) {
         this.player = player;
+        this.phaseManager = new PhaseManager(player);
     }
 
     public void draw(SpriteBatch batch) {
@@ -30,8 +31,8 @@ public class MonsterManager {
         updateMonsters(deltaTime);
         phaseManager.update(deltaTime);
 
-        if(phaseManager.shouldSpawn()){
-            monsters.addAll(phaseManager.getSpawnedMonsters(player.getPosition()));
+        if (phaseManager.shouldSpawn()) {
+            phaseManager.spawnMonsters(monsters);
         }
     }
 

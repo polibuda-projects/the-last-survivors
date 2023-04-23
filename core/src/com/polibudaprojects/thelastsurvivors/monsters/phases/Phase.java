@@ -16,15 +16,21 @@ public abstract class Phase {
     protected final Random rand = new Random();
     protected final float duration;
     protected final long interval;
+    protected final int maxCount;
     protected long lastSpawnTime;
 
-    public Phase(float duration, long interval) {
+    public Phase(float duration, long interval, int maxCount) {
         this.duration = duration;
         this.interval = interval;
+        this.maxCount = maxCount;
     }
 
     public boolean hasPhaseEnded(float timePassed) {
         return timePassed > duration;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
     }
 
     public boolean shouldSpawn() {
