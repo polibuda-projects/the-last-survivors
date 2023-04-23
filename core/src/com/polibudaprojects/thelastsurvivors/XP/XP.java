@@ -32,7 +32,7 @@ public class XP {
             taken = true;
         }
         updateVelocity(playerPosition);
-        if (position.dst(playerPosition) < 80) {
+        if (position.dst(playerPosition) < 100) {
             position.mulAdd(velocity, deltaTime);
         }
         if (canReach(playerPosition)) {
@@ -45,7 +45,7 @@ public class XP {
                 playerPosition.x - position.x - sprite.getWidth() / 2f,
                 playerPosition.y - position.y - sprite.getHeight() / 2f
         );
-        velocity = direction.nor().scl(200f);
+        velocity = direction.nor().scl(300f);
     }
 
     public void addXP(DemoPlayer player) {

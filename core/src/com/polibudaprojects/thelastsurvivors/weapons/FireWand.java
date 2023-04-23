@@ -24,6 +24,8 @@ public class FireWand implements Weapon {
     private final Sprite sprite2;
     private final Sprite sprite3;
 
+    private int level = 1;
+
     public FireWand(DemoPlayer player) {
         this.player = player;
         lastAttackTime = 0L;
@@ -58,6 +60,11 @@ public class FireWand implements Weapon {
     @Override
     public void update(float dt) {
         position = player.getCenterPosition();
+        if (level < player.getLevel()) {
+            level = player.getLevel();
+            setDamage(getDamage()+3);
+            setCooldown(getCooldown()-30L);
+        }
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
             lastAttackTime = TimeUtils.millis();
             int lastPosition = player.getLastInput();
@@ -104,6 +111,10 @@ public class FireWand implements Weapon {
 
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public long getCooldown() {
+        return cooldown;
     }
 
     @Override
