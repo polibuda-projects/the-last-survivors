@@ -64,6 +64,8 @@ public class PlayState extends State {
         BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
 
         BitmapFont timerFont = new BitmapFont();
+        BitmapFont.BitmapFontData fontData = timerFont.getData();
+        fontData.setScale(1.5f);
         float timeRemaining = 30 * 60;
         gameTimer = new GameTimer(timeRemaining, timerFont);
 
@@ -124,8 +126,8 @@ public class PlayState extends State {
             sb.begin();
             demoPlayer.draw(sb);
             monsterManager.draw(sb);
-            sb.draw(playerStats, cam.position.x - 310, cam.position.y - 240);
-            sb.draw(playerPortraitPng, cam.position.x - 295, cam.position.y - 213);
+            sb.draw(playerStats, cam.position.x - 540, cam.position.y - 312);
+            sb.draw(playerPortraitPng, cam.position.x - 525, cam.position.y - 285);
             sb.end();
 
             //HUD
