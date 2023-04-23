@@ -6,7 +6,7 @@ public class Gobbler extends Type {
         super(
                 "assets/monsters/gobbler.atlas",
                 "Gobbler",
-                100f,
+                90f,
                 35f,
                 7,
                 20
