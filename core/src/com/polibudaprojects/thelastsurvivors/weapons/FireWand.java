@@ -12,8 +12,8 @@ import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 import java.util.ArrayList;
 
 public class FireWand implements Weapon {
-    private int damage = 5;
-    private long cooldown = 1000L;
+    private int damage = 2;
+    private long cooldown = 500L;
     private long lastAttackTime;
     private final DemoPlayer player;
     private Vector2 position;
@@ -40,7 +40,7 @@ public class FireWand implements Weapon {
 
         sprite2 = new Sprite(bullet);
         sprite2.setSize(47f, 33f);
-        sprite2.setFlip(true,false);
+        sprite2.setFlip(true, false);
 
         sprite3 = new Sprite(bullet);
         sprite3.setSize(47f, 33f);
@@ -104,5 +104,10 @@ public class FireWand implements Weapon {
 
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
+    }
+
+    @Override
+    public String toString() {
+        return "FIRE WAND\n DAMAGE: " + damage + "\n COOLDOWN: " + (float) cooldown / 1000;
     }
 }

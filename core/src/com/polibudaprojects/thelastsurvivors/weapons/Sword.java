@@ -116,4 +116,9 @@ public class Sword implements Weapon {
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
     }
+
+    @Override
+    public String toString() {
+        return "SWORD\n DAMAGE: " + damage + "\n COOLDOWN: " + (float) cooldown / 1000;
+    }
 }

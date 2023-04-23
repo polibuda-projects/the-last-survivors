@@ -1,7 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Intersector;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
