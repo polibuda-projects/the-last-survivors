@@ -36,6 +36,8 @@ public class PlayState extends State {
     private final OrthographicCamera pause;
     private final Texture resumeBtn;
     private final Rectangle resumeBtnRectangle;
+    public static int monstersKilled;
+    public static int totalDamage;
 
 
     public PlayState(StatesManager gsm) {
@@ -78,6 +80,8 @@ public class PlayState extends State {
         //TODO change button image
         resumeBtn = new Texture("button.png");
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
+        monstersKilled = 0;
+        totalDamage = 0;
     }
 
 
@@ -96,7 +100,7 @@ public class PlayState extends State {
             gameTimer.update(dt);
             gameTimer.updatePosition(demoPlayer.getX() + 90, demoPlayer.getY() + 280);
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
-                gsm.set(new EndState(gsm));
+                gsm.set(new EndState(gsm, monstersKilled, gameTimer.getTimeRemaining(), totalDamage));
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
                 isPaused = true;
@@ -145,7 +149,7 @@ public class PlayState extends State {
                     "EXP: " + 50 + "/" + 100 + "\n\n";
 
             for (Weapon weapon : demoPlayer.getWeapons()) {
-                stats += weapon.toString() + "\n";
+                stats = stats.concat(weapon.toString() + "\n");
             }
 
             sb.setProjectionMatrix(pause.combined);
