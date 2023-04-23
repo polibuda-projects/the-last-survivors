@@ -45,7 +45,7 @@ public class PlayState extends State {
         super(gsm);
 
         //Map
-        infiniteTiledMap = new InfiniteTiledMap("map/game-dev1.tmx", 3, 3, 0.5f); // original view = 1f
+        infiniteTiledMap = new InfiniteTiledMap("map/game-dev.tmx", 3, 3, 0.5f); // original view = 1f
 
         //Player Stats Background
         Texture playerStatsPng = new Texture("playerHub.png");

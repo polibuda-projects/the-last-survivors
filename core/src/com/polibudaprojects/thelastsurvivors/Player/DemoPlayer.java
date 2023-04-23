@@ -64,8 +64,8 @@ public class DemoPlayer {
         sprite = new Sprite(playerStand);
         sprite.setSize(180f, 100f);
         position = new Vector2(
-                1500,
-                1500
+                5500,
+                5500
         );
 
         runningRight = true;
