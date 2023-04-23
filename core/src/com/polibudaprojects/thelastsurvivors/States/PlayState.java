@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
@@ -19,12 +20,15 @@ import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.nio.file.Paths;
+import java.util.List;
 
 public class PlayState extends State {
     private final InfiniteTiledMap infiniteTiledMap;
     private final ShapeRenderer shapeRenderer;
     private final MonsterManager monsterManager;
     private final DemoPlayer demoPlayer;
+
+    private final List<XP> xps;
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
     private final GameTimer gameTimer;
@@ -58,7 +62,7 @@ public class PlayState extends State {
         shapeRenderer = new ShapeRenderer();
         demoPlayer = new DemoPlayer();
         monsterManager = new MonsterManager(demoPlayer);
-
+        xps = monsterManager.getXps();
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
@@ -100,7 +104,16 @@ public class PlayState extends State {
             demoPlayer.update(dt);
             monsterManager.update(dt);
             gameTimer.update(dt);
-            gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight()/2f + cam.position.y - 10f);
+            gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight() / 2f + cam.position.y - 10f);
+            for (int i = 0; i < xps.size(); i++) {
+                if (xps.get(i) != null) {
+                    if (xps.get(i).isTaken()) {
+                        xps.remove(xps.get(i));
+                    } else {
+                        xps.get(i).update(dt, demoPlayer.getCenterPosition());
+                    }
+                }
+            }
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
                 gsm.set(new EndState(gsm, monstersKilled, gameTimer.getTimeRemaining(), totalDamage));
             }
@@ -126,6 +139,11 @@ public class PlayState extends State {
             sb.begin();
             demoPlayer.draw(sb);
             monsterManager.draw(sb);
+            for (XP xp : xps) {
+                if (xp != null) {
+                    xp.draw(sb);
+                }
+            }
             sb.draw(playerStats, cam.position.x - 540, cam.position.y - 312);
             sb.draw(playerPortraitPng, cam.position.x - 525, cam.position.y - 285);
             sb.end();
@@ -143,7 +161,7 @@ public class PlayState extends State {
             //XP BAR
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.SKY);
-            shapeRenderer.rect(82, 34, 100, 10);
+            shapeRenderer.rect(82, 34, (195f * demoPlayer.getScore()) / demoPlayer.getMaxScore(), 10);
             shapeRenderer.end();
         } else {
             stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" +

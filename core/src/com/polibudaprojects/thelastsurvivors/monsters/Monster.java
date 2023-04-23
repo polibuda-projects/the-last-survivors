@@ -132,4 +132,8 @@ public class Monster {
     public Rectangle getBoundingRectangle() {
         return sprite.getBoundingRectangle();
     }
+
+    public Vector2 getPosition() {
+        return position;
+    }
 }

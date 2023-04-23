@@ -17,9 +17,6 @@ import java.util.ArrayList;
 
 public class DemoPlayer {
     private final ArrayList<Weapon> weapons = new ArrayList<>();
-
-    private float timer;
-
     private int level = 1;
 
     private float regenTimer;
@@ -43,7 +40,9 @@ public class DemoPlayer {
     private int maxHealth = 100;
     private int currentHealth = 100;
 
-    private final int score = 0;
+    private int score = 0;
+
+    private final int maxScore = 100;
 
     private float animationTime = 0f;
 
@@ -58,7 +57,6 @@ public class DemoPlayer {
     private boolean hpRestored;
 
     public DemoPlayer() {
-        timer = 0.0f;
         Texture img = new Texture("player.png");
         TextureRegion playerStand = new TextureRegion(img, 0, 0, 144, 80);
         sprite = new Sprite(playerStand);
@@ -116,31 +114,19 @@ public class DemoPlayer {
 
     public void update(float deltaTime) {
         updateAnimation(deltaTime);
-
-        timer += deltaTime;
         regenTimer += deltaTime;
-        int seconds = (int) timer;
-        int hours = seconds / 3600;
-        int minutes = (seconds - (hours * 3600)) / 60;
-        if (minutes > 5 && level == 1) {
-            maxHealth = 300;
-            hpRegen = 40;
-            level = 2;
-            currentHealth += 100;
-            System.out.println("Max HP increased to 300");
-            System.out.println("HP Regen increased to 40");
+        if (score >= maxScore && !(level >= 30)) {
+            maxHealth += 30;
+            currentHealth += 10;
+            hpRegen += 5;
+            level += 1;
+            score = 0;
+            System.out.println("Reached " + level + " Level!!!");
         }
-        if (minutes > 10 && level == 2) {
-            maxHealth = 700;
-            hpRegen = 60;
-            level = 3;
-            currentHealth += 300;
-            System.out.println("Max HP increased to 700");
-            System.out.println("HP Regen increased to 60");
-        }
+
         int regenSec = (int) regenTimer;
         regenSec = regenSec % 60;
-        if (regenSec >= 40 && currentHealth < maxHealth) {
+        if (regenSec >= 40 && currentHealth < maxHealth && currentHealth > 0) {
             regenTimer = 0.0f;
             if ((currentHealth + hpRegen) > maxHealth) {
                 currentHealth = maxHealth;
@@ -282,6 +268,15 @@ public class DemoPlayer {
         return playerRunning;
     }
 
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Animation<TextureRegion> getPlayerStanding() {
         return playerStanding;
     }
@@ -324,5 +319,9 @@ public class DemoPlayer {
 
     public int getHpRegen() {
         return hpRegen;
+    }
+
+    public int getMaxScore() {
+        return maxScore;
     }
 }
