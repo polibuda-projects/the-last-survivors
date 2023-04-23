@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 public class Sword implements Weapon {
     private int damage = 5;
@@ -74,7 +76,6 @@ public class Sword implements Weapon {
         }
     }
 
-    @Override
     public Rectangle getHitbox() {
         if (player.isRunningRight()) {
             return hitboxRight.setPosition(player.getCenterPosition());
@@ -89,17 +90,23 @@ public class Sword implements Weapon {
     }
 
     @Override
-    public boolean canAttack() {
-        if (animationTime > 1.2f) {
-            return !animation.isAnimationFinished(animationTime + 0.3f);
-        } else {
-            return !animation.isAnimationFinished(animationTime);
+    public boolean canAttack(Monster monster) {
+        if (Intersector.overlaps(monster.getBoundingRectangle(), this.getHitbox())) {
+            if (animationTime > 1.2f) {
+                return false;
+            } else {
+                if (!animation.isAnimationFinished(animationTime)) {
+                    if (!monster.wasHitBy.containsKey(this)) {
+                        monster.wasHitBy.put(this, animationCount);
+                        return true;
+                    } else if (monster.wasHitBy.get(this) < animationCount) {
+                        monster.wasHitBy.replace(this, animationCount);
+                        return true;
+                    }
+                }
+            }
         }
-    }
-
-    @Override
-    public int getAttackInterval() {
-        return animationCount;
+        return false;
     }
 
     public void setDamage(int damage) {

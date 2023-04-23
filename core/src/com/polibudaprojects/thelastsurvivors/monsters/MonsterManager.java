@@ -48,10 +48,8 @@ public class MonsterManager {
             monster.attackIfPossible(player);
 
             for (Weapon weapon : player.getWeapons()) {
-                if (Intersector.overlaps(monster.getBoundingRectangle(), weapon.getHitbox())) {
-                    if (weapon.canAttack()) {
-                        monster.takeDamage(weapon);
-                    }
+                if (weapon.canAttack(monster)) {
+                    monster.takeDamage(weapon.getDamage());
                 }
             }
         }
