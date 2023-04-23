@@ -14,5 +14,5 @@ public interface Weapon {
 
     boolean canAttack();
 
-    long getAttackInterval();
+    int getAttackInterval();
 }

@@ -139,10 +139,9 @@ public class DemoPlayer {
         regenSec = regenSec % 60;
         if (regenSec >= 40 && currentHealth < maxHealth) {
             regenTimer = 0.0f;
-            if((currentHealth+hpRegen)>maxHealth){
+            if ((currentHealth + hpRegen) > maxHealth) {
                 currentHealth = maxHealth;
-            }
-            else{
+            } else {
                 currentHealth += hpRegen;
             }
             hpRestored = true;
@@ -197,6 +196,7 @@ public class DemoPlayer {
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
+        //Todo fix memory leak
         return new Vector2(centerX, centerY);
     }
 

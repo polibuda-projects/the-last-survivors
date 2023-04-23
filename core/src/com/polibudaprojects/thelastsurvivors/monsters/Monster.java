@@ -30,7 +30,7 @@ public class Monster {
     private long lastAttackTime;
     private int health;
 
-    public HashMap<Weapon, Long> wasHitBy = new HashMap<>();
+    private HashMap<Weapon, Integer> wasHitBy = new HashMap<>();
 
     public Monster(Type type, Vector2 position) {
         this.type = type;
@@ -99,19 +99,18 @@ public class Monster {
         return sprite.getBoundingRectangle().contains(playerPosition);
     }
 
-    public void takeDamage(int damage, Weapon weapon) {
+    public void takeDamage(Weapon weapon) {
         // TODO może lepiej to częściowo przenieść do weapon.canAttack(Monster monster)? Tu powinno być tylko zadanie obrażeń
-        // TODO można przekać tylko weapon i pobrać damage z weapon
         if (!isDead()) {
             if (!wasHitBy.containsKey(weapon)) {
-                wasHitBy.put(weapon, TimeUtils.millis());
+                wasHitBy.put(weapon, weapon.getAttackInterval());
                 replaceAnimation(type.getHitAnimation());
-                health -= damage;
+                health -= weapon.getDamage();
                 applyKnockback(-0.8f);
-            } else if (wasHitBy.get(weapon) + weapon.getAttackInterval() < TimeUtils.millis()) {
+            } else if (wasHitBy.get(weapon) < weapon.getAttackInterval()) {
                 replaceAnimation(type.getHitAnimation());
-                health -= damage;
-                wasHitBy.replace(weapon, TimeUtils.millis());
+                health -= weapon.getDamage();
+                wasHitBy.replace(weapon, weapon.getAttackInterval());
                 applyKnockback(-0.8f);
             }
             if (isDead()) {
