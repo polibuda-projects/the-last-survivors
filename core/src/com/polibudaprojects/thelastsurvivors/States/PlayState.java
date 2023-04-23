@@ -69,10 +69,12 @@ public class PlayState extends State {
         demoPlayer.update(dt);
         monsterManager.update(dt);
         gameTimer.update(dt);
+        gameTimer.updatePosition(demoPlayer.getX() + 90, demoPlayer.getY() + 280);
         if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
             gsm.set(new EndState(gsm));
         }
     }
+
 
     @Override
     public void render(SpriteBatch sb) {

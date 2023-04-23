@@ -26,6 +26,10 @@ public class GameTimer {
         }
     }
 
+    public void updatePosition(float x, float y) {
+        position.set(x, y);
+    }
+
     public void render(SpriteBatch batch) {
         batch.begin();
         String text = (int) timeRemaining / 60 + ":" + (int) timeRemaining % 60;
