@@ -9,7 +9,7 @@ public class MawFlower extends Type {
                 80f,
                 30f,
                 5,
-                10
+                7
         );
     }
 }

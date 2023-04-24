@@ -11,7 +11,8 @@ public class InfinitePhase extends Phase {
         super(
                 0f,
                 200L,
-                100
+                100,
+                0.5f
         );
     }
 

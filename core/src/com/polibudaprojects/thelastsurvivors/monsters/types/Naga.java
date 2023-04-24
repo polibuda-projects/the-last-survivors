@@ -8,8 +8,8 @@ public class Naga extends Type {
                 "Naga",
                 110f,
                 45f,
-                20,
-                100
+                30,
+                200
         );
     }
 }

@@ -15,26 +15,28 @@ public abstract class Phase {
     public static final int SPAWN_RADIUS_MAX = 700;
     protected final Random rand = new Random();
     protected final float duration;
-    protected final long interval;
-    protected final int maxCount;
+    protected final long spawnInterval;
+    protected final int initialMonstersLimit;
+    protected final float limitGrowRate;
     protected long lastSpawnTime;
 
-    public Phase(float duration, long interval, int maxCount) {
+    public Phase(float duration, long spawnInterval, int initialMonstersLimit, float limitGrowRate) {
         this.duration = duration;
-        this.interval = interval;
-        this.maxCount = maxCount;
+        this.spawnInterval = spawnInterval;
+        this.initialMonstersLimit = initialMonstersLimit;
+        this.limitGrowRate = limitGrowRate;
     }
 
     public boolean hasPhaseEnded(float timePassed) {
         return timePassed > duration;
     }
 
-    public int getMaxCount() {
-        return maxCount;
+    public int getMonstersLimit(float timePassed) {
+        return initialMonstersLimit + (int) (limitGrowRate * timePassed);
     }
 
     public boolean shouldSpawn() {
-        return TimeUtils.millis() - lastSpawnTime > interval;
+        return TimeUtils.millis() - lastSpawnTime > spawnInterval;
     }
 
     public List<Monster> getSpawnedMonsters(Vector2 playerPosition) {

@@ -8,8 +8,8 @@ public class Scarecrow extends Type {
                 "Scarecrow",
                 90f,
                 50f,
-                10,
-                30
+                15,
+                75
         );
     }
 }
