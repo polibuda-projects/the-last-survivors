@@ -46,7 +46,7 @@ public class PlayState extends State {
     public static int totalDamage;
     private final SoundFx soundFx;
     private final Random random;
-    private float soundEffectDelay;
+    private final float soundEffectDelay;
     private float elapsedTimeSinceLastSoundEffect;
 
 
@@ -85,7 +85,8 @@ public class PlayState extends State {
         font = new BitmapFont();
         stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" +
                 "HP REGEN: " + demoPlayer.getHpRegen() + "\n" +
-                "EXP: " + 50 + "/" + 100 + "\n\n";
+                "LEVEL: " + demoPlayer.getLevel()+"\n" +
+                "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
 
         pause = new OrthographicCamera();
         pause.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -191,7 +192,8 @@ public class PlayState extends State {
         } else {
             stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" +
                     "HP REGEN: " + demoPlayer.getHpRegen() + "\n" +
-                    "EXP: " + 50 + "/" + 100 + "\n\n";
+                    "LEVEL: " + demoPlayer.getLevel()+"\n" +
+                    "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
 
             for (Weapon weapon : demoPlayer.getWeapons()) {
                 stats = stats.concat(weapon.toString() + "\n");

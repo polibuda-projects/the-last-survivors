@@ -69,10 +69,12 @@ public class Sword implements Weapon {
     @Override
     public void update(float dt) {
         position = player.getPosition();
-        if (level < player.getLevel()) {
-            level = player.getLevel();
-            setDamage(getDamage() + 4);
-            setCooldown(getCooldown() - 70L);
+        if (!(player.getLevel() > 12)) {
+            if (level < player.getLevel()) {
+                level = player.getLevel();
+                setDamage(getDamage() + 4);
+                setCooldown(getCooldown() - 70L);
+            }
         }
         animationTime += dt;
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
