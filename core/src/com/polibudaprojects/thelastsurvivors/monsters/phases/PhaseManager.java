@@ -36,7 +36,7 @@ public class PhaseManager {
 
     public void spawnMonsters(List<Monster> monsters) {
         List<Monster> spawnedMonsters = getSpawnedMonsters();
-        int numberOfMonstersToRemove = monsters.size() + spawnedMonsters.size() - getCurrentPhase().getMaxCount();
+        int numberOfMonstersToRemove = monsters.size() + spawnedMonsters.size() - getCurrentPhase().getMonstersLimit(phaseTimer);
 
         if (numberOfMonstersToRemove > 0) {
             Collections.shuffle(spawnedMonsters);

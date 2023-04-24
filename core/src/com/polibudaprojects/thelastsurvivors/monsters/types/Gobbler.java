@@ -8,8 +8,8 @@ public class Gobbler extends Type {
                 "Gobbler",
                 90f,
                 35f,
-                7,
-                20
+                10,
+                25
         );
     }
 }

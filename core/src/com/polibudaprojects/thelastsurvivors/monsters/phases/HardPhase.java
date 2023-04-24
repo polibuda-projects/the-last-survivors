@@ -7,9 +7,10 @@ public class HardPhase extends Phase {
 
     public HardPhase() {
         super(
-                60f,
+                180f,
                 400L,
-                50
+                50,
+                0.4f
         );
     }
 
