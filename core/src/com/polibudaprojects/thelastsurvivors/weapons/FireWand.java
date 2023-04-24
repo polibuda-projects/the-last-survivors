@@ -60,10 +60,12 @@ public class FireWand implements Weapon {
     @Override
     public void update(float dt) {
         position = player.getCenterPosition();
-        if (level < player.getLevel()) {
-            level = player.getLevel();
-            setDamage(getDamage()+3);
-            setCooldown(getCooldown()-30L);
+        if (!(player.getLevel() > 12)) {
+            if (level < player.getLevel()) {
+                level = player.getLevel();
+                setDamage(getDamage()+3);
+                setCooldown(getCooldown()-30L);
+            }
         }
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
             lastAttackTime = TimeUtils.millis();

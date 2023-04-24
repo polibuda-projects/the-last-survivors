@@ -123,6 +123,12 @@ public class DemoPlayer {
             score = 0;
             System.out.println("Reached " + level + " Level!!!");
         }
+        if(score >= maxScore && level>=12)
+        {
+            score = 0;
+            level += 1;
+            System.out.println("Reached " + level + " Level!!!");
+        }
 
         int regenSec = (int) regenTimer;
         regenSec = regenSec % 60;
@@ -136,7 +142,7 @@ public class DemoPlayer {
             hpRestored = true;
             System.out.println("Regenerate " + hpRegen + " HP");
         }
-        float speed = 150f;
+        float speed = 120f;
         if (!isDead() && !isHiT()) {
             if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))) {
                 position.y += deltaTime * speed;
@@ -333,4 +339,6 @@ public class DemoPlayer {
     public int getLevel() {
         return level;
     }
+
+
 }
