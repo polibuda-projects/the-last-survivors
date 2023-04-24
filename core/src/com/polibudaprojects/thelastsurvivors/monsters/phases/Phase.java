@@ -11,7 +11,7 @@ import java.util.Random;
 
 public abstract class Phase {
 
-    public static final int SPAWN_RADIUS_MIN = 500;
+    public static final int SPAWN_RADIUS_MIN = 550;
     public static final int SPAWN_RADIUS_MAX = 700;
     protected final Random rand = new Random();
     protected final float duration;

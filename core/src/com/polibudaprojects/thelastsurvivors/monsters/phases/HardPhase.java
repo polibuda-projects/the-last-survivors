@@ -9,7 +9,7 @@ public class HardPhase extends Phase {
         super(
                 180f,
                 400L,
-                50,
+                60,
                 0.4f
         );
     }
@@ -19,6 +19,6 @@ public class HardPhase extends Phase {
         if (rand.nextInt(3) == 0) {
             return TypeAndCount.of(Naga.class, 1 + rand.nextInt(4));
         }
-        return TypeAndCount.of(Scarecrow.class, 5 + rand.nextInt(10));
+        return TypeAndCount.of(Scarecrow.class, 10 + rand.nextInt(10));
     }
 }
