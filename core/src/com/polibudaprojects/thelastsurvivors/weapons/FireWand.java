@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class FireWand implements Weapon {
     private int damage = 2;
-    private long cooldown = 500L;
+    private long cooldown = 1000L;
     private long lastAttackTime;
     private final DemoPlayer player;
     private Vector2 position;
@@ -64,7 +64,7 @@ public class FireWand implements Weapon {
             if (level < player.getLevel()) {
                 level = player.getLevel();
                 setDamage(getDamage()+3);
-                setCooldown(getCooldown()-30L);
+                setCooldown(getCooldown()-50L);
             }
         }
         if (TimeUtils.millis() - lastAttackTime > cooldown) {

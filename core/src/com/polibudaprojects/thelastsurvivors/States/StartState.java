@@ -9,7 +9,7 @@ public class StartState extends State {
     public StartState(StatesManager gsm) {
         super(gsm);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        background = new Texture("background.png");
+        background = new Texture("intro.png");
         playBtn = new Texture("button.png");
     }
 
