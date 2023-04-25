@@ -9,16 +9,16 @@ public class HardPhase extends Phase {
         super(
                 180f,
                 400L,
-                60,
-                0.4f
+                100,
+                0.5f
         );
     }
 
     @Override
     protected TypeAndCount getMonsterTypeAndCountToSpawn() {
         if (rand.nextInt(3) == 0) {
-            return TypeAndCount.of(Naga.class, 1 + rand.nextInt(4));
+            return TypeAndCount.of(Naga.class, 2 + rand.nextInt(8));
         }
-        return TypeAndCount.of(Scarecrow.class, 10 + rand.nextInt(10));
+        return TypeAndCount.of(Scarecrow.class, 15 + rand.nextInt(20));
     }
 }

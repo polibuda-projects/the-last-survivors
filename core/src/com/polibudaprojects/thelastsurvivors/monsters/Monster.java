@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
@@ -127,11 +128,14 @@ public class Monster {
         return position.dst(playerPosition) > MAX_DISTANCE_TO_PLAYER;
     }
 
-    public Rectangle getBoundingRectangle() {
-        return sprite.getBoundingRectangle();
+    public Item tryToDropItem() {
+        if (!isDead()) {
+            return null;
+        }
+        return type.dropItem(position);
     }
 
-    public Vector2 getPosition() {
-        return position;
+    public Rectangle getBoundingRectangle() {
+        return sprite.getBoundingRectangle();
     }
 }

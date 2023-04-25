@@ -14,15 +14,15 @@ import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
-import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
+import com.polibudaprojects.thelastsurvivors.items.ItemManager;
+import com.polibudaprojects.thelastsurvivors.items.XP;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Random;
 
 public class PlayState extends State {
@@ -43,8 +43,8 @@ public class PlayState extends State {
     private final float soundEffectDelay;
     private final BackgroundMusic backgroundMusic;
     private final MonsterManager monsterManager;
+    private final ItemManager itemManager;
     private final DemoPlayer demoPlayer;
-    private final List<XP> xps;
     private boolean isPaused;
     private boolean justPressed;
     private String stats;
@@ -66,8 +66,8 @@ public class PlayState extends State {
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
         demoPlayer = new DemoPlayer();
-        monsterManager = new MonsterManager(demoPlayer);
-        xps = monsterManager.getXps();
+        itemManager = new ItemManager(demoPlayer);
+        monsterManager = new MonsterManager(demoPlayer, itemManager);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
@@ -109,6 +109,7 @@ public class PlayState extends State {
         gameTimer.setTimeRemaining(TIME_LIMIT);
         demoPlayer.reset();
         monsterManager.reset();
+        itemManager.reset();
         backgroundMusic.restart();
     }
 
@@ -119,17 +120,10 @@ public class PlayState extends State {
             infiniteTiledMap.update(cam, demoPlayer.getX() + 90, demoPlayer.getY() + 50);
             demoPlayer.update(dt);
             monsterManager.update(dt);
+            itemManager.update(dt);
             gameTimer.update(dt);
             gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight() / 2f + cam.position.y - 10f);
-            for (int i = 0; i < xps.size(); i++) {
-                if (xps.get(i) != null) {
-                    if (xps.get(i).isTaken()) {
-                        xps.remove(xps.get(i));
-                    } else {
-                        xps.get(i).update(dt, demoPlayer.getCenterPosition());
-                    }
-                }
-            }
+
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
                 Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
                 gsm.set(gsm.getEnd());
@@ -164,11 +158,7 @@ public class PlayState extends State {
             sb.begin();
             demoPlayer.draw(sb);
             monsterManager.draw(sb);
-            for (XP xp : xps) {
-                if (xp != null) {
-                    xp.draw(sb);
-                }
-            }
+            itemManager.draw(sb);
             sb.draw(playerStats, cam.position.x - 540, cam.position.y - 312);
             sb.draw(playerPortraitPng, cam.position.x - 525, cam.position.y - 285);
             sb.end();
@@ -213,6 +203,7 @@ public class PlayState extends State {
     @Override
     public void dispose() {
         MonsterFactory.dispose();
+        XP.dispose();
         infiniteTiledMap.dispose();
         playerPortraitPng.dispose();
         background.dispose();

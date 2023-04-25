@@ -9,7 +9,7 @@ public class EasyPhase extends Phase {
                 60f,
                 800L,
                 15,
-                0.1f
+                0.2f
         );
     }
 
