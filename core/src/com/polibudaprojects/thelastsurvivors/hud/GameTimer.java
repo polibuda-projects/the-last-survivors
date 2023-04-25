@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class GameTimer {
+    private final BitmapFont font;
+    private final GlyphLayout layout;
+    private final Vector2 position;
     private float timeRemaining;
-    private BitmapFont font;
-    private GlyphLayout layout;
-    private Vector2 position;
 
     public GameTimer(float timeRemaining, BitmapFont font) {
         this.timeRemaining = timeRemaining;

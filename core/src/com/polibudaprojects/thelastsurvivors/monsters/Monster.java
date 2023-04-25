@@ -20,18 +20,16 @@ public class Monster {
 
     private static final float MAX_DISTANCE_TO_PLAYER = SPAWN_RADIUS_MAX;
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
-    private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
-
+    public final HashMap<Weapon, Integer> wasHitBy = new HashMap<>();
     private final Sprite sprite;
     private final Type type;
     private final Vector2 position;
+    private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
     private Vector2 velocity;
     private Animation<TextureRegion> animation;
     private float animationTime = 0f;
     private long lastAttackTime;
     private int health;
-
-    public HashMap<Weapon, Integer> wasHitBy = new HashMap<>();
 
     public Monster(Type type, Vector2 position) {
         this.type = type;
@@ -105,7 +103,7 @@ public class Monster {
             replaceAnimation(type.getHitAnimation());
             PlayState.totalDamage += damage;
             health -= damage;
-            applyKnockback(-0.8f);
+            applyKnockback();
             if (isDead()) {
                 PlayState.monstersKilled += 1;
                 replaceAnimation(type.getDieAnimation());
@@ -113,8 +111,8 @@ public class Monster {
         }
     }
 
-    private void applyKnockback(float knockback) {
-        position.mulAdd(velocity, knockback);
+    private void applyKnockback() {
+        position.mulAdd(velocity, -0.8f);
     }
 
     public boolean isDead() {

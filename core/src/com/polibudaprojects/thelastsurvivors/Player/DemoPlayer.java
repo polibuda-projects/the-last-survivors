@@ -17,33 +17,22 @@ import java.util.ArrayList;
 
 public class DemoPlayer {
     private final ArrayList<Weapon> weapons = new ArrayList<>();
-    private int level = 1;
-
-    private float regenTimer;
-
     private final Animation<TextureRegion> playerDeath;
     private final Animation<TextureRegion> playerRunning;
     private final Animation<TextureRegion> playerStanding;
-
     private final Animation<TextureRegion> playerHpRegen;
-
     private final Animation<TextureRegion> playerHit;
+    private final Vector2 position;
+    private final Sprite sprite;
+    private final int maxScore = 100;
+    private int level = 1;
+    private float regenTimer;
     private boolean runningRight;
     private int lastInput;
-
     private int hpRegen = 20;
-
-    private final Vector2 position;
-
-    private final Sprite sprite;
-
     private int maxHealth = 100;
     private int currentHealth = 100;
-
     private int score = 0;
-
-    private final int maxScore = 100;
-
     private float animationTime = 0f;
 
     private Animation<TextureRegion> animation;
@@ -123,8 +112,7 @@ public class DemoPlayer {
             score = 0;
             System.out.println("Reached " + level + " Level!!!");
         }
-        if(score >= maxScore && level>=12)
-        {
+        if (score >= maxScore && level >= 12) {
             score = 0;
             level += 1;
             System.out.println("Reached " + level + " Level!!!");
@@ -339,6 +327,5 @@ public class DemoPlayer {
     public int getLevel() {
         return level;
     }
-
 
 }

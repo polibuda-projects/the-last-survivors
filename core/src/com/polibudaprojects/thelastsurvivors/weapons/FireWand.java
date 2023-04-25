@@ -12,18 +12,16 @@ import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 import java.util.ArrayList;
 
 public class FireWand implements Weapon {
-    private int damage = 2;
-    private long cooldown = 1000L;
-    private long lastAttackTime;
     private final DemoPlayer player;
-    private Vector2 position;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
-
     private final Sprite sprite0;
     private final Sprite sprite1;
     private final Sprite sprite2;
     private final Sprite sprite3;
-
+    private int damage = 2;
+    private long cooldown = 1000L;
+    private long lastAttackTime;
+    private Vector2 position;
     private int level = 1;
 
     public FireWand(DemoPlayer player) {
@@ -63,8 +61,8 @@ public class FireWand implements Weapon {
         if (!(player.getLevel() > 12)) {
             if (level < player.getLevel()) {
                 level = player.getLevel();
-                setDamage(getDamage()+3);
-                setCooldown(getCooldown()-50L);
+                setDamage(getDamage() + 3);
+                setCooldown(getCooldown() - 50L);
             }
         }
         if (TimeUtils.millis() - lastAttackTime > cooldown) {
@@ -96,6 +94,10 @@ public class FireWand implements Weapon {
         return this.damage;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
     @Override
     public boolean canAttack(Monster monster) {
         for (Bullet bullet : bullets) {
@@ -107,16 +109,12 @@ public class FireWand implements Weapon {
         return false;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public long getCooldown() {
+        return cooldown;
     }
 
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
-    }
-
-    public long getCooldown() {
-        return cooldown;
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class CollisionDetector {
-    private TiledMapTileLayer obstacleLayer;
+    private final TiledMapTileLayer obstacleLayer;
 
     public CollisionDetector(TiledMap tiledMap) {
         obstacleLayer = (TiledMapTileLayer) tiledMap.getLayers().get("obstacle");
