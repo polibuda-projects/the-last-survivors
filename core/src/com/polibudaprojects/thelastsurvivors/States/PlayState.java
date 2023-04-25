@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
@@ -26,13 +27,9 @@ import java.util.Random;
 
 public class PlayState extends State {
 
-    public static int monstersKilled;
-    public static int totalDamage;
+    private static final float TIME_LIMIT = 30 * 60f;
     private final InfiniteTiledMap infiniteTiledMap;
     private final ShapeRenderer shapeRenderer;
-    private final MonsterManager monsterManager;
-    private final DemoPlayer demoPlayer;
-    private final List<XP> xps;
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
     private final GameTimer gameTimer;
@@ -44,13 +41,16 @@ public class PlayState extends State {
     private final SoundFx soundFx;
     private final Random random;
     private final float soundEffectDelay;
+    private final BackgroundMusic backgroundMusic;
+    private MonsterManager monsterManager;
+    private DemoPlayer demoPlayer;
+    private List<XP> xps;
     private boolean isPaused;
     private boolean justPressed;
     private String stats;
     private float elapsedTimeSinceLastSoundEffect;
 
     public PlayState(StatesManager gsm) {
-
         super(gsm);
 
         //Map
@@ -70,13 +70,12 @@ public class PlayState extends State {
         xps = monsterManager.getXps();
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
+        backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
 
         BitmapFont timerFont = new BitmapFont();
         BitmapFont.BitmapFontData fontData = timerFont.getData();
         fontData.setScale(1.5f);
-        float timeRemaining = 30 * 60;
-        gameTimer = new GameTimer(timeRemaining, timerFont);
+        gameTimer = new GameTimer(TIME_LIMIT, timerFont);
 
         isPaused = false;
         justPressed = false;
@@ -89,8 +88,6 @@ public class PlayState extends State {
         //TODO change button image
         resumeBtn = new Texture("button.png");
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
-        monstersKilled = 0;
-        totalDamage = 0;
 
         soundFx = new SoundFx();
         soundFx.loadSound("sound1", Paths.get("music/brains.wav"));
@@ -104,7 +101,16 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
+    }
 
+    @Override
+    public void reset() {
+        Statistics.getInstance().reset();
+        gameTimer.setTimeRemaining(TIME_LIMIT);
+        demoPlayer = new DemoPlayer();
+        monsterManager = new MonsterManager(demoPlayer);
+        xps = monsterManager.getXps();
+        backgroundMusic.restart();
     }
 
     @Override
@@ -126,7 +132,8 @@ public class PlayState extends State {
                 }
             }
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
-                gsm.set(new EndState(gsm, monstersKilled, gameTimer.getTimeRemaining(), totalDamage));
+                Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
+                gsm.set(gsm.getEnd());
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
                 isPaused = true;
@@ -145,7 +152,6 @@ public class PlayState extends State {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
             isPaused = false;
-
         }
         justPressed = false;
     }
@@ -209,6 +215,10 @@ public class PlayState extends State {
     public void dispose() {
         MonsterFactory.dispose();
         infiniteTiledMap.dispose();
+        playerPortraitPng.dispose();
+        background.dispose();
+        resumeBtn.dispose();
+        soundFx.dispose();
     }
 
 }

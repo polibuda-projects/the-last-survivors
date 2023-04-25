@@ -44,6 +44,10 @@ public class GameTimer {
         return timeRemaining;
     }
 
+    public void setTimeRemaining(float timeRemaining) {
+        this.timeRemaining = timeRemaining;
+    }
+
     public boolean isTimeUp() {
         return timeRemaining <= 0;
     }
