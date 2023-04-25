@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.items.Item;
 
 public abstract class Type {
 
@@ -32,6 +34,8 @@ public abstract class Type {
         this.hitAnimation = new Animation<>(0.066f, textureAtlas.findRegions("hit"), Animation.PlayMode.NORMAL);
         this.dieAnimation = new Animation<>(0.066f, textureAtlas.findRegions("die"), Animation.PlayMode.NORMAL);
     }
+
+    public abstract Item dropItem(Vector2 position);
 
     public Sprite getNewSprite() {
         Sprite sprite = new Sprite(walkAnimation.getKeyFrame(0));
