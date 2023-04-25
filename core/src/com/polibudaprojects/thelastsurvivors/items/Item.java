@@ -1,7 +1,9 @@
 package com.polibudaprojects.thelastsurvivors.items;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 
@@ -11,11 +13,13 @@ public abstract class Item {
     public static final float PULL_SPEED = 300f;
     protected final Sprite sprite;
     protected final Vector2 position;
+    private final Animation<TextureRegion> animation;
     protected Vector2 velocity;
     protected float timer;
 
-    protected Item(Sprite sprite, Vector2 position) {
+    protected Item(Sprite sprite, Animation<TextureRegion> animation, Vector2 position) {
         this.sprite = sprite;
+        this.animation = animation;
         this.position = position;
     }
 
@@ -27,6 +31,7 @@ public abstract class Item {
             updateVelocity(playerPosition);
             position.mulAdd(velocity, deltaTime);
         }
+        sprite.setRegion(animation.getKeyFrame(timer));
     }
 
     private void updateVelocity(Vector2 playerPosition) {
