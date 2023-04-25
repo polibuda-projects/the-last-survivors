@@ -22,6 +22,12 @@ public class MonsterManager {
         this.phaseManager = new PhaseManager(player);
     }
 
+    public void reset() {
+        monsters.clear();
+        xps.clear();
+        phaseManager.reset();
+    }
+
     public void draw(SpriteBatch batch) {
         for (Monster monster : monsters) {
             monster.draw(batch);

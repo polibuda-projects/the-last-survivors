@@ -42,9 +42,9 @@ public class PlayState extends State {
     private final Random random;
     private final float soundEffectDelay;
     private final BackgroundMusic backgroundMusic;
-    private MonsterManager monsterManager;
-    private DemoPlayer demoPlayer;
-    private List<XP> xps;
+    private final MonsterManager monsterManager;
+    private final DemoPlayer demoPlayer;
+    private final List<XP> xps;
     private boolean isPaused;
     private boolean justPressed;
     private String stats;
@@ -107,9 +107,8 @@ public class PlayState extends State {
     public void reset() {
         Statistics.getInstance().reset();
         gameTimer.setTimeRemaining(TIME_LIMIT);
-        demoPlayer = new DemoPlayer();
-        monsterManager = new MonsterManager(demoPlayer);
-        xps = monsterManager.getXps();
+        demoPlayer.reset();
+        monsterManager.reset();
         backgroundMusic.restart();
     }
 

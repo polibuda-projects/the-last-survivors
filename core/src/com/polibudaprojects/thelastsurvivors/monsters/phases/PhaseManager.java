@@ -22,6 +22,11 @@ public class PhaseManager {
         phases.add(new InfinitePhase());
     }
 
+    public void reset() {
+        phaseTimer = 0f;
+        currentPhase = 0;
+    }
+
     public void update(float deltaTime) {
         phaseTimer += deltaTime;
         if (getCurrentPhase().hasPhaseEnded(phaseTimer)) {

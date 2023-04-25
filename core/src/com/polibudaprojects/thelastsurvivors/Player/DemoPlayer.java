@@ -101,6 +101,21 @@ public class DemoPlayer {
         this.weapons.add(new FireWand(this));
     }
 
+    public void reset() {
+        position.set(5500, 5500);
+        gameOver = false;
+        level = 1;
+        hpRegen = 20;
+        maxHealth = 100;
+        currentHealth = 100;
+        score = 0;
+        runningRight = true;
+        hpRestored = false;
+        hit = false;
+        animationTime = 0f;
+        animation = this.playerStanding;
+    }
+
     public void update(float deltaTime) {
         updateAnimation(deltaTime);
         regenTimer += deltaTime;
@@ -188,7 +203,6 @@ public class DemoPlayer {
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
-        //Todo fix memory leak
         return new Vector2(centerX, centerY);
     }
 
@@ -200,7 +214,6 @@ public class DemoPlayer {
             currentHealth -= damage;
         }
     }
-
 
     public boolean isDead() {
         return currentHealth <= 0;
@@ -217,7 +230,6 @@ public class DemoPlayer {
     public boolean isHpRestored() {
         return hpRestored;
     }
-
 
     private void updateAnimation(float deltaTime) {
         animationTime += deltaTime;
@@ -266,7 +278,6 @@ public class DemoPlayer {
     public Animation<TextureRegion> getPlayerRunning() {
         return playerRunning;
     }
-
 
     public int getScore() {
         return score;
