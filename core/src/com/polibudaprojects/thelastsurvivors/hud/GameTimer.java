@@ -32,7 +32,7 @@ public class GameTimer {
 
     public void render(SpriteBatch batch) {
         batch.begin();
-        String text = (int) timeRemaining / 60 + ":" + (int) timeRemaining % 60;
+        String text = String.format("%d:%02d", (int) timeRemaining / 60, (int) timeRemaining % 60);
         layout.setText(font, text);
         float x = position.x - layout.width / 2f;
         float y = position.y - layout.height / 2f;
