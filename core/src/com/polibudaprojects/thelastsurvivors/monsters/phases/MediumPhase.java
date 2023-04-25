@@ -10,8 +10,8 @@ public class MediumPhase extends Phase {
         super(
                 180f,
                 600L,
-                30,
-                0.3f
+                40,
+                0.5f
         );
     }
 
@@ -19,11 +19,11 @@ public class MediumPhase extends Phase {
     protected TypeAndCount getMonsterTypeAndCountToSpawn() {
         switch (rand.nextInt(5)) {
             case 0:
-                return TypeAndCount.of(Scarecrow.class, 1 + rand.nextInt(2));
+                return TypeAndCount.of(Scarecrow.class, 1 + rand.nextInt(4));
             case 1:
-                return TypeAndCount.of(Gobbler.class, 3 + rand.nextInt(6));
+                return TypeAndCount.of(Gobbler.class, 5 + rand.nextInt(10));
             default:
-                return TypeAndCount.of(MawFlower.class, 10 + rand.nextInt(10));
+                return TypeAndCount.of(MawFlower.class, 10 + rand.nextInt(20));
         }
     }
 }
