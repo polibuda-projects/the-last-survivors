@@ -14,6 +14,10 @@ public class BackgroundMusic extends ApplicationAdapter {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(String.valueOf(path)));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.8f);
+    }
+
+    public void restart() {
+        backgroundMusic.stop();
         backgroundMusic.play();
     }
 

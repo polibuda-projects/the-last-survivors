@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
-import com.polibudaprojects.thelastsurvivors.States.PlayState;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
@@ -101,11 +101,11 @@ public class Monster {
     public void takeDamage(int damage) {
         if (!isDead()) {
             replaceAnimation(type.getHitAnimation());
-            PlayState.totalDamage += damage;
+            Statistics.getInstance().addToTotalDamage(damage);
             health -= damage;
             applyKnockback();
             if (isDead()) {
-                PlayState.monstersKilled += 1;
+                Statistics.getInstance().addToKilledMonsters(1);
                 replaceAnimation(type.getDieAnimation());
             }
         }
