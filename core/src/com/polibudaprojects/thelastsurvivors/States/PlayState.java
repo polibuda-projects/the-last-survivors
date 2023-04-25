@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
+import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.XP.XP;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
-import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
@@ -25,33 +26,31 @@ import java.util.List;
 import java.util.Random;
 
 public class PlayState extends State {
+
+    private static final float TIME_LIMIT = 30 * 60f;
     private final InfiniteTiledMap infiniteTiledMap;
     private final ShapeRenderer shapeRenderer;
-    private final MonsterManager monsterManager;
-    private final DemoPlayer demoPlayer;
-
-    private final List<XP> xps;
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
     private final GameTimer gameTimer;
-    private boolean isPaused;
-    private boolean justPressed;
     private final Texture background;
     private final BitmapFont font;
-    private String stats;
     private final OrthographicCamera pause;
     private final Texture resumeBtn;
     private final Rectangle resumeBtnRectangle;
-    public static int monstersKilled;
-    public static int totalDamage;
     private final SoundFx soundFx;
     private final Random random;
     private final float soundEffectDelay;
+    private final BackgroundMusic backgroundMusic;
+    private final MonsterManager monsterManager;
+    private final DemoPlayer demoPlayer;
+    private final List<XP> xps;
+    private boolean isPaused;
+    private boolean justPressed;
+    private String stats;
     private float elapsedTimeSinceLastSoundEffect;
 
-
     public PlayState(StatesManager gsm) {
-
         super(gsm);
 
         //Map
@@ -71,30 +70,24 @@ public class PlayState extends State {
         xps = monsterManager.getXps();
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        BackgroundMusic backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
+        backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
 
         BitmapFont timerFont = new BitmapFont();
         BitmapFont.BitmapFontData fontData = timerFont.getData();
         fontData.setScale(1.5f);
-        float timeRemaining = 30 * 60;
-        gameTimer = new GameTimer(timeRemaining, timerFont);
+        gameTimer = new GameTimer(TIME_LIMIT, timerFont);
 
         isPaused = false;
         justPressed = false;
         background = new Texture("background.png");
         font = new BitmapFont();
-        stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" +
-                "HP REGEN: " + demoPlayer.getHpRegen() + "\n" +
-                "LEVEL: " + demoPlayer.getLevel()+"\n" +
-                "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
+        stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" + "HP REGEN: " + demoPlayer.getHpRegen() + "\n" + "LEVEL: " + demoPlayer.getLevel() + "\n" + "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
 
         pause = new OrthographicCamera();
         pause.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO change button image
         resumeBtn = new Texture("button.png");
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
-        monstersKilled = 0;
-        totalDamage = 0;
 
         soundFx = new SoundFx();
         soundFx.loadSound("sound1", Paths.get("music/brains.wav"));
@@ -106,10 +99,17 @@ public class PlayState extends State {
         elapsedTimeSinceLastSoundEffect = 0.0f;
     }
 
-
     @Override
     public void handleInput() {
+    }
 
+    @Override
+    public void reset() {
+        Statistics.getInstance().reset();
+        gameTimer.setTimeRemaining(TIME_LIMIT);
+        demoPlayer.reset();
+        monsterManager.reset();
+        backgroundMusic.restart();
     }
 
     @Override
@@ -131,7 +131,8 @@ public class PlayState extends State {
                 }
             }
             if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
-                gsm.set(new EndState(gsm, monstersKilled, gameTimer.getTimeRemaining(), totalDamage));
+                Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
+                gsm.set(gsm.getEnd());
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
                 isPaused = true;
@@ -150,11 +151,9 @@ public class PlayState extends State {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
             isPaused = false;
-
         }
         justPressed = false;
     }
-
 
     @Override
     public void render(SpriteBatch sb) {
@@ -177,7 +176,6 @@ public class PlayState extends State {
             //HUD
             gameTimer.render(sb);
 
-
             //HP BAR
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.RED);
@@ -190,10 +188,7 @@ public class PlayState extends State {
             shapeRenderer.rect(82, 34, (195f * demoPlayer.getScore()) / demoPlayer.getMaxScore(), 10);
             shapeRenderer.end();
         } else {
-            stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" +
-                    "HP REGEN: " + demoPlayer.getHpRegen() + "\n" +
-                    "LEVEL: " + demoPlayer.getLevel()+"\n" +
-                    "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
+            stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" + "HP REGEN: " + demoPlayer.getHpRegen() + "\n" + "LEVEL: " + demoPlayer.getLevel() + "\n" + "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
 
             for (Weapon weapon : demoPlayer.getWeapons()) {
                 stats = stats.concat(weapon.toString() + "\n");
@@ -219,6 +214,10 @@ public class PlayState extends State {
     public void dispose() {
         MonsterFactory.dispose();
         infiniteTiledMap.dispose();
+        playerPortraitPng.dispose();
+        background.dispose();
+        resumeBtn.dispose();
+        soundFx.dispose();
     }
 
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.polibudaprojects.thelastsurvivors.States.StartState;
 import com.polibudaprojects.thelastsurvivors.States.StatesManager;
 
 public class GameMain extends ApplicationAdapter {
@@ -15,7 +14,6 @@ public class GameMain extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         gsm = new StatesManager();
-        gsm.push(new StartState(gsm));
     }
 
     @Override
@@ -28,5 +26,6 @@ public class GameMain extends ApplicationAdapter {
     @Override
     public void dispose() {
         super.dispose();
+        gsm.dispose();
     }
 }

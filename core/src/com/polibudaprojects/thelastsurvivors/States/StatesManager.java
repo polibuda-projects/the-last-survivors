@@ -2,33 +2,48 @@ package com.polibudaprojects.thelastsurvivors.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.Stack;
-
 public class StatesManager {
-    private final Stack<State> states;
+
+    private final State start;
+    private final State play;
+    private final State end;
+    private State state;
 
     public StatesManager() {
-        states = new Stack<State>();
-    }
-
-    public void push(State state) {
-        states.push(state);
-    }
-
-    public void pop() {
-        states.pop();
+        start = new StartState(this);
+        play = new PlayState(this);
+        end = new EndState(this);
+        state = start;
     }
 
     public void set(State state) {
-        states.pop();
-        states.push(state);
+        state.reset();
+        this.state = state;
     }
 
     public void update(float dt) {
-        states.peek().update(dt);
+        state.update(dt);
     }
 
     public void render(SpriteBatch sb) {
-        states.peek().render(sb);
+        state.render(sb);
+    }
+
+    public void dispose() {
+        start.dispose();
+        play.dispose();
+        end.dispose();
+    }
+
+    public State getStart() {
+        return start;
+    }
+
+    public State getPlay() {
+        return play;
+    }
+
+    public State getEnd() {
+        return end;
     }
 }

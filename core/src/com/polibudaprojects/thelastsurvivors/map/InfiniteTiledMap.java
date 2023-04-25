@@ -7,14 +7,14 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class InfiniteTiledMap {
-    private TiledMapRenderer[][] renderers;
-    private TiledMap[][] maps;
+    private final TiledMapRenderer[][] renderers;
+    private final TiledMap[][] maps;
     private int mapWidth;
     private int mapHeight;
-    private int gridWidth;
-    private int gridHeight;
-    private float zoomLevel;
-    private CollisionDetector collisionDetector;
+    private final int gridWidth;
+    private final int gridHeight;
+    private final float zoomLevel;
+    private final CollisionDetector collisionDetector;
 
     public InfiniteTiledMap(String mapFileName, int gridWidth, int gridHeight, float zoomLevel) {
         this.gridWidth = gridWidth;
@@ -31,8 +31,8 @@ public class InfiniteTiledMap {
             for (int j = 0; j < gridHeight; j++) {
                 maps[i][j] = tiledMap;
                 renderers[i][j] = new OrthogonalTiledMapRenderer(maps[i][j]);
-                mapWidth = (int) maps[i][j].getProperties().get("width", Integer.class) * (int) maps[i][j].getProperties().get("tilewidth", Integer.class);
-                mapHeight = (int) maps[i][j].getProperties().get("height", Integer.class) * (int) maps[i][j].getProperties().get("tileheight", Integer.class);
+                mapWidth = maps[i][j].getProperties().get("width", Integer.class) * maps[i][j].getProperties().get("tilewidth", Integer.class);
+                mapHeight = maps[i][j].getProperties().get("height", Integer.class) * maps[i][j].getProperties().get("tileheight", Integer.class);
             }
         }
     }

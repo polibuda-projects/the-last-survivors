@@ -14,19 +14,17 @@ import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 public class Sword implements Weapon {
-    private int damage = 5;
-    private long cooldown = 1000L;
-    private long lastAttackTime;
     private final Sprite sprite;
     private final Animation<TextureRegion> animation;
-    private Vector2 position;
-    private float animationTime = 0f;
     private final DemoPlayer player;
-
     private final Rectangle hitboxRight;
     private final Rectangle hitboxLeft;
     public int animationCount;
-
+    private int damage = 5;
+    private long cooldown = 1000L;
+    private long lastAttackTime;
+    private Vector2 position;
+    private float animationTime = 0f;
     private int level = 1;
 
     public Sword(DemoPlayer player) {
@@ -97,6 +95,10 @@ public class Sword implements Weapon {
         return this.damage;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
     @Override
     public boolean canAttack(Monster monster) {
         if (Intersector.overlaps(monster.getBoundingRectangle(), this.getHitbox())) {
@@ -117,16 +119,12 @@ public class Sword implements Weapon {
         return false;
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public long getCooldown() {
+        return cooldown;
     }
 
     public void setCooldown(long cooldown) {
         this.cooldown = cooldown;
-    }
-
-    public long getCooldown() {
-        return cooldown;
     }
 
     @Override

@@ -17,33 +17,22 @@ import java.util.ArrayList;
 
 public class DemoPlayer {
     private final ArrayList<Weapon> weapons = new ArrayList<>();
-    private int level = 1;
-
-    private float regenTimer;
-
     private final Animation<TextureRegion> playerDeath;
     private final Animation<TextureRegion> playerRunning;
     private final Animation<TextureRegion> playerStanding;
-
     private final Animation<TextureRegion> playerHpRegen;
-
     private final Animation<TextureRegion> playerHit;
+    private final Vector2 position;
+    private final Sprite sprite;
+    private final int maxScore = 100;
+    private int level = 1;
+    private float regenTimer;
     private boolean runningRight;
     private int lastInput;
-
     private int hpRegen = 20;
-
-    private final Vector2 position;
-
-    private final Sprite sprite;
-
     private int maxHealth = 100;
     private int currentHealth = 100;
-
     private int score = 0;
-
-    private final int maxScore = 100;
-
     private float animationTime = 0f;
 
     private Animation<TextureRegion> animation;
@@ -112,6 +101,21 @@ public class DemoPlayer {
         this.weapons.add(new FireWand(this));
     }
 
+    public void reset() {
+        position.set(5500, 5500);
+        gameOver = false;
+        level = 1;
+        hpRegen = 20;
+        maxHealth = 100;
+        currentHealth = 100;
+        score = 0;
+        runningRight = true;
+        hpRestored = false;
+        hit = false;
+        animationTime = 0f;
+        animation = this.playerStanding;
+    }
+
     public void update(float deltaTime) {
         updateAnimation(deltaTime);
         regenTimer += deltaTime;
@@ -123,8 +127,7 @@ public class DemoPlayer {
             score = 0;
             System.out.println("Reached " + level + " Level!!!");
         }
-        if(score >= maxScore && level>=12)
-        {
+        if (score >= maxScore && level >= 12) {
             score = 0;
             level += 1;
             System.out.println("Reached " + level + " Level!!!");
@@ -200,7 +203,6 @@ public class DemoPlayer {
     public Vector2 getCenterPosition() {
         float centerX = position.x + sprite.getWidth() / 2f;
         float centerY = position.y + sprite.getHeight() / 2f;
-        //Todo fix memory leak
         return new Vector2(centerX, centerY);
     }
 
@@ -212,7 +214,6 @@ public class DemoPlayer {
             currentHealth -= damage;
         }
     }
-
 
     public boolean isDead() {
         return currentHealth <= 0;
@@ -229,7 +230,6 @@ public class DemoPlayer {
     public boolean isHpRestored() {
         return hpRestored;
     }
-
 
     private void updateAnimation(float deltaTime) {
         animationTime += deltaTime;
@@ -278,7 +278,6 @@ public class DemoPlayer {
     public Animation<TextureRegion> getPlayerRunning() {
         return playerRunning;
     }
-
 
     public int getScore() {
         return score;
@@ -339,6 +338,5 @@ public class DemoPlayer {
     public int getLevel() {
         return level;
     }
-
 
 }

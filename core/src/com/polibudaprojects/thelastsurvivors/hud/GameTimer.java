@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class GameTimer {
+    private final BitmapFont font;
+    private final GlyphLayout layout;
+    private final Vector2 position;
     private float timeRemaining;
-    private BitmapFont font;
-    private GlyphLayout layout;
-    private Vector2 position;
 
     public GameTimer(float timeRemaining, BitmapFont font) {
         this.timeRemaining = timeRemaining;
@@ -32,7 +32,7 @@ public class GameTimer {
 
     public void render(SpriteBatch batch) {
         batch.begin();
-        String text = (int) timeRemaining / 60 + ":" + (int) timeRemaining % 60;
+        String text = String.format("%d:%02d", (int) timeRemaining / 60, (int) timeRemaining % 60);
         layout.setText(font, text);
         float x = position.x - layout.width / 2f;
         float y = position.y - layout.height / 2f;
@@ -42,6 +42,10 @@ public class GameTimer {
 
     public float getTimeRemaining() {
         return timeRemaining;
+    }
+
+    public void setTimeRemaining(float timeRemaining) {
+        this.timeRemaining = timeRemaining;
     }
 
     public boolean isTimeUp() {

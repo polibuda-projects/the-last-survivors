@@ -8,12 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 
 public class XP {
-    private float timer;
     private final Sprite sprite;
-    private Vector2 velocity;
     private final Vector2 position;
     private final DemoPlayer player;
-
+    private float timer;
+    private Vector2 velocity;
     private boolean taken = false;
 
     public XP(DemoPlayer demoPlayer, Vector2 position) {
@@ -55,12 +54,10 @@ public class XP {
         }
     }
 
-
     public void draw(SpriteBatch batch) {
         sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
     }
-
 
     public boolean canReach(Vector2 playerPosition) {
         return sprite.getBoundingRectangle().contains(playerPosition);

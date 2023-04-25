@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class SoundFx extends ApplicationAdapter {
 
-    private Map<String, Sound> soundMap;
+    private final Map<String, Sound> soundMap;
 
     public SoundFx() {
         soundMap = new HashMap<>();
