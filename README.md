@@ -8,20 +8,7 @@
 git clone https://github.com/polibuda-projects/the-last-survivors.git
 ```
 2. Make sure you have `Java >=11` installed
-3. Change access rights to the `gradlew` file
+3. Run script `run.sh`
 ```bash
-chmod +x ./gradlew
-```
-4. In the project directory run the following command
-```bash
-./gradlew desktop:dist
-```
-5. The executable file will be located in `desktop/build/libs/desktop-1.0.jar`
- - for Windows and Linux users
-```bash
-java -jar desktop/build/libs/desktop-1.0.jar
-```
- - for macOS users
-```bash
-java -XstartOnFirstThread -jar desktop/build/libs/desktop-1.0.jar
+./run.sh
 ```
