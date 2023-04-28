@@ -44,8 +44,9 @@ public class Sword implements Weapon {
         this.animation = new Animation<>(0.3f, frames, Animation.PlayMode.NORMAL);
 
         lastAttackTime = 0L;
-        hitboxRight = new Rectangle(player.getCenterPosition().x, player.getCenterPosition().y, 30, 20);
-        hitboxLeft = new Rectangle(player.getCenterPosition().x - 30, player.getCenterPosition().y, 30, 20);
+        Vector2 playerCenterPosition = player.getCenterPosition();
+        hitboxRight = new Rectangle(playerCenterPosition.x, playerCenterPosition.y, 30, 20);
+        hitboxLeft = new Rectangle(playerCenterPosition.x - 30, playerCenterPosition.y, 30, 20);
         animationCount = 0;
     }
 
@@ -83,10 +84,11 @@ public class Sword implements Weapon {
     }
 
     public Rectangle getHitbox() {
+        Vector2 playerCenterPosition = player.getCenterPosition();
         if (player.isRunningRight()) {
-            return hitboxRight.setPosition(player.getCenterPosition());
+            return hitboxRight.setPosition(playerCenterPosition);
         } else {
-            return hitboxLeft.setPosition(player.getCenterPosition().x - 30, player.getCenterPosition().y);
+            return hitboxLeft.setPosition(playerCenterPosition.x - 30, playerCenterPosition.y);
         }
     }
 

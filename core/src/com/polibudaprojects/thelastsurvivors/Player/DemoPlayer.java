@@ -16,6 +16,8 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 import java.util.ArrayList;
 
 public class DemoPlayer {
+    private static final float SPRITE_WIDTH = 180f;
+    private static final float SPRITE_HEIGHT = 100f;
     private final ArrayList<Weapon> weapons = new ArrayList<>();
     private final Animation<TextureRegion> playerDeath;
     private final Animation<TextureRegion> playerRunning;
@@ -49,7 +51,7 @@ public class DemoPlayer {
         Texture img = new Texture("player.png");
         TextureRegion playerStand = new TextureRegion(img, 0, 0, 144, 80);
         sprite = new Sprite(playerStand);
-        sprite.setSize(180f, 100f);
+        sprite.setSize(SPRITE_WIDTH, SPRITE_HEIGHT);
         position = new Vector2(
                 5500,
                 5500
@@ -201,9 +203,7 @@ public class DemoPlayer {
     }
 
     public Vector2 getCenterPosition() {
-        float centerX = position.x + sprite.getWidth() / 2f;
-        float centerY = position.y + sprite.getHeight() / 2f;
-        return new Vector2(centerX, centerY);
+        return new Vector2(position.x + SPRITE_WIDTH * 0.5f, position.y + SPRITE_HEIGHT * 0.5f);
     }
 
     public void takeDamage(int damage) {
