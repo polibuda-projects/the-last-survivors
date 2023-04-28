@@ -1,6 +1,7 @@
 package com.polibudaprojects.thelastsurvivors.items;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class ItemManager {
 
     public void update(float deltaTime) {
         ListIterator<Item> iter = items.listIterator();
+        Vector2 playerCenterPosition = player.getCenterPosition();
+
         while (iter.hasNext()) {
             Item item = iter.next();
             if (item.hasExceedLifetime()) {
@@ -41,12 +44,12 @@ public class ItemManager {
                 continue;
             }
 
-            if (item.canBeTaken(player.getCenterPosition())) {
+            if (item.canBeTaken(playerCenterPosition)) {
                 item.takeItem(player);
                 iter.remove();
                 continue;
             }
-            item.update(deltaTime, player.getCenterPosition());
+            item.update(deltaTime, playerCenterPosition);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
@@ -45,6 +46,8 @@ public class MonsterManager {
 
     private void updateMonsters(float deltaTime) {
         ListIterator<Monster> iter = monsters.listIterator();
+        Vector2 playerCenterPosition = player.getCenterPosition();
+
         while (iter.hasNext()) {
             Monster monster = iter.next();
             if (shouldBeRemoved(monster)) {
@@ -53,8 +56,11 @@ public class MonsterManager {
                 continue;
             }
 
-            monster.update(deltaTime, player.getCenterPosition());
-            monster.attackIfPossible(player);
+            monster.update(deltaTime, playerCenterPosition);
+
+            if(monster.canAttack(playerCenterPosition)){
+                monster.attack(player);
+            }
 
             for (Weapon weapon : player.getWeapons()) {
                 if (weapon.canAttack(monster)) {

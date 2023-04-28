@@ -14,18 +14,18 @@ import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 public class Sword implements Weapon {
+    private static final int BASE_DAMAGE = 5;
+    private static final long BASE_COOLDOWN = 1000L;
+    private static final int MAX_LEVEL = 12;
     private final Sprite sprite;
     private final Animation<TextureRegion> animation;
     private final DemoPlayer player;
     private final Rectangle hitboxRight;
     private final Rectangle hitboxLeft;
     public int animationCount;
-    private int damage = 5;
-    private long cooldown = 1000L;
     private long lastAttackTime;
     private Vector2 position;
     private float animationTime = 0f;
-    private int level = 1;
 
     public Sword(DemoPlayer player) {
         this.player = player;
@@ -44,8 +44,9 @@ public class Sword implements Weapon {
         this.animation = new Animation<>(0.3f, frames, Animation.PlayMode.NORMAL);
 
         lastAttackTime = 0L;
-        hitboxRight = new Rectangle(player.getCenterPosition().x, player.getCenterPosition().y, 30, 20);
-        hitboxLeft = new Rectangle(player.getCenterPosition().x - 30, player.getCenterPosition().y, 30, 20);
+        Vector2 playerCenterPosition = player.getCenterPosition();
+        hitboxRight = new Rectangle(playerCenterPosition.x, playerCenterPosition.y, 30, 20);
+        hitboxLeft = new Rectangle(playerCenterPosition.x - 30, playerCenterPosition.y, 30, 20);
         animationCount = 0;
     }
 
@@ -61,21 +62,13 @@ public class Sword implements Weapon {
             }
             sprite.draw(sb);
         }
-
     }
 
     @Override
     public void update(float dt) {
         position = player.getPosition();
-        if (!(player.getLevel() > 12)) {
-            if (level < player.getLevel()) {
-                level = player.getLevel();
-                setDamage(getDamage() + 4);
-                setCooldown(getCooldown() - 70L);
-            }
-        }
         animationTime += dt;
-        if (TimeUtils.millis() - lastAttackTime > cooldown) {
+        if (TimeUtils.millis() - lastAttackTime > getCooldown()) {
             lastAttackTime = TimeUtils.millis();
             animationTime = 0;
             animationCount += 1;
@@ -83,20 +76,12 @@ public class Sword implements Weapon {
     }
 
     public Rectangle getHitbox() {
+        Vector2 playerCenterPosition = player.getCenterPosition();
         if (player.isRunningRight()) {
-            return hitboxRight.setPosition(player.getCenterPosition());
+            return hitboxRight.setPosition(playerCenterPosition);
         } else {
-            return hitboxLeft.setPosition(player.getCenterPosition().x - 30, player.getCenterPosition().y);
+            return hitboxLeft.setPosition(playerCenterPosition.x - 30, playerCenterPosition.y);
         }
-    }
-
-    @Override
-    public int getDamage() {
-        return this.damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
     }
 
     @Override
@@ -119,16 +104,21 @@ public class Sword implements Weapon {
         return false;
     }
 
-    public long getCooldown() {
-        return cooldown;
+    @Override
+    public int getDamage() {
+        return BASE_DAMAGE + getLevel() * 4;
     }
 
-    public void setCooldown(long cooldown) {
-        this.cooldown = cooldown;
+    public long getCooldown() {
+        return BASE_COOLDOWN - getLevel() * 70L;
+    }
+
+    private int getLevel() {
+        return Math.min(MAX_LEVEL, (player.getLevel() - 1));
     }
 
     @Override
     public String toString() {
-        return "SWORD\n DAMAGE: " + damage + "\n COOLDOWN: " + (float) cooldown / 1000;
+        return "SWORD\n DAMAGE: " + getDamage() + "\n COOLDOWN: " + (float) getCooldown() / 1000;
     }
 }

@@ -80,19 +80,17 @@ public class Monster {
         animationTime = 0f;
     }
 
-    public void attackIfPossible(DemoPlayer player) {
-        if (canAttack(player)) {
-            System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
-            player.takeDamage(type.getDamage());
-            replaceAnimation(type.getAttackAnimation());
-            lastAttackTime = TimeUtils.millis();
-        }
+    public void attack(DemoPlayer player) {
+        System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
+        player.takeDamage(type.getDamage());
+        replaceAnimation(type.getAttackAnimation());
+        lastAttackTime = TimeUtils.millis();
     }
 
-    private boolean canAttack(DemoPlayer player) {
+    public boolean canAttack(Vector2 playerPosition) {
         return !isDead() &&
                 TimeUtils.millis() - lastAttackTime > type.getAttackInterval() &&
-                canReach(player.getCenterPosition());
+                canReach(playerPosition);
     }
 
     private boolean canReach(Vector2 playerPosition) {

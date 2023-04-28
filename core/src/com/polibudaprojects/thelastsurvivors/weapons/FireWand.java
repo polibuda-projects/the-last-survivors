@@ -12,17 +12,17 @@ import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 import java.util.ArrayList;
 
 public class FireWand implements Weapon {
+    private static final int BASE_DAMAGE = 2;
+    private static final long BASE_COOLDOWN = 1000L;
+    private static final int MAX_LEVEL = 12;
     private final DemoPlayer player;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final Sprite sprite0;
     private final Sprite sprite1;
     private final Sprite sprite2;
     private final Sprite sprite3;
-    private int damage = 2;
-    private long cooldown = 1000L;
     private long lastAttackTime;
     private Vector2 position;
-    private int level = 1;
 
     public FireWand(DemoPlayer player) {
         this.player = player;
@@ -58,14 +58,7 @@ public class FireWand implements Weapon {
     @Override
     public void update(float dt) {
         position = player.getCenterPosition();
-        if (!(player.getLevel() > 12)) {
-            if (level < player.getLevel()) {
-                level = player.getLevel();
-                setDamage(getDamage() + 3);
-                setCooldown(getCooldown() - 50L);
-            }
-        }
-        if (TimeUtils.millis() - lastAttackTime > cooldown) {
+        if (TimeUtils.millis() - lastAttackTime > getCooldown()) {
             lastAttackTime = TimeUtils.millis();
             int lastPosition = player.getLastInput();
             switch (lastPosition) {
@@ -90,15 +83,6 @@ public class FireWand implements Weapon {
     }
 
     @Override
-    public int getDamage() {
-        return this.damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    @Override
     public boolean canAttack(Monster monster) {
         for (Bullet bullet : bullets) {
             if (Intersector.overlaps(monster.getBoundingRectangle(), bullet.getHitbox())) {
@@ -109,16 +93,21 @@ public class FireWand implements Weapon {
         return false;
     }
 
-    public long getCooldown() {
-        return cooldown;
+    @Override
+    public int getDamage() {
+        return BASE_DAMAGE + getLevel() * 3;
     }
 
-    public void setCooldown(long cooldown) {
-        this.cooldown = cooldown;
+    public long getCooldown() {
+        return BASE_COOLDOWN - getLevel() * 50L;
+    }
+
+    private int getLevel() {
+        return Math.min(MAX_LEVEL, (player.getLevel() - 1));
     }
 
     @Override
     public String toString() {
-        return "FIRE WAND\n DAMAGE: " + damage + "\n COOLDOWN: " + (float) cooldown / 1000;
+        return "FIRE WAND\n DAMAGE: " + getDamage() + "\n COOLDOWN: " + (float) getCooldown() / 1000;
     }
 }
