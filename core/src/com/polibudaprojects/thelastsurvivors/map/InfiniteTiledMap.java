@@ -9,12 +9,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 public class InfiniteTiledMap {
     private final TiledMapRenderer[][] renderers;
     private final TiledMap[][] maps;
-    private int mapWidth;
-    private int mapHeight;
     private final int gridWidth;
     private final int gridHeight;
     private final float zoomLevel;
     private final CollisionDetector collisionDetector;
+    private int mapWidth;
+    private int mapHeight;
 
     public InfiniteTiledMap(String mapFileName, int gridWidth, int gridHeight, float zoomLevel) {
         this.gridWidth = gridWidth;

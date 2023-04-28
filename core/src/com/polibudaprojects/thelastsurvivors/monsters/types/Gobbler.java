@@ -19,7 +19,7 @@ public class Gobbler extends Type {
 
     @Override
     public Item dropItem(Vector2 position) {
-        if(Math.random() > 0.2){
+        if (Math.random() > 0.2) {
             return XP.getCommonXP(position);
         }
         return null;

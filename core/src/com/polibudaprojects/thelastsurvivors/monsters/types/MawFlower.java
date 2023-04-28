@@ -19,7 +19,7 @@ public class MawFlower extends Type {
 
     @Override
     public Item dropItem(Vector2 position) {
-        if(Math.random() > 0.5){
+        if (Math.random() > 0.5) {
             return XP.getCommonXP(position);
         }
         return null;
