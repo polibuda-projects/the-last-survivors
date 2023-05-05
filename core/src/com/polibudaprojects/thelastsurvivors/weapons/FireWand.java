@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 import java.util.ArrayList;
@@ -15,7 +15,8 @@ public class FireWand implements Weapon {
     private static final int BASE_DAMAGE = 2;
     private static final long BASE_COOLDOWN = 1000L;
     private static final int MAX_LEVEL = 12;
-    private final DemoPlayer player;
+    private static final int SPEED = 350;
+    private final Player player;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final Sprite sprite0;
     private final Sprite sprite1;
@@ -24,7 +25,7 @@ public class FireWand implements Weapon {
     private long lastAttackTime;
     private Vector2 position;
 
-    public FireWand(DemoPlayer player) {
+    public FireWand(Player player) {
         this.player = player;
         lastAttackTime = 0L;
         position = player.getCenterPosition();
@@ -63,16 +64,16 @@ public class FireWand implements Weapon {
             int lastPosition = player.getLastInput();
             switch (lastPosition) {
                 case 0:
-                    bullets.add(new Bullet(position, sprite0, 0, 170));
+                    bullets.add(new Bullet(position, sprite0, 0, SPEED));
                     break;
                 case 1:
-                    bullets.add(new Bullet(position, sprite1, 0, -170));
+                    bullets.add(new Bullet(position, sprite1, 0, -SPEED));
                     break;
                 case 2:
-                    bullets.add(new Bullet(position, sprite2, -170, 0));
+                    bullets.add(new Bullet(position, sprite2, -SPEED, 0));
                     break;
                 case 3:
-                    bullets.add(new Bullet(position, sprite3, 170, 0));
+                    bullets.add(new Bullet(position, sprite3, SPEED, 0));
                     break;
             }
         }

@@ -2,7 +2,7 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
@@ -16,9 +16,9 @@ public class MonsterManager {
     private final List<Monster> monsters = new ArrayList<>();
     private final PhaseManager phaseManager;
     private final ItemManager itemManager;
-    private final DemoPlayer player;
+    private final Player player;
 
-    public MonsterManager(DemoPlayer player, ItemManager itemManager) {
+    public MonsterManager(Player player, ItemManager itemManager) {
         this.player = player;
         this.itemManager = itemManager;
         this.phaseManager = new PhaseManager(player);
@@ -58,7 +58,7 @@ public class MonsterManager {
 
             monster.update(deltaTime, playerCenterPosition);
 
-            if(monster.canAttack(playerCenterPosition)){
+            if (monster.canAttack(playerCenterPosition)) {
                 monster.attack(player);
             }
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
@@ -80,7 +80,7 @@ public class Monster {
         animationTime = 0f;
     }
 
-    public void attack(DemoPlayer player) {
+    public void attack(Player player) {
         System.out.println(type.getName() + " attacked player dealing " + type.getDamage() + " damage");
         player.takeDamage(type.getDamage());
         replaceAnimation(type.getAttackAnimation());
