@@ -7,18 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bullet {
     private final Vector2 position;
+    private final Vector2 velocity;
     private final Sprite sprite;
     private final Rectangle hitbox;
-    private final int speedX;
-    private final int speedY;
 
-    public Bullet(Vector2 position, Sprite sprite, int speedX, int speedY) {
+    public Bullet(Vector2 position, Vector2 velocity, Sprite sprite) {
         this.position = position;
+        this.velocity = velocity;
         this.sprite = sprite;
         hitbox = new Rectangle(position.x, position.y, 47, 33);
-
-        this.speedX = speedX;
-        this.speedY = speedY;
     }
 
     public void draw(SpriteBatch sb) {
@@ -27,8 +24,7 @@ public class Bullet {
     }
 
     public void update(float dt) {
-        position.x += dt * speedX;
-        position.y += dt * speedY;
+        position.mulAdd(velocity, dt);
         hitbox.setPosition(position);
     }
 

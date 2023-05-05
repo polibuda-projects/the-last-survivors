@@ -16,35 +16,14 @@ public class FireWand implements Weapon {
     private static final long BASE_COOLDOWN = 1000L;
     private static final int MAX_LEVEL = 12;
     private static final int SPEED = 350;
+    private final Texture bullet;
     private final Player player;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
-    private final Sprite sprite0;
-    private final Sprite sprite1;
-    private final Sprite sprite2;
-    private final Sprite sprite3;
-    private long lastAttackTime;
-    private Vector2 position;
+    private long lastAttackTime = 0L;
 
     public FireWand(Player player) {
         this.player = player;
-        lastAttackTime = 0L;
-        position = player.getCenterPosition();
-
-        Texture bullet = new Texture("fireBullet.png");
-        sprite0 = new Sprite(bullet);
-        sprite0.setSize(33f, 47f);
-        sprite0.rotate90(false);
-
-        sprite1 = new Sprite(bullet);
-        sprite1.setSize(33f, 47f);
-        sprite1.rotate90(true);
-
-        sprite2 = new Sprite(bullet);
-        sprite2.setSize(47f, 33f);
-        sprite2.setFlip(true, false);
-
-        sprite3 = new Sprite(bullet);
-        sprite3.setSize(47f, 33f);
+        bullet = new Texture("fireBullet.png");
     }
 
     @Override
@@ -58,29 +37,27 @@ public class FireWand implements Weapon {
 
     @Override
     public void update(float dt) {
-        position = player.getCenterPosition();
         if (TimeUtils.millis() - lastAttackTime > getCooldown()) {
             lastAttackTime = TimeUtils.millis();
-            int lastPosition = player.getLastInput();
-            switch (lastPosition) {
-                case 0:
-                    bullets.add(new Bullet(position, sprite0, 0, SPEED));
-                    break;
-                case 1:
-                    bullets.add(new Bullet(position, sprite1, 0, -SPEED));
-                    break;
-                case 2:
-                    bullets.add(new Bullet(position, sprite2, -SPEED, 0));
-                    break;
-                case 3:
-                    bullets.add(new Bullet(position, sprite3, SPEED, 0));
-                    break;
-            }
+            Vector2 velocity = player.getLastVelocity().nor().scl(SPEED);
+            bullets.add(new Bullet(
+                    player.getCenterPosition(),
+                    velocity,
+                    createBulletSprite(velocity.angleDeg())
+            ));
         }
 
         for (Bullet bullet : bullets) {
             bullet.update(dt);
         }
+    }
+
+    private Sprite createBulletSprite(float angle) {
+        Sprite sprite = new Sprite(bullet);
+        sprite.setSize(47f, 33f);
+        sprite.setRotation(angle);
+        sprite.setFlip(false, 90f < angle && angle < 270f);
+        return sprite;
     }
 
     @Override

@@ -21,6 +21,8 @@ public abstract class Player {
     protected final ArrayList<Weapon> weapons = new ArrayList<>();
     private final Texture texture;
     private final Vector2 position = new Vector2();
+    private final Vector2 velocity = new Vector2();
+    private final Vector2 lastVelocity = Vector2.X;
     private final Sprite sprite;
     private final int maxScore = 100;
     private final float speed;
@@ -36,7 +38,6 @@ public abstract class Player {
     private float regenTimer;
     private boolean runningRight;
     private int level;
-    private int lastInput;
     private int hpRegen;
     private int maxHealth;
     private int currentHealth;
@@ -113,22 +114,22 @@ public abstract class Player {
     }
 
     public void update(float deltaTime) {
-        updateAnimation(deltaTime);
         if (!isDead()) {
             tryToLevelUp();
             tryToRegenerateHealth(deltaTime);
             move(deltaTime);
             updateWeapons(deltaTime);
         }
+        updateAnimation(deltaTime);
     }
 
     private void updateAnimation(float deltaTime) {
         animationTime += deltaTime;
         if ((animation.isAnimationFinished(animationTime) && animation != playerDeath) || (animation == playerRunning || animation == playerStanding)) {
-            if (wantsToGoLeft() || wantsToGoRight() || wantsToGoDown() || wantsToGoUp()) {
-                animation = playerRunning;
-            } else {
+            if (velocity.isZero()) {
                 animation = playerStanding;
+            } else {
+                animation = playerRunning;
             }
         }
         sprite.setRegion(animation.getKeyFrame(animationTime));
@@ -169,27 +170,27 @@ public abstract class Player {
     }
 
     private void move(float deltaTime) {
+        velocity.setZero();
+
         if (wantsToGoUp()) {
-            position.y += deltaTime * speed;
-            lastInput = 0;
+            velocity.add(0f, 1f);
         }
         if (wantsToGoDown()) {
-            position.y -= deltaTime * speed;
-            lastInput = 1;
+            velocity.add(0f, -1f);
         }
         if (wantsToGoLeft()) {
-            position.x -= deltaTime * speed;
-            lastInput = 2;
-        }
-        if (wantsToGoRight()) {
-            position.x += deltaTime * speed;
-            lastInput = 3;
-        }
-        if (wantsToGoLeft() && !wantsToGoRight()) {
+            velocity.add(-1f, 0f);
             runningRight = false;
         }
-        if (wantsToGoRight() && !wantsToGoLeft()) {
+        if (wantsToGoRight()) {
+            velocity.add(1f, 0f);
             runningRight = true;
+        }
+
+        if (!velocity.isZero()) {
+            lastVelocity.set(velocity);
+            velocity.nor().scl(speed * deltaTime);
+            position.add(velocity);
         }
     }
 
@@ -231,6 +232,10 @@ public abstract class Player {
         return new Vector2(position.x + SPRITE_WIDTH * 0.5f, position.y + SPRITE_HEIGHT * 0.5f);
     }
 
+    public Vector2 getLastVelocity() {
+        return new Vector2(lastVelocity);
+    }
+
     public boolean isDead() {
         return currentHealth <= 0;
     }
@@ -257,10 +262,6 @@ public abstract class Player {
 
     public int getCurrentHealth() {
         return currentHealth;
-    }
-
-    public int getLastInput() {
-        return lastInput;
     }
 
     public int getHpRegen() {
