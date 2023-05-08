@@ -41,6 +41,9 @@ gradle-app.setting
 /desktop/build/
 /html/build/
 /ios/build/
+/gradlew
+/gradlew.bat
+
 
 ## OS Specific
 .DS_Store
