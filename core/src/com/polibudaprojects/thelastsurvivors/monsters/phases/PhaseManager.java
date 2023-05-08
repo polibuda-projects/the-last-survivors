@@ -1,6 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 import java.util.ArrayList;
@@ -9,12 +9,12 @@ import java.util.List;
 
 public class PhaseManager {
 
-    private final DemoPlayer player;
+    private final Player player;
     private final List<Phase> phases = new ArrayList<>();
     private float phaseTimer = 0f;
     private int currentPhase = 0;
 
-    public PhaseManager(DemoPlayer player) {
+    public PhaseManager(Player player) {
         this.player = player;
         phases.add(new EasyPhase());
         phases.add(new MediumPhase());

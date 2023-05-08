@@ -2,7 +2,7 @@ package com.polibudaprojects.thelastsurvivors.items;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.ListIterator;
 public class ItemManager {
 
     private final List<Item> items = new ArrayList<>();
-    private final DemoPlayer player;
+    private final Player player;
 
-    public ItemManager(DemoPlayer player) {
+    public ItemManager(Player player) {
         this.player = player;
     }
 

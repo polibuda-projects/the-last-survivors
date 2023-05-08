@@ -12,7 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
@@ -44,7 +45,7 @@ public class PlayState extends State {
     private final BackgroundMusic backgroundMusic;
     private final MonsterManager monsterManager;
     private final ItemManager itemManager;
-    private final DemoPlayer demoPlayer;
+    private final Player player;
     private boolean isPaused;
     private boolean justPressed;
     private String stats;
@@ -65,9 +66,9 @@ public class PlayState extends State {
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
-        demoPlayer = new DemoPlayer();
-        itemManager = new ItemManager(demoPlayer);
-        monsterManager = new MonsterManager(demoPlayer, itemManager);
+        player = new FireWarrior();
+        itemManager = new ItemManager(player);
+        monsterManager = new MonsterManager(player, itemManager);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
@@ -81,7 +82,7 @@ public class PlayState extends State {
         justPressed = false;
         background = new Texture("background.png");
         font = new BitmapFont();
-        stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" + "HP REGEN: " + demoPlayer.getHpRegen() + "\n" + "LEVEL: " + demoPlayer.getLevel() + "\n" + "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
+        stats = "HEALTH: " + player.getCurrentHealth() + "/" + player.getMaxHealth() + "\n" + "HP REGEN: " + player.getHpRegen() + "\n" + "LEVEL: " + player.getLevel() + "\n" + "EXP: " + player.getScore() + "/" + player.getMaxScore() + "\n\n";
 
         pause = new OrthographicCamera();
         pause.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -107,7 +108,7 @@ public class PlayState extends State {
     public void reset() {
         Statistics.getInstance().reset();
         gameTimer.setTimeRemaining(TIME_LIMIT);
-        demoPlayer.reset();
+        player.reset();
         monsterManager.reset();
         itemManager.reset();
         backgroundMusic.restart();
@@ -117,14 +118,14 @@ public class PlayState extends State {
     public void update(float dt) {
         if (!isPaused) {
             handleInput();
-            infiniteTiledMap.update(cam, demoPlayer.getX() + 90, demoPlayer.getY() + 50);
-            demoPlayer.update(dt);
+            infiniteTiledMap.update(cam, player.getPosition().x + 90, player.getPosition().y + 50);
+            player.update(dt);
             monsterManager.update(dt);
             itemManager.update(dt);
             gameTimer.update(dt);
             gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight() / 2f + cam.position.y - 10f);
 
-            if (demoPlayer.isGameOver() || gameTimer.isTimeUp()) {
+            if (player.isGameOver() || gameTimer.isTimeUp()) {
                 Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
                 gsm.set(gsm.getEnd());
             }
@@ -156,7 +157,7 @@ public class PlayState extends State {
 
             sb.setProjectionMatrix(cam.combined);
             sb.begin();
-            demoPlayer.draw(sb);
+            player.draw(sb);
             monsterManager.draw(sb);
             itemManager.draw(sb);
             sb.draw(playerStats, cam.position.x - 540, cam.position.y - 312);
@@ -169,18 +170,18 @@ public class PlayState extends State {
             //HP BAR
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(82, 53, (195f * demoPlayer.getCurrentHealth()) / demoPlayer.getMaxHealth(), 10);
+            shapeRenderer.rect(82, 53, (195f * player.getCurrentHealth()) / player.getMaxHealth(), 10);
             shapeRenderer.end();
 
             //XP BAR
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.SKY);
-            shapeRenderer.rect(82, 34, (195f * demoPlayer.getScore()) / demoPlayer.getMaxScore(), 10);
+            shapeRenderer.rect(82, 34, (195f * player.getScore()) / player.getMaxScore(), 10);
             shapeRenderer.end();
         } else {
-            stats = "HEALTH: " + demoPlayer.getCurrentHealth() + "/" + demoPlayer.getMaxHealth() + "\n" + "HP REGEN: " + demoPlayer.getHpRegen() + "\n" + "LEVEL: " + demoPlayer.getLevel() + "\n" + "EXP: " + demoPlayer.getScore() + "/" + demoPlayer.getMaxScore() + "\n\n";
+            stats = "HEALTH: " + player.getCurrentHealth() + "/" + player.getMaxHealth() + "\n" + "HP REGEN: " + player.getHpRegen() + "\n" + "LEVEL: " + player.getLevel() + "\n" + "EXP: " + player.getScore() + "/" + player.getMaxScore() + "\n\n";
 
-            for (Weapon weapon : demoPlayer.getWeapons()) {
+            for (Weapon weapon : player.getWeapons()) {
                 stats = stats.concat(weapon.toString() + "\n");
             }
 
@@ -205,6 +206,7 @@ public class PlayState extends State {
         MonsterFactory.dispose();
         XP.dispose();
         infiniteTiledMap.dispose();
+        player.dispose();
         playerPortraitPng.dispose();
         background.dispose();
         resumeBtn.dispose();

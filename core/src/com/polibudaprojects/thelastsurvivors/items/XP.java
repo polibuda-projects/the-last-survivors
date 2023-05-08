@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 public class XP extends Item {
 
@@ -36,7 +36,7 @@ public class XP extends Item {
     }
 
     @Override
-    public void takeItem(DemoPlayer player) {
+    public void takeItem(Player player) {
         player.setScore(player.getScore() + value);
     }
 }

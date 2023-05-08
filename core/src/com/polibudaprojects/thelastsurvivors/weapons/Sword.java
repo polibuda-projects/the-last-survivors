@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
 public class Sword implements Weapon {
@@ -19,7 +19,7 @@ public class Sword implements Weapon {
     private static final int MAX_LEVEL = 12;
     private final Sprite sprite;
     private final Animation<TextureRegion> animation;
-    private final DemoPlayer player;
+    private final Player player;
     private final Rectangle hitboxRight;
     private final Rectangle hitboxLeft;
     public int animationCount;
@@ -27,7 +27,7 @@ public class Sword implements Weapon {
     private Vector2 position;
     private float animationTime = 0f;
 
-    public Sword(DemoPlayer player) {
+    public Sword(Player player) {
         this.player = player;
 
         Texture img = new Texture("player.png");
@@ -41,7 +41,7 @@ public class Sword implements Weapon {
         for (int i = 0; i < 5; i++) {
             frames.add(new TextureRegion(img, i * 144, 880, 144, 80));
         }
-        this.animation = new Animation<>(0.3f, frames, Animation.PlayMode.NORMAL);
+        this.animation = new Animation<>(0.15f, frames, Animation.PlayMode.NORMAL);
 
         lastAttackTime = 0L;
         Vector2 playerCenterPosition = player.getCenterPosition();
@@ -55,11 +55,7 @@ public class Sword implements Weapon {
         if (player.getCurrentHealth() > 0) {
             sprite.setPosition(position.x, position.y);
             sprite.setRegion(animation.getKeyFrame(animationTime));
-            if (player.isRunningRight() && sprite.isFlipX()) {
-                sprite.setFlip(false, false);
-            } else if (!player.isRunningRight() && !sprite.isFlipX()) {
-                sprite.setFlip(true, false);
-            }
+            sprite.setFlip(player.isFacingLeft(), false);
             sprite.draw(sb);
         }
     }
@@ -77,10 +73,10 @@ public class Sword implements Weapon {
 
     public Rectangle getHitbox() {
         Vector2 playerCenterPosition = player.getCenterPosition();
-        if (player.isRunningRight()) {
-            return hitboxRight.setPosition(playerCenterPosition);
-        } else {
+        if (player.isFacingLeft()) {
             return hitboxLeft.setPosition(playerCenterPosition.x - 30, playerCenterPosition.y);
+        } else {
+            return hitboxRight.setPosition(playerCenterPosition);
         }
     }
 

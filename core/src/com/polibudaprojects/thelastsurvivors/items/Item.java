@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.DemoPlayer;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 public abstract class Item {
     public static final float LIFETIME = 20f;
@@ -23,7 +23,7 @@ public abstract class Item {
         this.position = position;
     }
 
-    public abstract void takeItem(DemoPlayer player);
+    public abstract void takeItem(Player player);
 
     public void update(float deltaTime, Vector2 playerPosition) {
         timer += deltaTime;
