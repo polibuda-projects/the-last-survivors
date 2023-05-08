@@ -36,7 +36,7 @@ public abstract class Player {
     private Animation<TextureRegion> animation;
     private float animationTime;
     private float regenTimer;
-    private boolean runningRight;
+    private boolean facingLeft;
     private int level;
     private int hpRegen;
     private int maxHealth;
@@ -85,7 +85,7 @@ public abstract class Player {
         hpRegen = initialHpRegen;
         maxHealth = initialMaxHealth;
         currentHealth = maxHealth;
-        runningRight = true;
+        facingLeft = false;
 
         animationTime = 0f;
         animation = playerStanding;
@@ -104,7 +104,7 @@ public abstract class Player {
     protected abstract Animation<TextureRegion> loadHitAnimation(Texture texture);
 
     public void draw(SpriteBatch batch) {
-        sprite.setFlip(!runningRight, false);
+        sprite.setFlip(facingLeft, false);
         sprite.setPosition(position.x, position.y);
         sprite.draw(batch);
 
@@ -125,7 +125,7 @@ public abstract class Player {
 
     private void updateAnimation(float deltaTime) {
         animationTime += deltaTime;
-        if ((animation.isAnimationFinished(animationTime) && animation != playerDeath) || (animation == playerRunning || animation == playerStanding)) {
+        if (shouldChangeAnimation()) {
             if (velocity.isZero()) {
                 animation = playerStanding;
             } else {
@@ -133,6 +133,10 @@ public abstract class Player {
             }
         }
         sprite.setRegion(animation.getKeyFrame(animationTime));
+    }
+
+    private boolean shouldChangeAnimation() {
+        return (animation.isAnimationFinished(animationTime) && animation != playerDeath) || (animation == playerRunning || animation == playerStanding);
     }
 
     private void replaceAnimation(Animation<TextureRegion> newAnimation) {
@@ -155,15 +159,9 @@ public abstract class Player {
 
     private void tryToRegenerateHealth(float deltaTime) {
         regenTimer += deltaTime;
-        int regenSec = (int) regenTimer;
-        regenSec = regenSec % 60;
-        if (regenSec >= REGEN_INTERVAL && currentHealth < maxHealth && currentHealth > 0) {
+        if (regenTimer >= REGEN_INTERVAL && currentHealth < maxHealth) {
             regenTimer = 0f;
-            if ((currentHealth + hpRegen) > maxHealth) {
-                currentHealth = maxHealth;
-            } else {
-                currentHealth += hpRegen;
-            }
+            currentHealth = Math.min(currentHealth + hpRegen, maxHealth);
             replaceAnimation(playerHpRegen);
             System.out.println("Regenerate " + hpRegen + " HP");
         }
@@ -173,18 +171,18 @@ public abstract class Player {
         velocity.setZero();
 
         if (wantsToGoUp()) {
-            velocity.add(0f, 1f);
+            velocity.add(0, 1);
         }
         if (wantsToGoDown()) {
-            velocity.add(0f, -1f);
+            velocity.add(0, -1);
         }
         if (wantsToGoLeft()) {
-            velocity.add(-1f, 0f);
-            runningRight = false;
+            velocity.add(-1, 0);
+            facingLeft = true;
         }
         if (wantsToGoRight()) {
-            velocity.add(1f, 0f);
-            runningRight = true;
+            velocity.add(1, 0);
+            facingLeft = false;
         }
 
         if (!velocity.isZero()) {
@@ -244,8 +242,8 @@ public abstract class Player {
         return isDead() && animation.isAnimationFinished(animationTime);
     }
 
-    public boolean isRunningRight() {
-        return runningRight;
+    public boolean isFacingLeft() {
+        return facingLeft;
     }
 
     public int getScore() {

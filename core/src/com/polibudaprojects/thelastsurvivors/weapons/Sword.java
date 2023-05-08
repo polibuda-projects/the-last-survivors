@@ -55,11 +55,7 @@ public class Sword implements Weapon {
         if (player.getCurrentHealth() > 0) {
             sprite.setPosition(position.x, position.y);
             sprite.setRegion(animation.getKeyFrame(animationTime));
-            if (player.isRunningRight() && sprite.isFlipX()) {
-                sprite.setFlip(false, false);
-            } else if (!player.isRunningRight() && !sprite.isFlipX()) {
-                sprite.setFlip(true, false);
-            }
+            sprite.setFlip(player.isFacingLeft(), false);
             sprite.draw(sb);
         }
     }
@@ -77,10 +73,10 @@ public class Sword implements Weapon {
 
     public Rectangle getHitbox() {
         Vector2 playerCenterPosition = player.getCenterPosition();
-        if (player.isRunningRight()) {
-            return hitboxRight.setPosition(playerCenterPosition);
-        } else {
+        if (player.isFacingLeft()) {
             return hitboxLeft.setPosition(playerCenterPosition.x - 30, playerCenterPosition.y);
+        } else {
+            return hitboxRight.setPosition(playerCenterPosition);
         }
     }
 
