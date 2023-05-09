@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
 import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
@@ -17,13 +18,10 @@ import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
-import com.polibudaprojects.thelastsurvivors.items.XP;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
-import com.polibudaprojects.thelastsurvivors.monsters.MonsterFactory;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
-import java.nio.file.Paths;
 import java.util.Random;
 
 public class PlayState extends State {
@@ -58,11 +56,11 @@ public class PlayState extends State {
         infiniteTiledMap = new InfiniteTiledMap("map/game-dev.tmx", 3, 3, 0.5f); // original view = 1f
 
         //Player Stats Background
-        Texture playerStatsPng = new Texture("playerHub.png");
+        Texture playerStatsPng = Assets.get("playerHub.png", Texture.class);
         playerStats = new TextureRegion(playerStatsPng, 0, 0, 300, 82);
 
         //Player Portrait
-        playerPortraitPng = new Texture("portrait.png");
+        playerPortraitPng = Assets.get("portrait.png", Texture.class);
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
@@ -71,7 +69,7 @@ public class PlayState extends State {
         monsterManager = new MonsterManager(player, itemManager);
         cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        backgroundMusic = new BackgroundMusic(Paths.get("music/BackgroundTheLastSurvivors.mp3"));
+        backgroundMusic = new BackgroundMusic();
 
         BitmapFont timerFont = new BitmapFont();
         BitmapFont.BitmapFontData fontData = timerFont.getData();
@@ -80,20 +78,20 @@ public class PlayState extends State {
 
         isPaused = false;
         justPressed = false;
-        background = new Texture("background.png");
+        background = Assets.get("background.png", Texture.class);
         font = new BitmapFont();
         stats = "HEALTH: " + player.getCurrentHealth() + "/" + player.getMaxHealth() + "\n" + "HP REGEN: " + player.getHpRegen() + "\n" + "LEVEL: " + player.getLevel() + "\n" + "EXP: " + player.getScore() + "/" + player.getMaxScore() + "\n\n";
 
         pause = new OrthographicCamera();
         pause.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO change button image
-        resumeBtn = new Texture("button.png");
+        resumeBtn = Assets.get("button.png", Texture.class);
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
 
         soundFx = new SoundFx();
-        soundFx.loadSound("sound1", Paths.get("music/brains.wav"));
-        soundFx.loadSound("sound2", Paths.get("music/groan.wav"));
-        soundFx.loadSound("sound3", Paths.get("music/rar.wav"));
+        soundFx.loadSound("sound1", "music/brains.wav");
+        soundFx.loadSound("sound2", "music/groan.wav");
+        soundFx.loadSound("sound3", "music/rar.wav");
 
         random = new Random();
         soundEffectDelay = 3.0f;
@@ -200,17 +198,4 @@ public class PlayState extends State {
             }
         }
     }
-
-    @Override
-    public void dispose() {
-        MonsterFactory.dispose();
-        XP.dispose();
-        infiniteTiledMap.dispose();
-        player.dispose();
-        playerPortraitPng.dispose();
-        background.dispose();
-        resumeBtn.dispose();
-        soundFx.dispose();
-    }
-
 }

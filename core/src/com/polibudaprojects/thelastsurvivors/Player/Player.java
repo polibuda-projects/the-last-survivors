@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ public abstract class Player {
     private static final int START_X = 5500;
     private static final int START_Y = 5500;
     protected final ArrayList<Weapon> weapons = new ArrayList<>();
-    private final Texture texture;
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
     private final Vector2 lastVelocity = Vector2.X;
@@ -43,8 +43,9 @@ public abstract class Player {
     private int currentHealth;
     private int score;
 
-    public Player(Texture texture, int initialMaxHealth, int initialHpRegen, float initialSpeed) {
-        this.texture = texture;
+    public Player(String textureFileName, int initialMaxHealth, int initialHpRegen, float initialSpeed) {
+        Texture texture = Assets.get(textureFileName, Texture.class);
+
         this.initialMaxHealth = initialMaxHealth;
         this.initialHpRegen = initialHpRegen;
         this.speed = initialSpeed;
@@ -212,10 +213,6 @@ public abstract class Player {
                 replaceAnimation(playerHit);
             }
         }
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 
     public ArrayList<Weapon> getWeapons() {

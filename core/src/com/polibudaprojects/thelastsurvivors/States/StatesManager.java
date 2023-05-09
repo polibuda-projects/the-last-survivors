@@ -29,12 +29,6 @@ public class StatesManager {
         state.render(sb);
     }
 
-    public void dispose() {
-        start.dispose();
-        play.dispose();
-        end.dispose();
-    }
-
     public State getStart() {
         return start;
     }

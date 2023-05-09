@@ -1,17 +1,15 @@
 package com.polibudaprojects.thelastsurvivors.Music;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-
-import java.nio.file.Path;
+import com.polibudaprojects.thelastsurvivors.Assets;
 
 public class BackgroundMusic extends ApplicationAdapter {
 
     private final Music backgroundMusic;
 
-    public BackgroundMusic(Path path) {
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(String.valueOf(path)));
+    public BackgroundMusic() {
+        backgroundMusic = Assets.get("music/BackgroundTheLastSurvivors.mp3", Music.class);
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.8f);
     }
@@ -19,10 +17,5 @@ public class BackgroundMusic extends ApplicationAdapter {
     public void restart() {
         backgroundMusic.stop();
         backgroundMusic.play();
-    }
-
-    @Override
-    public void dispose() {
-        backgroundMusic.dispose();
     }
 }

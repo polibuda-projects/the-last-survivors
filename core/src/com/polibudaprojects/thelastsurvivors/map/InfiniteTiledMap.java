@@ -3,8 +3,8 @@ package com.polibudaprojects.thelastsurvivors.map;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.polibudaprojects.thelastsurvivors.Assets;
 
 public class InfiniteTiledMap {
     private final TiledMapRenderer[][] renderers;
@@ -23,8 +23,7 @@ public class InfiniteTiledMap {
         renderers = new TiledMapRenderer[gridWidth][gridHeight];
         maps = new TiledMap[gridWidth][gridHeight];
 
-        TmxMapLoader loader = new TmxMapLoader();
-        TiledMap tiledMap = loader.load(mapFileName);
+        TiledMap tiledMap = Assets.get(mapFileName, TiledMap.class);
         collisionDetector = new CollisionDetector(tiledMap);
 
         for (int i = 0; i < gridWidth; i++) {

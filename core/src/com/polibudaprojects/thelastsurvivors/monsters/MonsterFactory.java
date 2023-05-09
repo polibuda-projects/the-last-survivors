@@ -23,9 +23,4 @@ public class MonsterFactory {
         }
         return Optional.of(new Monster(type, position));
     }
-
-    public static void dispose() {
-        monsterTypes.forEach((aClass, type) -> type.dispose());
-        monsterTypes.clear();
-    }
 }
