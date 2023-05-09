@@ -40,8 +40,12 @@ public class Assets {
         assetManager.load("map/game-dev.tmx", TiledMap.class);
     }
 
-    public static void finishLoading() {
-        assetManager.finishLoading();
+    public static boolean finishedLoading() {
+        return assetManager.update();
+    }
+
+    public static float getProgress() {
+        return assetManager.getProgress();
     }
 
     public static <T> T get(String fileName, Class<T> type) {

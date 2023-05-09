@@ -16,7 +16,6 @@ public class EndState extends State {
 
     public EndState(StatesManager gsm) {
         super(gsm);
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background = Assets.get("background.png", Texture.class);
         gameOver = Assets.get("gameOver.png", Texture.class);
         startAgain = Assets.get("startAgain.png", Texture.class);

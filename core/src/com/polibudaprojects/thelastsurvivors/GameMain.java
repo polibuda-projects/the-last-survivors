@@ -13,7 +13,6 @@ public class GameMain extends ApplicationAdapter {
     @Override
     public void create() {
         Assets.load();
-        Assets.finishLoading();
         batch = new SpriteBatch();
         gsm = new StatesManager();
     }

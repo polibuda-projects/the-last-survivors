@@ -1,5 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.States;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -10,7 +11,7 @@ public abstract class State {
     protected State(StatesManager gsm) {
         this.gsm = gsm;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, 240, 400);
+        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public abstract void handleInput();

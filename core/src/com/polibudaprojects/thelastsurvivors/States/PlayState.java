@@ -67,7 +67,6 @@ public class PlayState extends State {
         player = new FireWarrior();
         itemManager = new ItemManager(player);
         monsterManager = new MonsterManager(player, itemManager);
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         backgroundMusic = new BackgroundMusic();
 

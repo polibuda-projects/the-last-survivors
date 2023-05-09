@@ -11,7 +11,6 @@ public class StartState extends State {
 
     public StartState(StatesManager gsm) {
         super(gsm);
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background = Assets.get("intro.png", Texture.class);
         playBtn = Assets.get("button.png", Texture.class);
     }
