@@ -3,6 +3,7 @@ package com.polibudaprojects.thelastsurvivors.Player;
 public class Statistics {
 
     private static volatile Statistics instance;
+    private Player player;
     private int monstersKilled;
     private int totalDamage;
     private float timeLeft;
@@ -22,8 +23,17 @@ public class Statistics {
     }
 
     public void reset() {
+        player = null;
         monstersKilled = 0;
         totalDamage = 0;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getMonstersKilled() {

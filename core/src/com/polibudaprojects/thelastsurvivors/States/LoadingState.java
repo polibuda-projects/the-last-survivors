@@ -32,9 +32,10 @@ public class LoadingState extends State {
     @Override
     public void update(float dt) {
         if (Assets.finishedLoading()) {
-            gsm.set(gsm.getStart());
+            gsm.setState(gsm.getStart());
         }
-        progress = Math.min(Assets.getProgress() + 0.1f, 1f);
+        progress = Assets.getProgress();
+        progress = progress > 0.95f ? 1f : progress;
     }
 
     @Override

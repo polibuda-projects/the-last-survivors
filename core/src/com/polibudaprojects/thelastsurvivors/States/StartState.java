@@ -18,7 +18,7 @@ public class StartState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            gsm.set(gsm.getPlay());
+            gsm.setState(gsm.getPlay());
         }
     }
 

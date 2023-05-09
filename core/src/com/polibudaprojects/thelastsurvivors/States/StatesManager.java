@@ -6,6 +6,7 @@ public class StatesManager {
 
     private State start;
     private State play;
+    private State pause;
     private State end;
     private State state;
 
@@ -13,8 +14,12 @@ public class StatesManager {
         state = new LoadingState(this);
     }
 
-    public void set(State state) {
+    public void setState(State state) {
         state.reset();
+        this.state = state;
+    }
+
+    public void setStateNoReset(State state) {
         this.state = state;
     }
 
@@ -38,6 +43,13 @@ public class StatesManager {
             play = new PlayState(this);
         }
         return play;
+    }
+
+    public State getPause() {
+        if (pause == null) {
+            pause = new PauseState(this);
+        }
+        return pause;
     }
 
     public State getEnd() {

@@ -25,7 +25,7 @@ public class EndState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            gsm.set(gsm.getStart());
+            gsm.setState(gsm.getStart());
         }
     }
 
