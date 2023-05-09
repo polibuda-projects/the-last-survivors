@@ -22,8 +22,6 @@ import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
-import java.util.Random;
-
 public class PlayState extends State {
 
     private static final float TIME_LIMIT = 30 * 60f;
@@ -38,8 +36,6 @@ public class PlayState extends State {
     private final Texture resumeBtn;
     private final Rectangle resumeBtnRectangle;
     private final SoundFx soundFx;
-    private final Random random;
-    private final float soundEffectDelay;
     private final BackgroundMusic backgroundMusic;
     private final MonsterManager monsterManager;
     private final ItemManager itemManager;
@@ -47,7 +43,6 @@ public class PlayState extends State {
     private boolean isPaused;
     private boolean justPressed;
     private String stats;
-    private float elapsedTimeSinceLastSoundEffect;
 
     public PlayState(StatesManager gsm) {
         super(gsm);
@@ -88,13 +83,6 @@ public class PlayState extends State {
         resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
 
         soundFx = new SoundFx();
-        soundFx.loadSound("sound1", "music/brains.wav");
-        soundFx.loadSound("sound2", "music/groan.wav");
-        soundFx.loadSound("sound3", "music/rar.wav");
-
-        random = new Random();
-        soundEffectDelay = 3.0f;
-        elapsedTimeSinceLastSoundEffect = 0.0f;
     }
 
     @Override
@@ -131,15 +119,7 @@ public class PlayState extends State {
                 justPressed = true;
             }
 
-            elapsedTimeSinceLastSoundEffect += dt;
-
-            if (elapsedTimeSinceLastSoundEffect >= soundEffectDelay) {
-                if (random.nextInt(100) < 1) {
-                    int soundToPlay = random.nextInt(3) + 1;
-                    soundFx.playSound("sound" + soundToPlay);
-                    elapsedTimeSinceLastSoundEffect = 0.0f;
-                }
-            }
+            soundFx.playRandomMonsterSound(dt);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !justPressed) {
             isPaused = false;
