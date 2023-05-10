@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
@@ -30,7 +31,7 @@ public class Sword implements Weapon {
     public Sword(Player player) {
         this.player = player;
 
-        Texture img = new Texture("player.png");
+        Texture img = Assets.get("player.png", Texture.class);
         TextureRegion sword = new TextureRegion(img, 0, 880, 144, 80);
         sprite = new Sprite(sword);
         sprite.setSize(180f, 100f);

@@ -1,36 +1,40 @@
 package com.polibudaprojects.thelastsurvivors.Music;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.polibudaprojects.thelastsurvivors.Assets;
 
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class SoundFx extends ApplicationAdapter {
 
-    private final Map<String, Sound> soundMap;
+    private static final float SOUND_EFFECT_DELAY = 3f;
+    private final List<Sound> monsterSounds = new ArrayList<>();
+    private final Random random = new Random();
+    private float elapsedTimeSinceLastSoundEffect = 0f;
 
     public SoundFx() {
-        soundMap = new HashMap<>();
+        monsterSounds.add(Assets.get("music/brains.wav", Sound.class));
+        monsterSounds.add(Assets.get("music/groan.wav", Sound.class));
+        monsterSounds.add(Assets.get("music/rar.wav", Sound.class));
     }
 
-    public void loadSound(String name, Path path) {
-        soundMap.put(name, Gdx.audio.newSound(Gdx.files.internal(String.valueOf(path))));
-    }
-
-    public void playSound(String name) {
-        soundMap.get(name);
-        if (soundMap.get(name) != null) {
-            soundMap.get(name).play();
+    public void playMonsterSound(int index) {
+        if (monsterSounds.get(index) != null) {
+            monsterSounds.get(index).play();
         }
     }
 
-    @Override
-    public void dispose() {
-        for (Sound sound : soundMap.values()) {
-            sound.dispose();
+    public void playRandomMonsterSound(float dt) {
+        elapsedTimeSinceLastSoundEffect += dt;
+
+        if (elapsedTimeSinceLastSoundEffect >= SOUND_EFFECT_DELAY) {
+            if (random.nextInt(100) < 1) {
+                playMonsterSound(random.nextInt(monsterSounds.size()));
+                elapsedTimeSinceLastSoundEffect = 0.0f;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ public class Scarecrow extends Type {
 
     public Scarecrow() {
         super(
-                "assets/monsters/scarecrow.atlas",
+                "monsters/scarecrow.atlas",
                 "Scarecrow",
                 90f,
                 50f,

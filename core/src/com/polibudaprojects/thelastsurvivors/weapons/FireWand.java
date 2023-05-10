@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 
@@ -23,7 +24,7 @@ public class FireWand implements Weapon {
 
     public FireWand(Player player) {
         this.player = player;
-        bullet = new Texture("fireBullet.png");
+        bullet = Assets.get("fireBullet.png", Texture.class);
     }
 
     @Override

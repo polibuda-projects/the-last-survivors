@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 
 public abstract class Type {
 
-    private final TextureAtlas textureAtlas;
     private final String name;
     private final float spriteSize;
     private final float speed;
@@ -22,7 +22,7 @@ public abstract class Type {
     private final Animation<TextureRegion> dieAnimation;
 
     public Type(String textureAtlasPath, String name, float spriteSize, float speed, int damage, int maxHealth) {
-        this.textureAtlas = new TextureAtlas(textureAtlasPath);
+        TextureAtlas textureAtlas = Assets.get(textureAtlasPath, TextureAtlas.class);
         this.name = name;
         this.spriteSize = spriteSize;
         this.speed = speed;
@@ -77,9 +77,5 @@ public abstract class Type {
 
     public Animation<TextureRegion> getDieAnimation() {
         return dieAnimation;
-    }
-
-    public void dispose() {
-        textureAtlas.dispose();
     }
 }

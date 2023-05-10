@@ -8,7 +8,7 @@ public class MawFlower extends Type {
 
     public MawFlower() {
         super(
-                "assets/monsters/maw-flower.atlas",
+                "monsters/maw-flower.atlas",
                 "Maw Flower",
                 80f,
                 30f,

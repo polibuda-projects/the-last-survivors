@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 
 public class EndState extends State {
@@ -15,17 +16,16 @@ public class EndState extends State {
 
     public EndState(StatesManager gsm) {
         super(gsm);
-        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        background = new Texture("background.png");
-        gameOver = new Texture("gameOver.png");
-        startAgain = new Texture("startAgain.png");
+        background = Assets.get("background.png", Texture.class);
+        gameOver = Assets.get("gameOver.png", Texture.class);
+        startAgain = Assets.get("startAgain.png", Texture.class);
         font = new BitmapFont();
     }
 
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            gsm.set(gsm.getStart());
+            gsm.setState(gsm.getStart());
         }
     }
 
@@ -56,13 +56,5 @@ public class EndState extends State {
         font.getData().setScale(1.5f, 1.5f);
         font.draw(sb, stats, 120, Gdx.graphics.getHeight() - 150);
         sb.end();
-    }
-
-    @Override
-    public void dispose() {
-        background.dispose();
-        gameOver.dispose();
-        startAgain.dispose();
-        System.out.println("Menu State Disposed");
     }
 }

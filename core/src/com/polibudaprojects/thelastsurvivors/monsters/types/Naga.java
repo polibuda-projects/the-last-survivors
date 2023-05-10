@@ -8,7 +8,7 @@ public class Naga extends Type {
 
     public Naga() {
         super(
-                "assets/monsters/naga.atlas",
+                "monsters/naga.atlas",
                 "Naga",
                 110f,
                 45f,

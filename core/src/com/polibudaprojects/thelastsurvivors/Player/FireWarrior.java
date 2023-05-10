@@ -11,7 +11,7 @@ public class FireWarrior extends Player {
 
     public FireWarrior() {
         super(
-                new Texture("player.png"),
+                "player.png",
                 100,
                 20,
                 200f);
