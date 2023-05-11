@@ -18,7 +18,11 @@ Dive into the world of "The Last Survivors" and prove you have what it takes to 
 git clone https://github.com/polibuda-projects/the-last-survivors.git
 ```
 2. Make sure you have `Java >=11` installed
-3. Run script `run.sh`
+3. Add executable permissions to `gradlew` script
 ```bash
-./run.sh
+chmod +x gradlew
+```
+4. Run script following command
+```bash
+./gradlew run
 ```
