@@ -20,6 +20,7 @@ public class Sword implements Weapon {
     private static final int MAX_LEVEL = 12;
     private final Sprite sprite;
     private final Animation<TextureRegion> animation;
+    private final Texture icon;
     private final Player player;
     private final Rectangle hitboxRight;
     private final Rectangle hitboxLeft;
@@ -32,6 +33,7 @@ public class Sword implements Weapon {
         this.player = player;
 
         Texture img = Assets.get("player.png", Texture.class);
+        icon = Assets.get("sword_icon.png", Texture.class);
         TextureRegion sword = new TextureRegion(img, 0, 880, 144, 80);
         sprite = new Sprite(sword);
         sprite.setSize(180f, 100f);
@@ -112,6 +114,11 @@ public class Sword implements Weapon {
 
     private int getLevel() {
         return Math.min(MAX_LEVEL, (player.getLevel() - 1));
+    }
+
+    @Override
+    public Texture getIcon() {
+        return icon;
     }
 
     @Override

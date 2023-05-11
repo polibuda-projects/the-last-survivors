@@ -9,17 +9,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
 
 public abstract class Player {
+    public static final int MAX_WEAPONS_COUNT = 3;
     public static final float SPRITE_WIDTH = 180f;
     public static final float SPRITE_HEIGHT = 100f;
     public static final int REGEN_INTERVAL = 40;
     private static final int START_X = 5500;
     private static final int START_Y = 5500;
-    protected final ArrayList<Weapon> weapons = new ArrayList<>();
+    protected final ArrayList<Weapon> weapons = new ArrayList<>(MAX_WEAPONS_COUNT);
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
     private final Vector2 lastVelocity = Vector2.X;
@@ -59,7 +61,6 @@ public abstract class Player {
         sprite.setSize(SPRITE_WIDTH, SPRITE_HEIGHT);
 
         reset();
-        addDefaultWeapon();
     }
 
     private static boolean wantsToGoRight() {
@@ -90,6 +91,9 @@ public abstract class Player {
 
         animationTime = 0f;
         animation = playerStanding;
+
+        weapons.clear();
+        addDefaultWeapon();
     }
 
     protected abstract void addDefaultWeapon();
@@ -154,6 +158,10 @@ public abstract class Player {
             }
             level += 1;
             score = 0;
+
+            if (level == 2) {
+                weapons.add(new FireWand(this));
+            }
             System.out.println("Reached " + level + " Level!!!");
         }
     }
@@ -194,14 +202,7 @@ public abstract class Player {
     }
 
     private void updateWeapons(float deltaTime) {
-        for (Weapon weapon : weapons) {
-            if (level < 2) {
-                weapon.update(deltaTime);
-                break;
-            } else {
-                weapon.update(deltaTime);
-            }
-        }
+        weapons.forEach(weapon -> weapon.update(deltaTime));
     }
 
     public void takeDamage(int damage) {

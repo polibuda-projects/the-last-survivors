@@ -25,6 +25,7 @@ public class Assets {
         assetManager.load("gameOver.png", Texture.class);
         assetManager.load("startAgain.png", Texture.class);
         assetManager.load("fireBullet.png", Texture.class);
+        assetManager.load("sword_icon.png", Texture.class);
 
         assetManager.load("monsters/maw-flower.atlas", TextureAtlas.class);
         assetManager.load("monsters/gobbler.atlas", TextureAtlas.class);

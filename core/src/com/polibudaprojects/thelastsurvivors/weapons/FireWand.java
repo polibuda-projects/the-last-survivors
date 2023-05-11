@@ -86,6 +86,11 @@ public class FireWand implements Weapon {
     }
 
     @Override
+    public Texture getIcon() {
+        return bullet;
+    }
+
+    @Override
     public String toString() {
         return "FIRE WAND\n DAMAGE: " + getDamage() + "\n COOLDOWN: " + (float) getCooldown() / 1000;
     }

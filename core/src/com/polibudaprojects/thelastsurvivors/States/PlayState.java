@@ -15,6 +15,7 @@ import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
+import com.polibudaprojects.thelastsurvivors.hud.WeaponsList;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
@@ -27,6 +28,7 @@ public class PlayState extends State {
     private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
     private final GameTimer gameTimer;
+    private final WeaponsList weaponsList;
     private final SoundFx soundFx;
     private final BackgroundMusic backgroundMusic;
     private final MonsterManager monsterManager;
@@ -58,6 +60,7 @@ public class PlayState extends State {
         BitmapFont.BitmapFontData fontData = timerFont.getData();
         fontData.setScale(1.5f);
         gameTimer = new GameTimer(TIME_LIMIT, timerFont);
+        weaponsList = new WeaponsList(player);
 
         soundFx = new SoundFx();
     }
@@ -90,6 +93,8 @@ public class PlayState extends State {
         itemManager.update(dt);
         gameTimer.update(dt);
         gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight() / 2f + cam.position.y - 10f);
+        weaponsList.update(dt);
+        weaponsList.updatePosition(cam.position.x, cam.position.y);
 
         if (player.isGameOver() || gameTimer.isTimeUp()) {
             Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
@@ -114,6 +119,7 @@ public class PlayState extends State {
 
         //HUD
         gameTimer.render(sb);
+        weaponsList.render(sb);
 
         //HP BAR
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
