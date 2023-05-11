@@ -15,13 +15,19 @@ import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
+import com.polibudaprojects.thelastsurvivors.hud.HUD;
+import com.polibudaprojects.thelastsurvivors.hud.WeaponsList;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayState extends State {
 
-    private static final float TIME_LIMIT = 30 * 60f;
+    public static final float TIME_LIMIT = 30 * 60f;
+    private final List<HUD> hudElements = new ArrayList<>();
     private final InfiniteTiledMap infiniteTiledMap;
     private final ShapeRenderer shapeRenderer;
     private final Texture playerPortraitPng;
@@ -57,7 +63,9 @@ public class PlayState extends State {
         BitmapFont timerFont = new BitmapFont();
         BitmapFont.BitmapFontData fontData = timerFont.getData();
         fontData.setScale(1.5f);
-        gameTimer = new GameTimer(TIME_LIMIT, timerFont);
+        gameTimer = new GameTimer(timerFont);
+        hudElements.add(gameTimer);
+        hudElements.add(new WeaponsList(player));
 
         soundFx = new SoundFx();
     }
@@ -65,7 +73,6 @@ public class PlayState extends State {
     @Override
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
             Statistics.getInstance().setPlayer(player);
             gsm.setState(gsm.getPause());
         }
@@ -74,7 +81,7 @@ public class PlayState extends State {
     @Override
     public void reset() {
         Statistics.getInstance().reset();
-        gameTimer.setTimeRemaining(TIME_LIMIT);
+        gameTimer.reset();
         player.reset();
         monsterManager.reset();
         itemManager.reset();
@@ -88,15 +95,20 @@ public class PlayState extends State {
         player.update(dt);
         monsterManager.update(dt);
         itemManager.update(dt);
-        gameTimer.update(dt);
-        gameTimer.updatePosition(cam.position.x, Gdx.graphics.getHeight() / 2f + cam.position.y - 10f);
+        updateHUD(dt);
 
         if (player.isGameOver() || gameTimer.isTimeUp()) {
-            Statistics.getInstance().setTimeLeft(gameTimer.getTimeRemaining());
             gsm.setState(gsm.getEnd());
         }
 
         soundFx.playRandomMonsterSound(dt);
+    }
+
+    private void updateHUD(float dt) {
+        for (HUD hud : hudElements) {
+            hud.update(dt);
+            hud.updatePosition(cam.position.x, cam.position.y);
+        }
     }
 
     @Override
@@ -113,7 +125,7 @@ public class PlayState extends State {
         sb.end();
 
         //HUD
-        gameTimer.render(sb);
+        hudElements.forEach(hud -> hud.render(sb));
 
         //HP BAR
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);

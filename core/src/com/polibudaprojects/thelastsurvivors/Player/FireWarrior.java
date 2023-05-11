@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
 import com.polibudaprojects.thelastsurvivors.weapons.Sword;
 
 public class FireWarrior extends Player {
@@ -20,7 +19,6 @@ public class FireWarrior extends Player {
     @Override
     protected void addDefaultWeapon() {
         weapons.add(new Sword(this));
-        weapons.add(new FireWand(this));
     }
 
     @Override
