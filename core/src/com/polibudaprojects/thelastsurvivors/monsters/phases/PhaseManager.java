@@ -59,7 +59,7 @@ public class PhaseManager {
     }
 
     private List<Monster> getSpawnedMonsters() {
-        return getCurrentPhase().getSpawnedMonsters(player.getPosition());
+        return getCurrentPhase().getSpawnedMonsters(player.getCenterPosition());
     }
 
     private void startNextPhase() {

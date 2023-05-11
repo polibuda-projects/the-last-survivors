@@ -15,11 +15,12 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.HashMap;
 
-import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_MAX;
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_A_MAX;
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_B_MAX;
 
 public class Monster {
 
-    private static final float MAX_DISTANCE_TO_PLAYER = SPAWN_RADIUS_MAX;
+    private static final float MAX_DISTANCE_TO_PLAYER = Math.max(SPAWN_RADIUS_A_MAX, SPAWN_RADIUS_B_MAX);
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
     public final HashMap<Weapon, Integer> wasHitBy = new HashMap<>();
     private final Sprite sprite;
