@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WeaponsList {
+public class WeaponsList implements HUD {
 
     public static final float SIZE = 32f;
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -25,14 +25,17 @@ public class WeaponsList {
         this.player = player;
     }
 
-    public void updatePosition(float x, float y) {
-        position.set(x - Gdx.graphics.getWidth() / 2f, y + Gdx.graphics.getHeight() / 2f - SIZE);
+    @Override
+    public void updatePosition(float cameraX, float cameraY) {
+        position.set(cameraX - Gdx.graphics.getWidth() / 2f, cameraY + Gdx.graphics.getHeight() / 2f - SIZE);
     }
 
+    @Override
     public void update(float dt) {
         icons = player.getWeapons().stream().map(Weapon::getIcon).collect(Collectors.toList());
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         batch.begin();
         for (int i = 0; i < icons.size(); i++) {

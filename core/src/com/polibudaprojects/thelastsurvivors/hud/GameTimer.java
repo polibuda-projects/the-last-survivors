@@ -5,31 +5,43 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.States.PlayState;
 
-public class GameTimer {
+public class GameTimer implements HUD {
+
     private final BitmapFont font;
     private final GlyphLayout layout;
     private final Vector2 position;
+    private final Statistics statistics = Statistics.getInstance();
     private float timeRemaining;
 
-    public GameTimer(float timeRemaining, BitmapFont font) {
-        this.timeRemaining = timeRemaining;
+    public GameTimer(BitmapFont font) {
+        this.timeRemaining = PlayState.TIME_LIMIT;
         this.font = font;
         this.layout = new GlyphLayout();
         this.position = new Vector2(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() - 10f);
     }
 
+    public void reset() {
+        timeRemaining = PlayState.TIME_LIMIT;
+    }
+
+    @Override
     public void update(float delta) {
         timeRemaining -= delta;
         if (timeRemaining < 0) {
             timeRemaining = 0;
         }
+        statistics.setTimeLeft(timeRemaining);
     }
 
-    public void updatePosition(float x, float y) {
-        position.set(x, y);
+    @Override
+    public void updatePosition(float cameraX, float cameraY) {
+        position.set(cameraX, Gdx.graphics.getHeight() / 2f + cameraY - 10f);
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         batch.begin();
         String text = String.format("%d:%02d", (int) timeRemaining / 60, (int) timeRemaining % 60);
@@ -38,14 +50,6 @@ public class GameTimer {
         float y = position.y - layout.height / 2f;
         font.draw(batch, layout, x, y);
         batch.end();
-    }
-
-    public float getTimeRemaining() {
-        return timeRemaining;
-    }
-
-    public void setTimeRemaining(float timeRemaining) {
-        this.timeRemaining = timeRemaining;
     }
 
     public boolean isTimeUp() {
