@@ -207,7 +207,7 @@ public abstract class Player {
 
     public void takeDamage(int damage) {
         if (!isDead()) {
-            currentHealth -= damage;
+            currentHealth = Math.max(currentHealth - damage, 0);
             if (isDead()) {
                 replaceAnimation(playerDeath);
             } else {
