@@ -28,7 +28,7 @@ public abstract class Type {
         this.speed = speed;
         this.damage = damage;
         this.maxHealth = maxHealth;
-        this.attackInterval = 1000L;
+        this.attackInterval = 800L;
         this.walkAnimation = new Animation<>(0.066f, textureAtlas.findRegions("walk"), Animation.PlayMode.LOOP);
         this.attackAnimation = new Animation<>(0.066f, textureAtlas.findRegions("attack"), Animation.PlayMode.NORMAL);
         this.hitAnimation = new Animation<>(0.066f, textureAtlas.findRegions("hit"), Animation.PlayMode.NORMAL);

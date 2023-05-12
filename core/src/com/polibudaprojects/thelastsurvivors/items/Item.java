@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 public abstract class Item {
-    public static final float LIFETIME = 20f;
+    public static final float LIFETIME = 30f;
     public static final float PULL_DISTANCE = 70f;
     public static final float PULL_SPEED = 300f;
     protected final Sprite sprite;

@@ -8,7 +8,7 @@ public class EasyPhase extends Phase {
         super(
                 60f,
                 800L,
-                15,
+                20,
                 0.2f
         );
     }

@@ -22,6 +22,6 @@ public class Scarecrow extends Type {
         if (Math.random() > 0.5) {
             return XP.getRareXP(position);
         }
-        return null;
+        return XP.getCommonXP(position);
     }
 }
