@@ -10,7 +10,7 @@ public class MediumPhase extends Phase {
         super(
                 180f,
                 600L,
-                40,
+                50,
                 0.5f
         );
     }

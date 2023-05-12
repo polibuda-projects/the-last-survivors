@@ -14,19 +14,23 @@ import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.HashMap;
+import java.util.List;
 
-import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_MAX;
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_A_MAX;
+import static com.polibudaprojects.thelastsurvivors.monsters.phases.Phase.SPAWN_RADIUS_B_MAX;
 
 public class Monster {
 
-    private static final float MAX_DISTANCE_TO_PLAYER = SPAWN_RADIUS_MAX;
+    private static final float MAX_DISTANCE_TO_PLAYER = Math.max(SPAWN_RADIUS_A_MAX, SPAWN_RADIUS_B_MAX);
     private static final float VELOCITY_UPDATE_INTERVAL = 0.5f;
+    private static final float PLAYER_ATTRACTION_FACTOR = 1.5f;
     public final HashMap<Weapon, Integer> wasHitBy = new HashMap<>();
     private final Sprite sprite;
     private final Type type;
     private final Vector2 position;
+    private final Vector2 velocity = new Vector2();
+    private final Vector2 velocityToPlayer = new Vector2();
     private float timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
-    private Vector2 velocity;
     private Animation<TextureRegion> animation;
     private float animationTime = 0f;
     private long lastAttackTime;
@@ -35,36 +39,18 @@ public class Monster {
     public Monster(Type type, Vector2 position) {
         this.type = type;
         this.position = position;
-        this.velocity = new Vector2();
         this.sprite = type.getNewSprite();
         this.health = type.getMaxHealth();
         this.animation = type.getWalkAnimation();
     }
 
-    public void update(float deltaTime, Vector2 playerPosition) {
+    public void update(List<Monster> others, Vector2 playerPosition, float deltaTime) {
         updateAnimation(deltaTime);
         if (!isDead()) {
-            timeSinceLastVelocityUpdate += deltaTime;
-            if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
-                updateVelocity(playerPosition);
-                timeSinceLastVelocityUpdate = 0f;
-            }
+            teleportIfShould(playerPosition); // Boss monster should teleport if is too far away
+            updateVelocity(others, playerPosition, deltaTime);
             position.mulAdd(velocity, deltaTime);
         }
-    }
-
-    private void updateVelocity(Vector2 playerPosition) {
-        Vector2 direction = new Vector2(
-                playerPosition.x - position.x - sprite.getWidth() / 2f,
-                playerPosition.y - position.y - sprite.getHeight() / 2f
-        );
-        velocity = direction.nor().scl(type.getSpeed());
-    }
-
-    public void draw(SpriteBatch batch) {
-        sprite.setPosition(position.x, position.y);
-        sprite.setFlip(velocity.x < 0, false);
-        sprite.draw(batch);
     }
 
     private void updateAnimation(float deltaTime) {
@@ -73,6 +59,57 @@ public class Monster {
             animation = type.getWalkAnimation();
         }
         sprite.setRegion(animation.getKeyFrame(animationTime));
+    }
+
+    private void updateVelocity(List<Monster> others, Vector2 playerPosition, float deltaTime) {
+        timeSinceLastVelocityUpdate += deltaTime;
+        if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
+            updateVelocityToPlayer(playerPosition);
+            velocity.set(velocityToPlayer.cpy().add(getCollisionAvoidanceVelocity(others)));
+            scaleVelocity();
+            timeSinceLastVelocityUpdate = 0f;
+        }
+    }
+
+    private void scaleVelocity() {
+        if (velocity.len() > 1) {
+            velocity.nor();
+        }
+        velocity.scl(type.getSpeed());
+    }
+
+    private void updateVelocityToPlayer(Vector2 playerPosition) {
+        Vector2 direction = new Vector2(
+                playerPosition.x - position.x - sprite.getWidth() / 2f,
+                playerPosition.y - position.y - sprite.getHeight() / 2f
+        );
+        velocityToPlayer.set(direction.nor().scl(PLAYER_ATTRACTION_FACTOR));
+    }
+
+    private Vector2 getCollisionAvoidanceVelocity(List<Monster> others) {
+        Vector2 avoidanceVelocity = new Vector2();
+        for (Monster other : others) {
+            float distance = position.dst(other.position);
+            if (distance < sprite.getWidth() && distance != 0) {
+                Vector2 distanceVector = position.cpy().sub(other.position);
+                avoidanceVelocity.mulAdd(distanceVector, 1 / distance);
+            }
+        }
+        return avoidanceVelocity.nor();
+    }
+
+    private void teleportIfShould(Vector2 playerPosition) {
+        if (type.isBoss() && hasExceededMaxDistance(playerPosition)) {
+            Vector2 distanceVector = playerPosition.cpy().sub(position);
+            position.mulAdd(distanceVector, 2);
+            timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
+        }
+    }
+
+    public void draw(SpriteBatch batch) {
+        sprite.setPosition(position.x, position.y);
+        sprite.setFlip(velocityToPlayer.x < 0, false);
+        sprite.draw(batch);
     }
 
     private void replaceAnimation(Animation<TextureRegion> type) {
@@ -114,6 +151,10 @@ public class Monster {
         position.mulAdd(velocity, -0.8f);
     }
 
+    public boolean shouldBeRemoved(Vector2 playerPosition) {
+        return isDeathAnimationFinished() || (hasExceededMaxDistance(playerPosition) && !type.isBoss());
+    }
+
     public boolean isDead() {
         return health <= 0;
     }
@@ -130,7 +171,10 @@ public class Monster {
         if (!isDead()) {
             return null;
         }
-        return type.dropItem(position);
+        return type.dropItem(new Vector2(
+                position.x + sprite.getWidth() / 4,
+                position.y + sprite.getHeight() / 4)
+        );
     }
 
     public Rectangle getBoundingRectangle() {

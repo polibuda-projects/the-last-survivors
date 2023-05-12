@@ -31,6 +31,7 @@ public class Assets {
         assetManager.load("monsters/gobbler.atlas", TextureAtlas.class);
         assetManager.load("monsters/scarecrow.atlas", TextureAtlas.class);
         assetManager.load("monsters/naga.atlas", TextureAtlas.class);
+        assetManager.load("monsters/grim-reaper.atlas", TextureAtlas.class);
         assetManager.load("items/experience.atlas", TextureAtlas.class);
 
         assetManager.load("music/BackgroundTheLastSurvivors.mp3", Music.class);

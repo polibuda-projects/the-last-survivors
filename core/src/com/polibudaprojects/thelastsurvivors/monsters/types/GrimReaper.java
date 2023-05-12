@@ -4,24 +4,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.items.XP;
 
-public class Scarecrow extends Type {
+public class GrimReaper extends Type {
 
-    public Scarecrow() {
+    public GrimReaper() {
         super(
-                "monsters/scarecrow.atlas",
-                "Scarecrow",
-                90f,
+                "monsters/grim-reaper.atlas",
+                "Grim Reaper",
+                250f,
                 50f,
-                15,
-                75
+                100,
+                2000,
+                true
         );
     }
 
     @Override
     public Item dropItem(Vector2 position) {
-        if (Math.random() > 0.5) {
-            return XP.getRareXP(position);
-        }
-        return XP.getCommonXP(position);
+        return XP.getEpicXP(position);
     }
 }

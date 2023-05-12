@@ -1,5 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
@@ -11,8 +12,10 @@ import java.util.Random;
 
 public abstract class Phase {
 
-    public static final int SPAWN_RADIUS_MIN = 550;
-    public static final int SPAWN_RADIUS_MAX = 700;
+    public static final int SPAWN_RADIUS_A_MIN = Gdx.graphics.getWidth() / 2 + 80;
+    public static final int SPAWN_RADIUS_B_MIN = Gdx.graphics.getHeight() / 2 + 80;
+    public static final int SPAWN_RADIUS_A_MAX = SPAWN_RADIUS_A_MIN + 150;
+    public static final int SPAWN_RADIUS_B_MAX = SPAWN_RADIUS_B_MIN + 150;
     protected final Random rand = new Random();
     protected final float duration;
     protected final long spawnInterval;
@@ -62,10 +65,11 @@ public abstract class Phase {
         double randomAngle = rand.nextDouble();
         for (int i = 0; i < monstersCount; i++) {
             double angle = (randomAngle + i) * angleInterval;
-            int radius = SPAWN_RADIUS_MIN + rand.nextInt(SPAWN_RADIUS_MAX - SPAWN_RADIUS_MIN);
+            int radiusA = SPAWN_RADIUS_A_MIN + rand.nextInt(SPAWN_RADIUS_A_MAX - SPAWN_RADIUS_A_MIN);
+            int radiusB = SPAWN_RADIUS_B_MIN + rand.nextInt(SPAWN_RADIUS_B_MAX - SPAWN_RADIUS_B_MIN);
             spawnPositions[i] = new Vector2(
-                    (float) (playerPosition.x + radius * Math.cos(angle)),
-                    (float) (playerPosition.y + radius * Math.sin(angle))
+                    (float) (playerPosition.x + radiusA * Math.cos(angle)),
+                    (float) (playerPosition.y + radiusB * Math.sin(angle))
             );
         }
         return spawnPositions;
