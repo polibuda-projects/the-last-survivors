@@ -16,23 +16,29 @@ public abstract class Type {
     private final int damage;
     private final int maxHealth;
     private final long attackInterval;
+    private final boolean boss;
     private final Animation<TextureRegion> walkAnimation;
     private final Animation<TextureRegion> attackAnimation;
     private final Animation<TextureRegion> hitAnimation;
     private final Animation<TextureRegion> dieAnimation;
 
-    public Type(String textureAtlasPath, String name, float spriteSize, float speed, int damage, int maxHealth) {
+    public Type(String textureAtlasPath, String name, float spriteSize, float speed, int damage, int maxHealth, boolean boss) {
         TextureAtlas textureAtlas = Assets.get(textureAtlasPath, TextureAtlas.class);
         this.name = name;
         this.spriteSize = spriteSize;
         this.speed = speed;
         this.damage = damage;
         this.maxHealth = maxHealth;
+        this.boss = boss;
         this.attackInterval = 800L;
         this.walkAnimation = new Animation<>(0.066f, textureAtlas.findRegions("walk"), Animation.PlayMode.LOOP);
         this.attackAnimation = new Animation<>(0.066f, textureAtlas.findRegions("attack"), Animation.PlayMode.NORMAL);
         this.hitAnimation = new Animation<>(0.066f, textureAtlas.findRegions("hit"), Animation.PlayMode.NORMAL);
         this.dieAnimation = new Animation<>(0.066f, textureAtlas.findRegions("die"), Animation.PlayMode.NORMAL);
+    }
+
+    public Type(String textureAtlasPath, String name, float spriteSize, float speed, int damage, int maxHealth) {
+        this(textureAtlasPath, name, spriteSize, speed, damage, maxHealth, false);
     }
 
     public abstract Item dropItem(Vector2 position);
@@ -57,6 +63,10 @@ public abstract class Type {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public boolean isBoss() {
+        return boss;
     }
 
     public long getAttackInterval() {

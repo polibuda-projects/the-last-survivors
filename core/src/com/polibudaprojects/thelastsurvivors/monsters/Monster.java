@@ -47,11 +47,8 @@ public class Monster {
     public void update(List<Monster> others, Vector2 playerPosition, float deltaTime) {
         updateAnimation(deltaTime);
         if (!isDead()) {
-            timeSinceLastVelocityUpdate += deltaTime;
-            if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
-                updateVelocity(others, playerPosition);
-                timeSinceLastVelocityUpdate = 0f;
-            }
+            teleportIfShould(playerPosition); // Boss monster should teleport if is too far away
+            updateVelocity(others, playerPosition, deltaTime);
             position.mulAdd(velocity, deltaTime);
         }
     }
@@ -64,10 +61,14 @@ public class Monster {
         sprite.setRegion(animation.getKeyFrame(animationTime));
     }
 
-    private void updateVelocity(List<Monster> others, Vector2 playerPosition) {
-        updateVelocityToPlayer(playerPosition);
-        velocity.set(velocityToPlayer.cpy().add(getCollisionAvoidanceVelocity(others)));
-        scaleVelocity();
+    private void updateVelocity(List<Monster> others, Vector2 playerPosition, float deltaTime) {
+        timeSinceLastVelocityUpdate += deltaTime;
+        if (timeSinceLastVelocityUpdate >= VELOCITY_UPDATE_INTERVAL) {
+            updateVelocityToPlayer(playerPosition);
+            velocity.set(velocityToPlayer.cpy().add(getCollisionAvoidanceVelocity(others)));
+            scaleVelocity();
+            timeSinceLastVelocityUpdate = 0f;
+        }
     }
 
     private void scaleVelocity() {
@@ -95,6 +96,14 @@ public class Monster {
             }
         }
         return avoidanceVelocity.nor();
+    }
+
+    private void teleportIfShould(Vector2 playerPosition) {
+        if (type.isBoss() && hasExceededMaxDistance(playerPosition)) {
+            Vector2 distanceVector = playerPosition.cpy().sub(position);
+            position.mulAdd(distanceVector, 2);
+            timeSinceLastVelocityUpdate = VELOCITY_UPDATE_INTERVAL;
+        }
     }
 
     public void draw(SpriteBatch batch) {
@@ -140,6 +149,10 @@ public class Monster {
 
     private void applyKnockback() {
         position.mulAdd(velocity, -0.8f);
+    }
+
+    public boolean shouldBeRemoved(Vector2 playerPosition) {
+        return isDeathAnimationFinished() || (hasExceededMaxDistance(playerPosition) && !type.isBoss());
     }
 
     public boolean isDead() {
