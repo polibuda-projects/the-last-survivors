@@ -20,6 +20,6 @@ public class GrimReaper extends Type {
 
     @Override
     public Item dropItem(Vector2 position) {
-        return XP.getRareXP(position);
+        return XP.getEpicXP(position);
     }
 }

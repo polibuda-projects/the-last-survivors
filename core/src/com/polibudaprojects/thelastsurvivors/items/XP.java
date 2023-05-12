@@ -33,6 +33,15 @@ public class XP extends Item {
         return new XP(sprite, animation, position, 30);
     }
 
+    // TODO This is only dropped by Grim Reaper and should be replaced with TreasureChest Item to make it interesting
+    public static Item getEpicXP(Vector2 position) {
+        TextureAtlas textureAtlas = Assets.get("items/experience.atlas", TextureAtlas.class);
+        Animation<TextureRegion> animation = new Animation<>(0.08f, textureAtlas.findRegions("epic"), Animation.PlayMode.LOOP);
+        Sprite sprite = new Sprite(animation.getKeyFrame(0));
+        sprite.setSize(40f, 54f);
+        return new XP(sprite, animation, position, 100);
+    }
+
     @Override
     public void takeItem(Player player) {
         player.setScore(player.getScore() + value);

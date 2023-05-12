@@ -171,7 +171,10 @@ public class Monster {
         if (!isDead()) {
             return null;
         }
-        return type.dropItem(position);
+        return type.dropItem(new Vector2(
+                position.x + sprite.getWidth() / 4,
+                position.y + sprite.getHeight() / 4)
+        );
     }
 
     public Rectangle getBoundingRectangle() {
