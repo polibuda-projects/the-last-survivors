@@ -56,7 +56,7 @@ public class MonsterManager {
                 continue;
             }
 
-            monster.update(deltaTime, playerCenterPosition);
+            monster.update(monsters, playerCenterPosition, deltaTime);
 
             if (monster.canAttack(playerCenterPosition)) {
                 monster.attack(player);
