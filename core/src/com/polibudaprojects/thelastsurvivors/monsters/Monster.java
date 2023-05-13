@@ -108,7 +108,7 @@ public class Monster {
 
     public void draw(SpriteBatch batch) {
         sprite.setPosition(position.x, position.y);
-        sprite.setFlip(velocityToPlayer.x < 0, false);
+        sprite.setFlip(isFlipX(), false);
         sprite.draw(batch);
     }
 
@@ -151,6 +151,10 @@ public class Monster {
         position.mulAdd(velocity, -0.8f);
     }
 
+    private boolean isFlipX() {
+        return velocityToPlayer.x < 0;
+    }
+
     public boolean shouldBeRemoved(Vector2 playerPosition) {
         return isDeathAnimationFinished() || (hasExceededMaxDistance(playerPosition) && !type.isBoss());
     }
@@ -177,7 +181,7 @@ public class Monster {
         );
     }
 
-    public Rectangle getBoundingRectangle() {
-        return sprite.getBoundingRectangle();
+    public Rectangle getHitbox() {
+        return type.getHitbox(position, isFlipX());
     }
 }

@@ -1,5 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters.types;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.items.XP;
@@ -10,6 +11,7 @@ public class Naga extends Type {
         super(
                 "monsters/naga.atlas",
                 "Naga",
+                new Rectangle(40, 0, 70, 100),
                 110f,
                 45f,
                 30,

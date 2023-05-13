@@ -47,9 +47,8 @@ public class Sword implements Weapon {
         this.animation = new Animation<>(0.15f, frames, Animation.PlayMode.NORMAL);
 
         lastAttackTime = 0L;
-        Vector2 playerCenterPosition = player.getCenterPosition();
-        hitboxRight = new Rectangle(playerCenterPosition.x, playerCenterPosition.y, 30, 20);
-        hitboxLeft = new Rectangle(playerCenterPosition.x - 30, playerCenterPosition.y, 30, 20);
+        hitboxRight = new Rectangle(0, 0, 60, 50);
+        hitboxLeft = new Rectangle(0, 0, 60, 50);
         animationCount = 0;
     }
 
@@ -77,15 +76,15 @@ public class Sword implements Weapon {
     public Rectangle getHitbox() {
         Vector2 playerCenterPosition = player.getCenterPosition();
         if (player.isFacingLeft()) {
-            return hitboxLeft.setPosition(playerCenterPosition.x - 30, playerCenterPosition.y);
+            return hitboxLeft.setPosition(playerCenterPosition.x - 50, playerCenterPosition.y - 10);
         } else {
-            return hitboxRight.setPosition(playerCenterPosition);
+            return hitboxRight.setPosition(playerCenterPosition.x - 10, playerCenterPosition.y - 10);
         }
     }
 
     @Override
     public boolean canAttack(Monster monster) {
-        if (Intersector.overlaps(monster.getBoundingRectangle(), this.getHitbox())) {
+        if (Intersector.overlaps(monster.getHitbox(), this.getHitbox())) {
             if (animationTime > 1.2f) {
                 return false;
             } else {
