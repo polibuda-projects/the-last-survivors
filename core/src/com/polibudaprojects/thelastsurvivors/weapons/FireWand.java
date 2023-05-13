@@ -64,7 +64,7 @@ public class FireWand implements Weapon {
     @Override
     public boolean canAttack(Monster monster) {
         for (Bullet bullet : bullets) {
-            if (Intersector.overlaps(monster.getBoundingRectangle(), bullet.getHitbox())) {
+            if (Intersector.overlaps(monster.getHitbox(), bullet.getHitbox())) {
                 bullets.remove(bullet);
                 return true;
             }

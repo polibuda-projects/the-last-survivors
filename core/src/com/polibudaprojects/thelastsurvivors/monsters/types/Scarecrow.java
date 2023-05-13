@@ -1,5 +1,6 @@
 package com.polibudaprojects.thelastsurvivors.monsters.types;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.items.XP;
@@ -10,6 +11,7 @@ public class Scarecrow extends Type {
         super(
                 "monsters/scarecrow.atlas",
                 "Scarecrow",
+                new Rectangle(40, 0, 50, 65),
                 90f,
                 50f,
                 15,
