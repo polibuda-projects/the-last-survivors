@@ -26,12 +26,6 @@ public class Assets {
         assetManager.load("startAgain.png", Texture.class);
         assetManager.load("fireBullet.png", Texture.class);
         assetManager.load("sword_icon.png", Texture.class);
-
-        assetManager.load("monsters/maw-flower.atlas", TextureAtlas.class);
-        assetManager.load("monsters/gobbler.atlas", TextureAtlas.class);
-        assetManager.load("monsters/scarecrow.atlas", TextureAtlas.class);
-        assetManager.load("monsters/naga.atlas", TextureAtlas.class);
-        assetManager.load("monsters/grim-reaper.atlas", TextureAtlas.class);
         assetManager.load("items/experience.atlas", TextureAtlas.class);
 
         assetManager.load("music/BackgroundTheLastSurvivors.mp3", Music.class);
@@ -52,6 +46,15 @@ public class Assets {
 
     public static <T> T get(String fileName, Class<T> type) {
         return assetManager.get(fileName, type);
+    }
+
+    public static <T> T loadAndGet(String fileName, Class<T> type) {
+        assetManager.finishLoading();
+        if (!assetManager.contains(fileName, type)) {
+            assetManager.load(fileName, type);
+            assetManager.finishLoading();
+        }
+        return get(fileName, type);
     }
 
     public static void dispose() {

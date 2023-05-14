@@ -25,7 +25,7 @@ public abstract class Type {
     private final Animation<TextureRegion> dieAnimation;
 
     public Type(String textureAtlasPath, String name, Rectangle hitbox, float spriteSize, float speed, int damage, int maxHealth, boolean boss) {
-        TextureAtlas textureAtlas = Assets.get(textureAtlasPath, TextureAtlas.class);
+        TextureAtlas textureAtlas = Assets.loadAndGet(textureAtlasPath, TextureAtlas.class);
         this.name = name;
         this.hitbox = hitbox;
         this.spriteSize = spriteSize;
