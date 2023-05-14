@@ -8,9 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Level implements HUD {
     private final Player player;
     private final Vector2 position = new Vector2();
