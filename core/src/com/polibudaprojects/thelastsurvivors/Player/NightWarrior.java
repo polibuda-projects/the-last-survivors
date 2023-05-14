@@ -6,14 +6,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.polibudaprojects.thelastsurvivors.weapons.Sword;
 
-public class FireWarrior extends Player {
+public class NightWarrior extends Player {
 
-    public FireWarrior() {
+    public NightWarrior() {
         super(
-                "players/FireWarrior.png",
-                100,
-                20,
-                200f);
+                "players/NightWarrior.png",
+                140,
+                40,
+                180f);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class FireWarrior extends Player {
     @Override
     protected Animation<TextureRegion> loadRunningAnimation(Texture texture) {
         Array<TextureRegion> frames = new Array<>();
-        for (int i = 0; i < 8; i++) {
-            frames.add(new TextureRegion(texture, i * 144, 80, 144, 80));
+        for (int i = 0; i < 6; i++) {
+            frames.add(new TextureRegion(texture, i * 80, 80, 80, 80));
         }
         return new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
     }
@@ -33,8 +33,8 @@ public class FireWarrior extends Player {
     @Override
     protected Animation<TextureRegion> loadStandingAnimation(Texture texture) {
         Array<TextureRegion> frames = new Array<>();
-        for (int i = 0; i < 8; i++) {
-            frames.add(new TextureRegion(texture, i * 144, 0, 144, 80));
+        for (int i = 0; i < 9; i++) {
+            frames.add(new TextureRegion(texture, i * 80, 0, 80, 80));
         }
         return new Animation<>(0.15f, frames, Animation.PlayMode.LOOP);
     }
@@ -42,8 +42,8 @@ public class FireWarrior extends Player {
     @Override
     protected Animation<TextureRegion> loadDeathAnimation(Texture texture) {
         Array<TextureRegion> frames = new Array<>();
-        for (int i = 0; i < 12; i++) {
-            frames.add(new TextureRegion(texture, i * 144, 1920, 144, 80));
+        for (int i = 0; i < 23; i++) {
+            frames.add(new TextureRegion(texture, i * 80, 320, 80, 80));
         }
         return new Animation<>(0.2f, frames, Animation.PlayMode.NORMAL);
     }
@@ -51,8 +51,8 @@ public class FireWarrior extends Player {
     @Override
     protected Animation<TextureRegion> loadHpRegenAnimation(Texture texture) {
         Array<TextureRegion> frames = new Array<>();
-        for (int i = 0; i < 6; i++) {
-            frames.add(new TextureRegion(texture, i * 144, 1600, 144, 80));
+        for (int i = 0; i < 5; i++) {
+            frames.add(new TextureRegion(texture, i * 80, 160, 80, 80));
         }
         return new Animation<>(0.15f, frames, Animation.PlayMode.NORMAL);
     }
@@ -61,7 +61,7 @@ public class FireWarrior extends Player {
     protected Animation<TextureRegion> loadHitAnimation(Texture texture) {
         Array<TextureRegion> frames = new Array<>();
         for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(texture, i * 144, 1840, 144, 80));
+            frames.add(new TextureRegion(texture, i * 80, 240, 80, 80));
         }
         return new Animation<>(0.08f, frames, Animation.PlayMode.NORMAL);
     }

@@ -16,9 +16,11 @@ public class Assets {
     public static void load() {
         assetManager.setLoader(TiledMap.class, new TmxMapLoader());
 
-        assetManager.load("player.png", Texture.class);
-        assetManager.load("playerHub.png", Texture.class);
-        assetManager.load("portrait.png", Texture.class);
+        assetManager.load("players/FireWarrior.png", Texture.class);
+        assetManager.load("players/MageWarrior.png", Texture.class);
+        assetManager.load("players/NightWarrior.png", Texture.class);
+        assetManager.load("hub/playerHub.png", Texture.class);
+        assetManager.load("hub/level.png", Texture.class);
         assetManager.load("intro.png", Texture.class);
         assetManager.load("button.png", Texture.class);
         assetManager.load("background.png", Texture.class);

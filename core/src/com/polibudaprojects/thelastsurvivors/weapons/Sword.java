@@ -32,7 +32,7 @@ public class Sword implements Weapon {
     public Sword(Player player) {
         this.player = player;
 
-        Texture img = Assets.get("player.png", Texture.class);
+        Texture img = Assets.get("players/FireWarrior.png", Texture.class);
         icon = Assets.get("sword_icon.png", Texture.class);
         TextureRegion sword = new TextureRegion(img, 0, 880, 144, 80);
         sprite = new Sprite(sword);
