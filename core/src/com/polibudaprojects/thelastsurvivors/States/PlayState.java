@@ -11,11 +11,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
-import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.Player.*;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.hud.HUD;
+import com.polibudaprojects.thelastsurvivors.hud.Level;
 import com.polibudaprojects.thelastsurvivors.hud.WeaponsList;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
@@ -30,7 +29,6 @@ public class PlayState extends State {
     private final List<HUD> hudElements = new ArrayList<>();
     private final InfiniteTiledMap infiniteTiledMap;
     private final ShapeRenderer shapeRenderer;
-    private final Texture playerPortraitPng;
     private final TextureRegion playerStats;
     private final GameTimer gameTimer;
     private final SoundFx soundFx;
@@ -46,11 +44,9 @@ public class PlayState extends State {
         infiniteTiledMap = new InfiniteTiledMap("map/game-dev.tmx", 3, 3, 0.5f); // original view = 1f
 
         //Player Stats Background
-        Texture playerStatsPng = Assets.get("playerHub.png", Texture.class);
+        Texture playerStatsPng = Assets.get("hub/playerHub.png", Texture.class);
         playerStats = new TextureRegion(playerStatsPng, 0, 0, 300, 82);
 
-        //Player Portrait
-        playerPortraitPng = Assets.get("portrait.png", Texture.class);
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
@@ -65,6 +61,7 @@ public class PlayState extends State {
         fontData.setScale(1.5f);
         gameTimer = new GameTimer(timerFont);
         hudElements.add(gameTimer);
+        hudElements.add(new Level(player));
         hudElements.add(new WeaponsList(player));
 
         soundFx = new SoundFx();
@@ -114,14 +111,12 @@ public class PlayState extends State {
     @Override
     public void render(SpriteBatch sb) {
         infiniteTiledMap.render(cam);
-
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         player.draw(sb);
         monsterManager.draw(sb);
         itemManager.draw(sb);
         sb.draw(playerStats, cam.position.x - 540, cam.position.y - 312);
-        sb.draw(playerPortraitPng, cam.position.x - 525, cam.position.y - 285);
         sb.end();
 
         //HUD

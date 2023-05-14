@@ -155,14 +155,16 @@ public abstract class Player {
                 maxHealth += 30;
                 currentHealth += 10;
                 hpRegen += 5;
+                level += 1;
+                score = 0;
+                System.out.println("Reached " + level + " Level!!!");
             }
-            level += 1;
-            score = 0;
-
+            if(level==12){
+                score = maxScore;
+            }
             if (level == 2) {
                 weapons.add(new FireWand(this));
             }
-            System.out.println("Reached " + level + " Level!!!");
         }
     }
 
@@ -267,6 +269,7 @@ public abstract class Player {
     public int getMaxScore() {
         return maxScore;
     }
+
 
     public int getLevel() {
         return level;
