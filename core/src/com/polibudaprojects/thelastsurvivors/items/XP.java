@@ -44,7 +44,7 @@ public class XP extends Item {
 
     @Override
     public void takeItem(Player player) {
-        if(player.getLevel()<12){
+        if(player.getLevel()<99){
             player.setScore(player.getScore() + value);
         }
     }
