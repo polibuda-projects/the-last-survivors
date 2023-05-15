@@ -8,6 +8,7 @@ As the clock ticks, your wits and reflexes will be pushed to the limit. Arm your
 Dive into the world of "The Last Survivors" and prove you have what it takes to defend our species from the brink of extinction. Will you emerge victorious, or will the monstrous horde claim another victim? Time is of the essence - the fight for survival begins now!
 
 <img src="Resources/dashboard.png">
+<img src="Resources/select.png">
 <img src="Resources/gameplay1.png">
 <img src="Resources/gameplay2.png">
 
