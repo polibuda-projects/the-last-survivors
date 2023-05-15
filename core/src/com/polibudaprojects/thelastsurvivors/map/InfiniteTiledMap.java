@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Assets;
 
 public class InfiniteTiledMap {
@@ -40,11 +41,11 @@ public class InfiniteTiledMap {
         return maps[0][0];
     }
 
-    public void update(OrthographicCamera cam, float playerX, float playerY) {
-        int centerX = (int) (playerX / mapWidth) % gridWidth;
-        int centerY = (int) (playerY / mapHeight) % gridHeight;
+    public void update(OrthographicCamera cam, Vector2 playerCenterPosition) {
+        int centerX = (int) (playerCenterPosition.x / mapWidth) % gridWidth;
+        int centerY = (int) (playerCenterPosition.y / mapHeight) % gridHeight;
 
-        cam.position.set(centerX * mapWidth + playerX % mapWidth, centerY * mapHeight + playerY % mapHeight, 0);
+        cam.position.set(centerX * mapWidth + playerCenterPosition.x % mapWidth, centerY * mapHeight + playerCenterPosition.y % mapHeight, 0);
         cam.update();
     }
 

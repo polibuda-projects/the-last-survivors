@@ -15,11 +15,11 @@ public class MageWarrior extends Player {
                 30,
                 220f,
                 225f,
-                125f,
+                180f,
                 5500,
                 5500,
-                120,
-                30);
+                110,
+                60);
     }
 
     @Override

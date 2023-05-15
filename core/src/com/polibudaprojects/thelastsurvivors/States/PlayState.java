@@ -85,7 +85,7 @@ public class PlayState extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        infiniteTiledMap.update(cam, player.getPosition().x + player.getCamCorrectionX(), player.getPosition().y + player.getCamCorrectionY());
+        infiniteTiledMap.update(cam, player.getCenterPosition());
         player.update(dt);
         monsterManager.update(dt);
         itemManager.update(dt);

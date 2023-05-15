@@ -14,12 +14,12 @@ public class NightWarrior extends Player {
                 140,
                 40,
                 180f,
-                180f,
-                100f,
+                160f,
+                160f,
                 5500,
                 5500,
-                110,
-                40);
+                80,
+                65);
     }
 
     @Override

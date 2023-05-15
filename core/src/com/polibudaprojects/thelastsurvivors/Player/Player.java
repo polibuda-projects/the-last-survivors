@@ -17,13 +17,11 @@ import java.util.ArrayList;
 public abstract class Player {
     public static final int MAX_WEAPONS_COUNT = 3;
     public static final int REGEN_INTERVAL = 40;
+    protected final ArrayList<Weapon> weapons = new ArrayList<>(MAX_WEAPONS_COUNT);
     private final int startX;
     private final int startY;
-
-    private final int camCorrectionX;
-    private final int camCorrectionY;
-
-    protected final ArrayList<Weapon> weapons = new ArrayList<>(MAX_WEAPONS_COUNT);
+    private final int centerOffsetX;
+    private final int centerOffsetY;
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
     private final Vector2 lastVelocity = Vector2.X;
@@ -47,17 +45,17 @@ public abstract class Player {
     private int currentHealth;
     private int score;
 
-    public Player(String textureFileName, int initialMaxHealth, int initialHpRegen, float initialSpeed, float spriteWidth, float spriteHeight, int startX, int startY, int camCorrectionX, int camCorrectionY) {
-        this.startX = startX;
-        this.startY = startY;
-        this.camCorrectionX = camCorrectionX;
-        this.camCorrectionY = camCorrectionY;
-
+    public Player(String textureFileName, int initialMaxHealth, int initialHpRegen, float initialSpeed, float spriteWidth, float spriteHeight, int startX, int startY, int centerOffsetX, int centerOffsetY) {
         Texture texture = Assets.get(textureFileName, Texture.class);
 
         this.initialMaxHealth = initialMaxHealth;
         this.initialHpRegen = initialHpRegen;
         this.speed = initialSpeed;
+
+        this.startX = startX;
+        this.startY = startY;
+        this.centerOffsetX = centerOffsetX;
+        this.centerOffsetY = centerOffsetY;
 
         playerRunning = loadRunningAnimation(texture);
         playerStanding = loadStandingAnimation(texture);
@@ -234,7 +232,7 @@ public abstract class Player {
     }
 
     public Vector2 getCenterPosition() {
-        return new Vector2(position.x + sprite.getWidth() * 0.5f, position.y + sprite.getHeight() * 0.5f);
+        return new Vector2(position.x + centerOffsetX, position.y + centerOffsetY);
     }
 
     public Vector2 getLastVelocity() {
@@ -277,16 +275,7 @@ public abstract class Player {
         return maxScore;
     }
 
-
     public int getLevel() {
         return level;
-    }
-
-    public int getCamCorrectionX() {
-        return camCorrectionX;
-    }
-
-    public int getCamCorrectionY() {
-        return camCorrectionY;
     }
 }
