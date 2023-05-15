@@ -13,7 +13,13 @@ public class MageWarrior extends Player {
                 "players/MageWarrior.png",
                 70,
                 30,
-                220f);
+                220f,
+                225f,
+                125f,
+                5500,
+                5500,
+                120,
+                30);
     }
 
     @Override

@@ -19,6 +19,9 @@ public class Assets {
         assetManager.load("players/FireWarrior.png", Texture.class);
         assetManager.load("players/MageWarrior.png", Texture.class);
         assetManager.load("players/NightWarrior.png", Texture.class);
+        assetManager.load("players/FireWarriorIcon.png", Texture.class);
+        assetManager.load("players/MageWarriorIcon.png", Texture.class);
+        assetManager.load("players/NightWarriorIcon.png", Texture.class);
         assetManager.load("hub/playerHub.png", Texture.class);
         assetManager.load("hub/level.png", Texture.class);
         assetManager.load("intro.png", Texture.class);

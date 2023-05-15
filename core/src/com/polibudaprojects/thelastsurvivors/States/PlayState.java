@@ -37,7 +37,7 @@ public class PlayState extends State {
     private final ItemManager itemManager;
     private final Player player;
 
-    public PlayState(StatesManager gsm) {
+    public PlayState(StatesManager gsm, Player player) {
         super(gsm);
 
         //Map
@@ -50,7 +50,7 @@ public class PlayState extends State {
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
-        player = new FireWarrior();
+        this.player = player;
         itemManager = new ItemManager(player);
         monsterManager = new MonsterManager(player, itemManager);
 
@@ -88,7 +88,7 @@ public class PlayState extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        infiniteTiledMap.update(cam, player.getPosition().x + 90, player.getPosition().y + 50);
+        infiniteTiledMap.update(cam, player.getPosition().x + player.getCamCorrectionX(), player.getPosition().y + player.getCamCorrectionY());
         player.update(dt);
         monsterManager.update(dt);
         itemManager.update(dt);
