@@ -56,10 +56,7 @@ public class PlayState extends State {
 
         backgroundMusic = new BackgroundMusic();
 
-        BitmapFont timerFont = new BitmapFont();
-        BitmapFont.BitmapFontData fontData = timerFont.getData();
-        fontData.setScale(1.5f);
-        gameTimer = new GameTimer(timerFont);
+        gameTimer = new GameTimer();
         hudElements.add(gameTimer);
         hudElements.add(new Level(player));
         hudElements.add(new WeaponsList(player));

@@ -10,17 +10,17 @@ import com.polibudaprojects.thelastsurvivors.States.PlayState;
 
 public class GameTimer implements HUD {
 
-    private final BitmapFont font;
+    private final BitmapFont font = new BitmapFont();
     private final GlyphLayout layout;
     private final Vector2 position;
     private final Statistics statistics = Statistics.getInstance();
     private float timeRemaining;
 
-    public GameTimer(BitmapFont font) {
+    public GameTimer() {
         this.timeRemaining = PlayState.TIME_LIMIT;
-        this.font = font;
         this.layout = new GlyphLayout();
         this.position = new Vector2(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() - 10f);
+        font.getData().setScale(1.5f);
     }
 
     public void reset() {
