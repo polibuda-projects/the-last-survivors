@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -102,6 +101,7 @@ public abstract class Player {
     }
 
     protected abstract void addDefaultWeapon();
+    protected abstract void addAdditionalWeapon();
 
     protected abstract Animation<TextureRegion> loadRunningAnimation(Texture texture);
 
@@ -160,15 +160,14 @@ public abstract class Player {
                 maxHealth += 30;
                 currentHealth += 10;
                 hpRegen += 5;
+            }
+            if (level < 99) {
                 level += 1;
-                score = 0;
+                score -=maxScore;
                 System.out.println("Reached " + level + " Level!!!");
             }
-            if (level == 12) {
-                score = maxScore;
-            }
             if (level == 2) {
-                weapons.add(new FireWand(this));
+                addAdditionalWeapon();
             }
         }
     }
