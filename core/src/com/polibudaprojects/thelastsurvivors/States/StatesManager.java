@@ -1,6 +1,7 @@
 package com.polibudaprojects.thelastsurvivors.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 public class StatesManager {
 
@@ -9,6 +10,8 @@ public class StatesManager {
     private State pause;
     private State end;
     private State state;
+
+    public Player player;
 
     public StatesManager() {
         state = new LoadingState(this);
@@ -40,7 +43,7 @@ public class StatesManager {
 
     public State getPlay() {
         if (play == null) {
-            play = new PlayState(this);
+            play = new PlayState(this, player);
         }
         return play;
     }
@@ -55,6 +58,13 @@ public class StatesManager {
     public State getEnd() {
         if (end == null) {
             end = new EndState(this);
+        }
+        return end;
+    }
+
+    public State getSelect() {
+        if (end == null) {
+            end = new ChampionSelectState(this);
         }
         return end;
     }

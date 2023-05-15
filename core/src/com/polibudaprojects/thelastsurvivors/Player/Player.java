@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 public abstract class Player {
     public static final int MAX_WEAPONS_COUNT = 3;
-    public static final float SPRITE_WIDTH = 180f;
-    public static final float SPRITE_HEIGHT = 100f;
     public static final int REGEN_INTERVAL = 40;
-    private static final int START_X = 5500;
-    private static final int START_Y = 5500;
+    private final int startX;
+    private final int startY;
+
+    private final int camCorrectionX;
+    private final int camCorrectionY;
+
     protected final ArrayList<Weapon> weapons = new ArrayList<>(MAX_WEAPONS_COUNT);
     private final Vector2 position = new Vector2();
     private final Vector2 velocity = new Vector2();
@@ -45,7 +47,12 @@ public abstract class Player {
     private int currentHealth;
     private int score;
 
-    public Player(String textureFileName, int initialMaxHealth, int initialHpRegen, float initialSpeed) {
+    public Player(String textureFileName, int initialMaxHealth, int initialHpRegen, float initialSpeed, float spriteWidth, float spriteHeight, int startX, int startY, int camCorrectionX, int camCorrectionY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.camCorrectionX = camCorrectionX;
+        this.camCorrectionY = camCorrectionY;
+
         Texture texture = Assets.get(textureFileName, Texture.class);
 
         this.initialMaxHealth = initialMaxHealth;
@@ -58,7 +65,7 @@ public abstract class Player {
         playerHpRegen = loadHpRegenAnimation(texture);
         playerHit = loadHitAnimation(texture);
         sprite = new Sprite(playerStanding.getKeyFrame(0));
-        sprite.setSize(SPRITE_WIDTH, SPRITE_HEIGHT);
+        sprite.setSize(spriteWidth, spriteHeight);
 
         reset();
     }
@@ -80,7 +87,7 @@ public abstract class Player {
     }
 
     public void reset() {
-        position.set(START_X, START_Y);
+        position.set(startX, startY);
 
         level = 1;
         score = 0;
@@ -159,7 +166,7 @@ public abstract class Player {
                 score = 0;
                 System.out.println("Reached " + level + " Level!!!");
             }
-            if(level==12){
+            if (level == 12) {
                 score = maxScore;
             }
             if (level == 2) {
@@ -227,7 +234,7 @@ public abstract class Player {
     }
 
     public Vector2 getCenterPosition() {
-        return new Vector2(position.x + SPRITE_WIDTH * 0.5f, position.y + SPRITE_HEIGHT * 0.5f);
+        return new Vector2(position.x + sprite.getWidth() * 0.5f, position.y + sprite.getHeight() * 0.5f);
     }
 
     public Vector2 getLastVelocity() {
@@ -275,4 +282,11 @@ public abstract class Player {
         return level;
     }
 
+    public int getCamCorrectionX() {
+        return camCorrectionX;
+    }
+
+    public int getCamCorrectionY() {
+        return camCorrectionY;
+    }
 }

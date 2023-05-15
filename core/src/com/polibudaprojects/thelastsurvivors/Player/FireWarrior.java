@@ -13,7 +13,13 @@ public class FireWarrior extends Player {
                 "players/FireWarrior.png",
                 100,
                 20,
-                200f);
+                200f,
+                180f,
+                100f,
+                5500,
+                5500,
+                90,
+                50);
     }
 
     @Override

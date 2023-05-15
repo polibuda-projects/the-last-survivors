@@ -13,7 +13,13 @@ public class NightWarrior extends Player {
                 "players/NightWarrior.png",
                 140,
                 40,
-                180f);
+                180f,
+                180f,
+                100f,
+                5500,
+                5500,
+                110,
+                40);
     }
 
     @Override
