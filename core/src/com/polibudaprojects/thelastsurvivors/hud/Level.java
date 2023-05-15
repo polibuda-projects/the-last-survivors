@@ -11,104 +11,43 @@ import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 public class Level implements HUD {
     private final Statistics statistics = Statistics.getInstance();
     private final Vector2 position = new Vector2();
-    private final TextureRegion playerLevel;
-    Texture playerLevelPng = Assets.get("hub/level.png", Texture.class);
+    private final TextureRegion[] digits = new TextureRegion[10];
+    private final int width = 32;
+    private final int height = 50;
+    private int[] digitIndexes = new int[0];
 
     public Level() {
-        playerLevel = new TextureRegion(playerLevelPng, 0, 0, 40, 55);
-    }
-
-    @Override
-    public void updatePosition(float cameraX, float cameraY) {
-        if (statistics.getLevel() == 1) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.7f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 6 || statistics.getLevel() == 9) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 2) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.17f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 3) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 5) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.65f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 4) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.08f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 7) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.18f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.68f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 8) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.17f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 10) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.2f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 11) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (2.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (statistics.getLevel() == 12) {
-            position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.45f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
+        Texture playerLevelPng = Assets.get("hub/level.png", Texture.class);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                int x = (i == 0) ? 3 : 36 * i;
+                digits[i + 5 * j] = new TextureRegion(playerLevelPng, x, 50 * j, width, height);
+            }
         }
     }
 
     @Override
+    public void updatePosition(float cameraX, float cameraY) {
+        position.set(cameraX - Gdx.graphics.getWidth() / 2f + 45, cameraY - Gdx.graphics.getHeight() / 2f + 26);
+    }
+
+    @Override
     public void update(float dt) {
+        String levelString = String.valueOf(statistics.getLevel());
+        digitIndexes = new int[levelString.length()];
+        for (int i = 0; i < digitIndexes.length; i++) {
+            digitIndexes[i] = (Character.getNumericValue(levelString.charAt(i)) + 9) % 10;
+        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
-        switch (statistics.getLevel()) {
-            case 1:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 2:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 46, 18, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 3:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 82, 18, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 4:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 116, 18, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 5:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 152, 18, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 6:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 12, 70, 32, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 7:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 48, 70, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 8:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 81, 70, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 9:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 116, 70, 32, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 10:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x - 20f, position.y);
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 155, 70, 33, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 11:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x - 20f, position.y);
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
-            case 12:
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x - 22f, position.y);
-                playerLevel.setRegion(new TextureRegion(playerLevelPng, 46, 18, 28, 38));
-                batch.draw(playerLevel, position.x, position.y);
-                break;
+        float scaleFactor = 0.7f;
+        float startX = position.x - (digitIndexes.length * width * scaleFactor) / 2;
+        for (int i = 0; i < digitIndexes.length; i++) {
+            batch.draw(digits[digitIndexes[i]], startX + i * width * scaleFactor, position.y, width * scaleFactor, height * scaleFactor);
         }
         batch.end();
-
     }
 }
