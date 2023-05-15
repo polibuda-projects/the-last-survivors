@@ -6,46 +6,45 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 
 public class Level implements HUD {
-    private final Player player;
+    private final Statistics statistics = Statistics.getInstance();
     private final Vector2 position = new Vector2();
-
+    private final TextureRegion playerLevel;
     Texture playerLevelPng = Assets.get("hub/level.png", Texture.class);
 
-    private final TextureRegion playerLevel;
-    public Level(Player player) {
-        this.player = player;
+    public Level() {
         playerLevel = new TextureRegion(playerLevelPng, 0, 0, 40, 55);
     }
 
     @Override
     public void updatePosition(float cameraX, float cameraY) {
-        if (player.getLevel() == 1) {
+        if (statistics.getLevel() == 1) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.7f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 6 || player.getLevel() == 9) {
+        } else if (statistics.getLevel() == 6 || statistics.getLevel() == 9) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 2) {
+        } else if (statistics.getLevel() == 2) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.17f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 3) {
+        } else if (statistics.getLevel() == 3) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 5) {
+        } else if (statistics.getLevel() == 5) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.65f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 4) {
+        } else if (statistics.getLevel() == 4) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.08f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.6f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 7) {
+        } else if (statistics.getLevel() == 7) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.18f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.68f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 8) {
+        } else if (statistics.getLevel() == 8) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.17f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 10) {
+        } else if (statistics.getLevel() == 10) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.2f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        } else if (player.getLevel() == 11) {
+        } else if (statistics.getLevel() == 11) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (2.15f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
-        }else if (player.getLevel() == 12) {
+        } else if (statistics.getLevel() == 12) {
             position.set(cameraX - Gdx.graphics.getWidth() / 2f + (1.45f * playerLevel.getRegionWidth()), cameraY + Gdx.graphics.getHeight() / 2f - (15.62f * playerLevel.getRegionHeight()));
         }
     }
+
     @Override
     public void update(float dt) {
     }
@@ -53,7 +52,7 @@ public class Level implements HUD {
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
-        switch (player.getLevel()) {
+        switch (statistics.getLevel()) {
             case 1:
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
                 batch.draw(playerLevel, position.x, position.y);
@@ -92,19 +91,19 @@ public class Level implements HUD {
                 break;
             case 10:
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x-20f, position.y);
+                batch.draw(playerLevel, position.x - 20f, position.y);
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 155, 70, 33, 38));
                 batch.draw(playerLevel, position.x, position.y);
                 break;
             case 11:
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x-20f, position.y);
+                batch.draw(playerLevel, position.x - 20f, position.y);
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
                 batch.draw(playerLevel, position.x, position.y);
                 break;
             case 12:
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 16, 18, 20, 38));
-                batch.draw(playerLevel, position.x-22f, position.y);
+                batch.draw(playerLevel, position.x - 22f, position.y);
                 playerLevel.setRegion(new TextureRegion(playerLevelPng, 46, 18, 28, 38));
                 batch.draw(playerLevel, position.x, position.y);
                 break;

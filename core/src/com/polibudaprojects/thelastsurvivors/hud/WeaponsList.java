@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.Player.Player;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -18,14 +19,10 @@ public class WeaponsList implements HUD {
     public static final float FRAME_SIZE = 32f;
     public static final float ICON_SIZE = 30f;
     private static final float MARGIN = (FRAME_SIZE - ICON_SIZE) / 2;
+    private final Statistics statistics = Statistics.getInstance();
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final Player player;
     private final Vector2 position = new Vector2();
     private List<Texture> icons = new ArrayList<>();
-
-    public WeaponsList(Player player) {
-        this.player = player;
-    }
 
     @Override
     public void updatePosition(float cameraX, float cameraY) {
@@ -34,7 +31,7 @@ public class WeaponsList implements HUD {
 
     @Override
     public void update(float dt) {
-        icons = player.getWeapons().stream()
+        icons = statistics.getWeapons().stream()
                 .map(Weapon::getIcon)
                 .collect(Collectors.toList());
     }

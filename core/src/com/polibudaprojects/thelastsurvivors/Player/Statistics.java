@@ -1,5 +1,9 @@
 package com.polibudaprojects.thelastsurvivors.Player;
 
+import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
+
+import java.util.ArrayList;
+
 public class Statistics {
 
     private static volatile Statistics instance;
@@ -23,17 +27,40 @@ public class Statistics {
     }
 
     public void reset() {
-        player = null;
         monstersKilled = 0;
         totalDamage = 0;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return player.getWeapons();
+    }
+
+    public int getScore() {
+        return player.getScore();
+    }
+
+    public int getMaxHealth() {
+        return player.getMaxHealth();
+    }
+
+    public int getCurrentHealth() {
+        return player.getCurrentHealth();
+    }
+
+    public int getHpRegen() {
+        return player.getHpRegen();
+    }
+
+    public int getMaxScore() {
+        return player.getMaxScore();
+    }
+
+    public int getLevel() {
+        return player.getLevel();
     }
 
     public int getMonstersKilled() {

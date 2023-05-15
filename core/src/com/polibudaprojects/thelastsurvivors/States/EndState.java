@@ -8,6 +8,7 @@ import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 
 public class EndState extends State {
+    private final Statistics statistics = Statistics.getInstance();
     private final Texture background;
     private final Texture startAgain;
     private final Texture gameOver;
@@ -31,9 +32,9 @@ public class EndState extends State {
 
     @Override
     public void reset() {
-        int monstersKilled = Statistics.getInstance().getMonstersKilled();
-        int totalDamage = Statistics.getInstance().getTotalDamage();
-        float timeLeft = Statistics.getInstance().getTimeLeft();
+        int monstersKilled = statistics.getMonstersKilled();
+        int totalDamage = statistics.getTotalDamage();
+        float timeLeft = statistics.getTimeLeft();
 
         stats = "MONSTERS KILLED: " + monstersKilled + "\n" +
                 "TIME LEFT: " + (int) timeLeft / 60 + ":" + (int) timeLeft % 60 + "\n" +

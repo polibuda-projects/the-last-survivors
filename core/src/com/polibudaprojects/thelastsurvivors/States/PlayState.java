@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -58,16 +57,17 @@ public class PlayState extends State {
 
         gameTimer = new GameTimer();
         hudElements.add(gameTimer);
-        hudElements.add(new Level(player));
-        hudElements.add(new WeaponsList(player));
+        hudElements.add(new Level());
+        hudElements.add(new WeaponsList());
 
         soundFx = new SoundFx();
+
+        Statistics.getInstance().setPlayer(player);
     }
 
     @Override
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Statistics.getInstance().setPlayer(player);
             gsm.setState(gsm.getPause());
         }
     }

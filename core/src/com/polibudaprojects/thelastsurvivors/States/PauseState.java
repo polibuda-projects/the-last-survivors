@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 public class PauseState extends State {
-
+    private final Statistics statistics = Statistics.getInstance();
     private final Texture background;
     private final BitmapFont font;
     private final Texture resumeBtn;
@@ -40,13 +39,12 @@ public class PauseState extends State {
 
     @Override
     public void reset() {
-        Player player = Statistics.getInstance().getPlayer();
-        int monstersKilled = Statistics.getInstance().getMonstersKilled();
-        float timeLeft = Statistics.getInstance().getTimeLeft();
+        int monstersKilled = statistics.getMonstersKilled();
+        float timeLeft = statistics.getTimeLeft();
 
-        stats = "HEALTH: " + player.getCurrentHealth() + "/" + player.getMaxHealth() + "\n" + "HP REGEN: " + player.getHpRegen() + "\n" + "LEVEL: " + player.getLevel() + "\n" + "EXP: " + player.getScore() + "/" + player.getMaxScore() + "\n\n";
+        stats = "HEALTH: " + statistics.getCurrentHealth() + "/" + statistics.getMaxHealth() + "\n" + "HP REGEN: " + statistics.getHpRegen() + "\n" + "LEVEL: " + statistics.getLevel() + "\n" + "EXP: " + statistics.getScore() + "/" + statistics.getMaxScore() + "\n\n";
 
-        for (Weapon weapon : player.getWeapons()) {
+        for (Weapon weapon : statistics.getWeapons()) {
             stats = stats.concat(weapon.toString() + "\n\n");
         }
 
