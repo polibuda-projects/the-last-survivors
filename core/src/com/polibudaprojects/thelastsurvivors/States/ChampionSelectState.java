@@ -17,6 +17,7 @@ import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.MageWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.NightWarrior;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
 
 public class ChampionSelectState extends State {
 
@@ -27,6 +28,7 @@ public class ChampionSelectState extends State {
     private final ImageButton fireButton;
     private final ImageButton nightButton;
     private final GlyphLayout textLayout;
+    private Player selectedPlayer;
 
     public ChampionSelectState(StatesManager gsm) {
         super(gsm);
@@ -57,31 +59,32 @@ public class ChampionSelectState extends State {
     public void handleInput() {
         nightButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                gsm.player = new NightWarrior();
-                gsm.setState(gsm.getPlay());
+                selectedPlayer = new NightWarrior();
             }
         });
         fireButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                gsm.player = new FireWarrior();
-                gsm.setState(gsm.getPlay());
+                selectedPlayer = new FireWarrior();
             }
         });
         mageButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                gsm.player = new MageWarrior();
-                gsm.setState(gsm.getPlay());
+                selectedPlayer = new MageWarrior();
             }
         });
     }
 
     @Override
     public void reset() {
+        selectedPlayer = null;
     }
 
     @Override
     public void update(float dt) {
         handleInput();
+        if (selectedPlayer != null) {
+            gsm.setState(gsm.getPlay(selectedPlayer));
+        }
     }
 
     @Override

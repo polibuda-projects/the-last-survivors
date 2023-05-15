@@ -11,7 +11,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
 import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
-import com.polibudaprojects.thelastsurvivors.Player.*;
+import com.polibudaprojects.thelastsurvivors.Player.Player;
+import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.hud.HUD;
 import com.polibudaprojects.thelastsurvivors.hud.Level;
@@ -46,7 +47,6 @@ public class PlayState extends State {
         //Player Stats Background
         Texture playerStatsPng = Assets.get("hub/playerHub.png", Texture.class);
         playerStats = new TextureRegion(playerStatsPng, 0, 0, 300, 82);
-
 
         //Used to generate HP Bar and Xp Bar
         shapeRenderer = new ShapeRenderer();
@@ -133,5 +133,9 @@ public class PlayState extends State {
         shapeRenderer.setColor(Color.SKY);
         shapeRenderer.rect(82, 34, (195f * player.getScore()) / player.getMaxScore(), 10);
         shapeRenderer.end();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

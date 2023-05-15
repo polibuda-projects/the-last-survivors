@@ -6,24 +6,25 @@ import com.polibudaprojects.thelastsurvivors.Player.Player;
 public class StatesManager {
 
     private State start;
+    private State select;
     private State play;
     private State pause;
     private State end;
     private State state;
-
-    public Player player;
+    private State previousState;
 
     public StatesManager() {
         state = new LoadingState(this);
     }
 
     public void setState(State state) {
+        previousState = this.state;
         state.reset();
         this.state = state;
     }
 
-    public void setStateNoReset(State state) {
-        this.state = state;
+    public void returnToPreviousState() {
+        this.state = previousState;
     }
 
     public void update(float dt) {
@@ -41,8 +42,8 @@ public class StatesManager {
         return start;
     }
 
-    public State getPlay() {
-        if (play == null) {
+    public State getPlay(Player player) {
+        if (play == null || ((PlayState) play).getPlayer() != player) {
             play = new PlayState(this, player);
         }
         return play;
@@ -63,9 +64,9 @@ public class StatesManager {
     }
 
     public State getSelect() {
-        if (end == null) {
-            end = new ChampionSelectState(this);
+        if (select == null) {
+            select = new ChampionSelectState(this);
         }
-        return end;
+        return select;
     }
 }

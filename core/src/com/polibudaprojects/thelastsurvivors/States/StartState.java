@@ -8,6 +8,7 @@ import com.polibudaprojects.thelastsurvivors.Assets;
 public class StartState extends State {
     private final Texture background;
     private final Texture playBtn;
+    private boolean justTouched;
 
     public StartState(StatesManager gsm) {
         super(gsm);
@@ -17,7 +18,11 @@ public class StartState extends State {
 
     @Override
     public void handleInput() {
+        // TODO instead use button with ClickListener
         if (Gdx.input.justTouched()) {
+            justTouched = true;
+        } else if (!Gdx.input.isTouched() && justTouched) {
+            justTouched = false;
             gsm.setState(gsm.getSelect());
         }
     }

@@ -34,7 +34,7 @@ public class PauseState extends State {
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
                 Gdx.input.justTouched() && resumeBtnRectangle.contains(Gdx.input.getX(), Gdx.input.getY())) {
-            gsm.setStateNoReset(gsm.getPlay());
+            gsm.returnToPreviousState();
         }
     }
 
