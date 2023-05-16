@@ -9,18 +9,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 
 public class Button extends Actor {
     private static final int PADDING = 50;
     private final Color hoverColor = new Color(0.7f, 0.7f, 0.7f, 1);
     private final Texture buttonTexture = Assets.get("button.png", Texture.class);
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font;
     private final GlyphLayout glyphLayout;
     private boolean isHovered;
 
-    public Button(String text, int fontScale, Runnable onClickAction) {
-        font.getData().setScale(fontScale);
-        font.setColor(Color.BLACK);
+    public Button(String text, int size, Runnable onClickAction) {
+        font = FontFactory.getFont(size, Color.BLACK);
         glyphLayout = new GlyphLayout(font, text);
 
         setBounds(getX(), getY(), glyphLayout.width + PADDING, glyphLayout.height + PADDING);
@@ -29,7 +29,7 @@ public class Button extends Actor {
     }
 
     public Button(String buttonText, Runnable onClickAction) {
-        this(buttonText, 3, onClickAction);
+        this(buttonText, 72, onClickAction);
     }
 
     private void addOnClickListener(Runnable onClickAction) {

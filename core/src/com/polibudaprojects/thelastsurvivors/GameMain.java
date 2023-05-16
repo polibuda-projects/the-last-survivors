@@ -28,5 +28,6 @@ public class GameMain extends ApplicationAdapter {
     public void dispose() {
         super.dispose();
         Assets.dispose();
+        FontFactory.dispose();
     }
 }

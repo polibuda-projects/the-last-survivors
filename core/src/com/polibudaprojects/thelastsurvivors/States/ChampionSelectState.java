@@ -1,6 +1,5 @@
 package com.polibudaprojects.thelastsurvivors.States;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 import com.polibudaprojects.thelastsurvivors.Player.FireWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.MageWarrior;
 import com.polibudaprojects.thelastsurvivors.Player.NightWarrior;
@@ -20,7 +20,7 @@ public class ChampionSelectState extends State {
 
     private final Texture background;
     private final ImageButton mageButton;
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font = FontFactory.getFont(60);
     private final ImageButton fireButton;
     private final ImageButton nightButton;
     private final GlyphLayout textLayout;
@@ -40,8 +40,6 @@ public class ChampionSelectState extends State {
         stage.addActor(fireButton);
         stage.addActor(nightButton);
 
-        font.setColor(Color.WHITE);
-        font.getData().setScale(3f);
         textLayout = new GlyphLayout(font, "SELECT HERO");
     }
 

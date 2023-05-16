@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.Button;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
@@ -13,12 +14,11 @@ import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 public class PauseState extends State {
     private final Statistics statistics = Statistics.getInstance();
     private final Texture background = Assets.get("background.png", Texture.class);
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font = FontFactory.getFont(32);
     private String stats;
 
     public PauseState(StatesManager gsm) {
         super(gsm);
-        font.getData().setScale(1.5f);
 
         Button resumeBtn = new Button("RESUME", gsm::returnToPreviousState);
         Button exitBtn = new Button("EXIT", () -> gsm.setState(gsm.getStart()));

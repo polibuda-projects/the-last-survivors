@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.States.PlayState;
 
 public class GameTimer implements HUD {
 
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font = FontFactory.getFont(32);
     private final GlyphLayout layout;
     private final Vector2 position;
     private final Statistics statistics = Statistics.getInstance();
@@ -20,7 +21,6 @@ public class GameTimer implements HUD {
         this.timeRemaining = PlayState.TIME_LIMIT;
         this.layout = new GlyphLayout();
         this.position = new Vector2(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() - 10f);
-        font.getData().setScale(1.5f);
     }
 
     public void reset() {

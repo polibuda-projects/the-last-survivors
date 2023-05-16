@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.hud.Button;
 
@@ -12,7 +13,7 @@ public class EndState extends State {
     private final Statistics statistics = Statistics.getInstance();
     private final Texture background = Assets.get("background.png", Texture.class);
     private final Texture gameOver = Assets.get("gameOver.png", Texture.class);
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font = FontFactory.getFont(32);
     private String stats;
 
     public EndState(StatesManager gsm) {
@@ -51,7 +52,6 @@ public class EndState extends State {
         sb.begin();
         sb.draw(background, 0, 0);
         sb.draw(gameOver, cam.position.x - gameOver.getWidth() / 2f, Gdx.graphics.getHeight() - gameOver.getHeight() + 50);
-        font.getData().setScale(1.5f, 1.5f);
         font.draw(sb, stats, 120, Gdx.graphics.getHeight() - 150);
         sb.end();
     }

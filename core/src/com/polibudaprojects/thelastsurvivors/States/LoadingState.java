@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.FontFactory;
 
 public class LoadingState extends State {
     private static final String LOADING_TEXT = "Loading...";
@@ -15,14 +16,12 @@ public class LoadingState extends State {
     private static final Color TOP_COLOR = Color.BLACK;
     private static final Color BOTTOM_COLOR = new Color(0x133824ff);
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont font = FontFactory.getFont(64);
     private float delayTimer = 0;
     private float progress;
 
     protected LoadingState(StatesManager gsm) {
         super(gsm);
-        this.font.setColor(Color.WHITE);
-        this.font.getData().setScale(3f);
     }
 
     @Override
