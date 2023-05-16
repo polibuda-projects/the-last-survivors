@@ -1,30 +1,23 @@
 package com.polibudaprojects.thelastsurvivors.States;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.hud.Button;
 
 public class StartState extends State {
-    private final Texture background;
-    private final Texture playBtn;
-    private boolean justTouched;
+    private final Texture background = Assets.get("intro.png", Texture.class);
 
     public StartState(StatesManager gsm) {
         super(gsm);
-        background = Assets.get("intro.png", Texture.class);
-        playBtn = Assets.get("button.png", Texture.class);
+        Button startButton = new Button("START", () -> gsm.setState(gsm.getSelect()));
+        startButton.setPosition(cam.position.x - startButton.getWidth() / 2f, cam.position.y - startButton.getHeight() / 2f);
+
+        stage.addActor(startButton);
     }
 
     @Override
     public void handleInput() {
-        // TODO instead use button with ClickListener
-        if (Gdx.input.justTouched()) {
-            justTouched = true;
-        } else if (!Gdx.input.isTouched() && justTouched) {
-            justTouched = false;
-            gsm.setState(gsm.getSelect());
-        }
     }
 
     @Override
@@ -41,7 +34,6 @@ public class StartState extends State {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(background, 0, 0);
-        sb.draw(playBtn, cam.position.x - playBtn.getWidth() / 2f, cam.position.y - playBtn.getHeight() / 2f);
         sb.end();
     }
 }

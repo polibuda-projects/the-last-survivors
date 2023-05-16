@@ -6,28 +6,26 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.hud.Button;
 
 public class EndState extends State {
     private final Statistics statistics = Statistics.getInstance();
-    private final Texture background;
-    private final Texture startAgain;
-    private final Texture gameOver;
-    private final BitmapFont font;
+    private final Texture background = Assets.get("background.png", Texture.class);
+    private final Texture gameOver = Assets.get("gameOver.png", Texture.class);
+    private final BitmapFont font = new BitmapFont();
     private String stats;
 
     public EndState(StatesManager gsm) {
         super(gsm);
-        background = Assets.get("background.png", Texture.class);
-        gameOver = Assets.get("gameOver.png", Texture.class);
-        startAgain = Assets.get("startAgain.png", Texture.class);
-        font = new BitmapFont();
+
+        Button tryAgainBtn = new Button("TRY AGAIN?", () -> gsm.setState(gsm.getStart()));
+        tryAgainBtn.setPosition(cam.position.x - tryAgainBtn.getWidth() / 2f, 20);
+
+        stage.addActor(tryAgainBtn);
     }
 
     @Override
     public void handleInput() {
-        if (Gdx.input.justTouched()) {
-            gsm.setState(gsm.getStart());
-        }
     }
 
     @Override
@@ -53,7 +51,6 @@ public class EndState extends State {
         sb.begin();
         sb.draw(background, 0, 0);
         sb.draw(gameOver, cam.position.x - gameOver.getWidth() / 2f, Gdx.graphics.getHeight() - gameOver.getHeight() + 50);
-        sb.draw(startAgain, cam.position.x - startAgain.getWidth() / 2f, 10);
         font.getData().setScale(1.5f, 1.5f);
         font.draw(sb, stats, 120, Gdx.graphics.getHeight() - 150);
         sb.end();

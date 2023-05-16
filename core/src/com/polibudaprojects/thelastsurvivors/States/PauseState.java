@@ -5,34 +5,33 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.polibudaprojects.thelastsurvivors.Assets;
 import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.hud.Button;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 public class PauseState extends State {
     private final Statistics statistics = Statistics.getInstance();
-    private final Texture background;
-    private final BitmapFont font;
-    private final Texture resumeBtn;
-    private final Rectangle resumeBtnRectangle;
+    private final Texture background = Assets.get("background.png", Texture.class);
+    private final BitmapFont font = new BitmapFont();
     private String stats;
 
     public PauseState(StatesManager gsm) {
         super(gsm);
-        background = Assets.get("background.png", Texture.class);
-        font = new BitmapFont();
         font.getData().setScale(1.5f);
 
-        //TODO change button image
-        resumeBtn = Assets.get("button.png", Texture.class);
-        resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
+        Button resumeBtn = new Button("RESUME", gsm::returnToPreviousState);
+        Button exitBtn = new Button("EXIT", () -> gsm.setState(gsm.getStart()));
+        resumeBtn.setPosition(10, 10);
+        exitBtn.setPosition(resumeBtn.getWidth() + 50, 10);
+
+        stage.addActor(resumeBtn);
+        stage.addActor(exitBtn);
     }
 
     @Override
     public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
-                Gdx.input.justTouched() && resumeBtnRectangle.contains(Gdx.input.getX(), Gdx.input.getY())) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             gsm.returnToPreviousState();
         }
     }
@@ -63,7 +62,6 @@ public class PauseState extends State {
         sb.begin();
         sb.draw(background, 0, 0);
         font.draw(sb, stats, 10, Gdx.graphics.getHeight() - 10);
-        sb.draw(resumeBtn, 10, 10);
         sb.end();
     }
 }
