@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors.Player;
+package com.polibudaprojects.thelastsurvivors.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -29,7 +29,9 @@ public class MageWarrior extends Player {
     }
 
     @Override
-    protected void addAdditionalWeapon() {weapons.add(new Sword(this));}
+    protected void addAdditionalWeapon() {
+        weapons.add(new Sword(this));
+    }
 
     @Override
     protected Animation<TextureRegion> loadRunningAnimation(Texture texture) {

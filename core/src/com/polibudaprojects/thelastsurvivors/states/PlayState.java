@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors.States;
+package com.polibudaprojects.thelastsurvivors.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,11 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.Music.BackgroundMusic;
-import com.polibudaprojects.thelastsurvivors.Music.SoundFx;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.hud.GameTimer;
 import com.polibudaprojects.thelastsurvivors.hud.HUD;
 import com.polibudaprojects.thelastsurvivors.hud.Level;
@@ -19,6 +15,10 @@ import com.polibudaprojects.thelastsurvivors.hud.WeaponsList;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.map.InfiniteTiledMap;
 import com.polibudaprojects.thelastsurvivors.monsters.MonsterManager;
+import com.polibudaprojects.thelastsurvivors.music.BackgroundMusic;
+import com.polibudaprojects.thelastsurvivors.music.SoundFx;
+import com.polibudaprojects.thelastsurvivors.player.Player;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;

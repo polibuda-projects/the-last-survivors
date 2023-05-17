@@ -1,12 +1,12 @@
-package com.polibudaprojects.thelastsurvivors.States;
+package com.polibudaprojects.thelastsurvivors.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.FontFactory;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 
 public class LoadingState extends State {
     private static final String LOADING_TEXT = "Loading...";

@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors;
+package com.polibudaprojects.thelastsurvivors.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

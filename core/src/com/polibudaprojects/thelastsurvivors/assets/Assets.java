@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors;
+package com.polibudaprojects.thelastsurvivors.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;

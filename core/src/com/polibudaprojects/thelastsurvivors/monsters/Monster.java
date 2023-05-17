@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
 import com.polibudaprojects.thelastsurvivors.items.Item;
 import com.polibudaprojects.thelastsurvivors.monsters.types.Type;
+import com.polibudaprojects.thelastsurvivors.player.Player;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.HashMap;

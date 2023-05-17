@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.FontFactory;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
-import com.polibudaprojects.thelastsurvivors.States.PlayState;
+import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
+import com.polibudaprojects.thelastsurvivors.states.PlayState;
 
 public class GameTimer implements HUD {
 

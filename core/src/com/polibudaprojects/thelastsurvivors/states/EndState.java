@@ -1,13 +1,13 @@
-package com.polibudaprojects.thelastsurvivors.States;
+package com.polibudaprojects.thelastsurvivors.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.FontFactory;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 import com.polibudaprojects.thelastsurvivors.hud.Button;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
 
 public class EndState extends State {
     private final Statistics statistics = Statistics.getInstance();

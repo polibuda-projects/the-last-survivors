@@ -2,9 +2,9 @@ package com.polibudaprojects.thelastsurvivors.monsters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.items.ItemManager;
 import com.polibudaprojects.thelastsurvivors.monsters.phases.PhaseManager;
+import com.polibudaprojects.thelastsurvivors.player.Player;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;

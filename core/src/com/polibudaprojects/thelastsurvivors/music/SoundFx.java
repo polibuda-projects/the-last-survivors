@@ -1,8 +1,8 @@
-package com.polibudaprojects.thelastsurvivors.Music;
+package com.polibudaprojects.thelastsurvivors.music;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.audio.Sound;
-import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
 
 import java.util.ArrayList;
 import java.util.List;

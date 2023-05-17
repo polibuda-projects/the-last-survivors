@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors.Player;
+package com.polibudaprojects.thelastsurvivors.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -101,6 +101,7 @@ public abstract class Player {
     }
 
     protected abstract void addDefaultWeapon();
+
     protected abstract void addAdditionalWeapon();
 
     protected abstract Animation<TextureRegion> loadRunningAnimation(Texture texture);
@@ -163,7 +164,7 @@ public abstract class Player {
             }
             if (level < 99) {
                 level += 1;
-                score -=maxScore;
+                score -= maxScore;
                 System.out.println("Reached " + level + " Level!!!");
             }
             if (level == 2) {

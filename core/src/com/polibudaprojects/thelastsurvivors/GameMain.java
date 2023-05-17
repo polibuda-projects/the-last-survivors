@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.polibudaprojects.thelastsurvivors.States.StatesManager;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
+import com.polibudaprojects.thelastsurvivors.states.StatesManager;
 
 public class GameMain extends ApplicationAdapter {
     SpriteBatch batch;
