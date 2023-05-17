@@ -1,7 +1,7 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
-import com.polibudaprojects.thelastsurvivors.Player.Player;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
+import com.polibudaprojects.thelastsurvivors.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;

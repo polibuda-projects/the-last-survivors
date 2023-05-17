@@ -1,18 +1,19 @@
 package com.polibudaprojects.thelastsurvivors.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.player.Player;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
 
 public class WeaponsList implements HUD {
 
@@ -21,13 +22,8 @@ public class WeaponsList implements HUD {
     private static final float MARGIN = (FRAME_SIZE - ICON_SIZE) / 2;
     private final Statistics statistics = Statistics.getInstance();
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final Vector2 position = new Vector2();
+    private final Vector2 position = new Vector2(0, SCREEN_HEIGHT - FRAME_SIZE);
     private List<Texture> icons = new ArrayList<>();
-
-    @Override
-    public void updatePosition(float cameraX, float cameraY) {
-        position.set(cameraX - Gdx.graphics.getWidth() / 2f, cameraY + Gdx.graphics.getHeight() / 2f - FRAME_SIZE);
-    }
 
     @Override
     public void update(float dt) {
@@ -37,7 +33,7 @@ public class WeaponsList implements HUD {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         renderIcons(batch);
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

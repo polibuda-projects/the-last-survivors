@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.polibudaprojects.thelastsurvivors.Player.Player;
+import com.polibudaprojects.thelastsurvivors.player.Player;
 
 public abstract class Item {
     public static final float LIFETIME = 30f;

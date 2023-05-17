@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors;
+package com.polibudaprojects.thelastsurvivors.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -28,7 +28,6 @@ public class Assets {
         assetManager.load("button.png", Texture.class);
         assetManager.load("background.png", Texture.class);
         assetManager.load("gameOver.png", Texture.class);
-        assetManager.load("startAgain.png", Texture.class);
         assetManager.load("fireBullet.png", Texture.class);
         assetManager.load("sword_icon.png", Texture.class);
         assetManager.load("items/experience.atlas", TextureAtlas.class);

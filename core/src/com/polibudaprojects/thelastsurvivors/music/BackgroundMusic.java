@@ -1,8 +1,8 @@
-package com.polibudaprojects.thelastsurvivors.Music;
+package com.polibudaprojects.thelastsurvivors.music;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.audio.Music;
-import com.polibudaprojects.thelastsurvivors.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
 
 public class BackgroundMusic extends ApplicationAdapter {
 

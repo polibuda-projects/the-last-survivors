@@ -1,6 +1,5 @@
 package com.polibudaprojects.thelastsurvivors.monsters.phases;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.polibudaprojects.thelastsurvivors.monsters.Monster;
@@ -10,10 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
+
 public abstract class Phase {
 
-    public static final int SPAWN_RADIUS_A_MIN = Gdx.graphics.getWidth() / 2 + 80;
-    public static final int SPAWN_RADIUS_B_MIN = Gdx.graphics.getHeight() / 2 + 80;
+    public static final int SPAWN_RADIUS_A_MIN = SCREEN_WIDTH / 2 + 80;
+    public static final int SPAWN_RADIUS_B_MIN = SCREEN_HEIGHT / 2 + 80;
     public static final int SPAWN_RADIUS_A_MAX = SPAWN_RADIUS_A_MIN + 150;
     public static final int SPAWN_RADIUS_B_MAX = SPAWN_RADIUS_B_MIN + 150;
     protected final Random rand = new Random();

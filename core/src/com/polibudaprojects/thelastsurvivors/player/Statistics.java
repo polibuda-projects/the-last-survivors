@@ -1,4 +1,4 @@
-package com.polibudaprojects.thelastsurvivors.Player;
+package com.polibudaprojects.thelastsurvivors.player;
 
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 

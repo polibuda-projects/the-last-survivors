@@ -1,38 +1,38 @@
-package com.polibudaprojects.thelastsurvivors.States;
+package com.polibudaprojects.thelastsurvivors.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.polibudaprojects.thelastsurvivors.Assets;
-import com.polibudaprojects.thelastsurvivors.Player.Statistics;
+import com.polibudaprojects.thelastsurvivors.assets.Assets;
+import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
+import com.polibudaprojects.thelastsurvivors.hud.Button;
+import com.polibudaprojects.thelastsurvivors.player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
+
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
 
 public class PauseState extends State {
     private final Statistics statistics = Statistics.getInstance();
-    private final Texture background;
-    private final BitmapFont font;
-    private final Texture resumeBtn;
-    private final Rectangle resumeBtnRectangle;
+    private final Texture background = Assets.get("background.png", Texture.class);
+    private final BitmapFont font = FontFactory.getFont(32);
+    private final Button resumeBtn;
+    private final Button exitBtn;
     private String stats;
 
     public PauseState(StatesManager gsm) {
         super(gsm);
-        background = Assets.get("background.png", Texture.class);
-        font = new BitmapFont();
-        font.getData().setScale(1.5f);
-
-        //TODO change button image
-        resumeBtn = Assets.get("button.png", Texture.class);
-        resumeBtnRectangle = new Rectangle(10, Gdx.graphics.getHeight() - resumeBtn.getHeight() - 10, resumeBtn.getWidth(), resumeBtn.getHeight());
+        resumeBtn = new Button("RESUME", gsm::returnToPreviousState);
+        exitBtn = new Button("EXIT", () -> gsm.setState(gsm.getStart()));
+        resumeBtn.setPosition(10, 10);
+        exitBtn.setPosition(resumeBtn.getWidth() + 50, 10);
     }
 
     @Override
     public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) ||
-                Gdx.input.justTouched() && resumeBtnRectangle.contains(Gdx.input.getX(), Gdx.input.getY())) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             gsm.returnToPreviousState();
         }
     }
@@ -61,9 +61,10 @@ public class PauseState extends State {
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
-        font.draw(sb, stats, 10, Gdx.graphics.getHeight() - 10);
-        sb.draw(resumeBtn, 10, 10);
+        sb.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        font.draw(sb, stats, 10, SCREEN_HEIGHT - 10);
+        resumeBtn.render(sb);
+        exitBtn.render(sb);
         sb.end();
     }
 }
