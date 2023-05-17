@@ -1,6 +1,5 @@
 package com.polibudaprojects.thelastsurvivors.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,7 +9,7 @@ import com.polibudaprojects.thelastsurvivors.player.Statistics;
 
 public class Level implements HUD {
     private final Statistics statistics = Statistics.getInstance();
-    private final Vector2 position = new Vector2();
+    private final Vector2 position = new Vector2(45, 28);
     private final TextureRegion[] digits = new TextureRegion[10];
     private final int width = 32;
     private final int height = 50;
@@ -27,11 +26,6 @@ public class Level implements HUD {
     }
 
     @Override
-    public void updatePosition(float cameraX, float cameraY) {
-        position.set(cameraX - Gdx.graphics.getWidth() / 2f + 45, cameraY - Gdx.graphics.getHeight() / 2f + 26);
-    }
-
-    @Override
     public void update(float dt) {
         String levelString = String.valueOf(statistics.getLevel());
         digitIndexes = new int[levelString.length()];
@@ -41,7 +35,7 @@ public class Level implements HUD {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         batch.begin();
         float scaleFactor = 0.7f;
         float startX = position.x - (digitIndexes.length * width * scaleFactor) / 2;
