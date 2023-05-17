@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 import com.polibudaprojects.thelastsurvivors.player.FireWarrior;
@@ -19,12 +18,15 @@ import com.polibudaprojects.thelastsurvivors.player.MageWarrior;
 import com.polibudaprojects.thelastsurvivors.player.NightWarrior;
 import com.polibudaprojects.thelastsurvivors.player.Player;
 
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
+
 public class ChampionSelectState extends State {
 
     private final Texture background;
     private final BitmapFont font = FontFactory.getFont(60);
     private final GlyphLayout textLayout;
-    private final Stage stage = new Stage(new ScreenViewport(cam));
+    private final Stage stage = new Stage(viewport);
     private Player selectedPlayer;
 
     public ChampionSelectState(StatesManager gsm) {
@@ -32,6 +34,7 @@ public class ChampionSelectState extends State {
         background = Assets.get("background.png", Texture.class);
         textLayout = new GlyphLayout(font, "SELECT HERO");
         createImageButtons();
+        Gdx.input.setInputProcessor(stage);
     }
 
     private static TextureRegionDrawable getDrawable(String filename) {
@@ -69,7 +72,6 @@ public class ChampionSelectState extends State {
 
     @Override
     public void handleInput() {
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class ChampionSelectState extends State {
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
+        sb.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         font.draw(sb, textLayout, cam.position.x - (textLayout.width / 2), cam.position.y + 200);
         sb.end();
         stage.draw();

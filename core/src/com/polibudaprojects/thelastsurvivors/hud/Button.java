@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
+
 public class Button {
     private static final int PADDING = 50;
     private final Color hoverColor = new Color(0.7f, 0.7f, 0.7f, 1);
@@ -47,8 +50,8 @@ public class Button {
     }
 
     private boolean isMouseOver() {
-        float mouseX = Gdx.input.getX();
-        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+        float mouseX = Gdx.input.getX() * (float) SCREEN_WIDTH / Gdx.graphics.getWidth();
+        float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) * (float) SCREEN_HEIGHT / Gdx.graphics.getHeight();
 
         return mouseX >= position.x && mouseX <= position.x + getWidth() &&
                 mouseY >= position.y && mouseY <= position.y + getHeight();

@@ -11,6 +11,9 @@ import com.polibudaprojects.thelastsurvivors.hud.Button;
 import com.polibudaprojects.thelastsurvivors.player.Statistics;
 import com.polibudaprojects.thelastsurvivors.weapons.Weapon;
 
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
+
 public class PauseState extends State {
     private final Statistics statistics = Statistics.getInstance();
     private final Texture background = Assets.get("background.png", Texture.class);
@@ -58,8 +61,8 @@ public class PauseState extends State {
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
-        font.draw(sb, stats, 10, Gdx.graphics.getHeight() - 10);
+        sb.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        font.draw(sb, stats, 10, SCREEN_HEIGHT - 10);
         resumeBtn.render(sb);
         exitBtn.render(sb);
         sb.end();

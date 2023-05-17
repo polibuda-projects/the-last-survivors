@@ -1,12 +1,14 @@
 package com.polibudaprojects.thelastsurvivors.states;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
+
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
 
 public class LoadingState extends State {
     private static final String LOADING_TEXT = "Loading...";
@@ -52,20 +54,20 @@ public class LoadingState extends State {
         shapeRenderer.setProjectionMatrix(cam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        shapeRenderer.rect(cam.position.x - (Gdx.graphics.getWidth() / 2f), cam.position.y - (Gdx.graphics.getHeight() / 2f), Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+        shapeRenderer.rect(cam.position.x - (SCREEN_WIDTH / 2f), cam.position.y - (SCREEN_HEIGHT / 2f), SCREEN_WIDTH, SCREEN_HEIGHT,
                 BOTTOM_COLOR, BOTTOM_COLOR, TOP_COLOR, TOP_COLOR);
 
         shapeRenderer.setColor(BAR_BACKGROUND_COLOR);
-        shapeRenderer.rect(cam.position.x - (Gdx.graphics.getWidth() / 4f), cam.position.y, Gdx.graphics.getWidth() / 2f, 50);
+        shapeRenderer.rect(cam.position.x - (SCREEN_WIDTH / 4f), cam.position.y, SCREEN_WIDTH / 2f, 50);
         shapeRenderer.setColor(BAR_COLOR);
-        shapeRenderer.rect(cam.position.x - (Gdx.graphics.getWidth() / 4f), cam.position.y, Gdx.graphics.getWidth() / 2f * progress, 50);
+        shapeRenderer.rect(cam.position.x - (SCREEN_WIDTH / 4f), cam.position.y, SCREEN_WIDTH / 2f * progress, 50);
 
         shapeRenderer.end();
 
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        font.draw(sb, LOADING_TEXT, cam.position.x - (Gdx.graphics.getWidth() / 4f), cam.position.y + 100);
-        font.draw(sb, getPercentProgressText(), cam.position.x + Gdx.graphics.getWidth() / 4f - 110, cam.position.y + 100);
+        font.draw(sb, LOADING_TEXT, cam.position.x - (SCREEN_WIDTH / 4f), cam.position.y + 100);
+        font.draw(sb, getPercentProgressText(), cam.position.x + SCREEN_WIDTH / 4f - 110, cam.position.y + 100);
         sb.end();
     }
 

@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.hud.Button;
 
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_HEIGHT;
+import static com.polibudaprojects.thelastsurvivors.GameMain.SCREEN_WIDTH;
+
 public class StartState extends State {
     private final Texture background = Assets.get("intro.png", Texture.class);
     private final Button startButton;
@@ -32,7 +35,7 @@ public class StartState extends State {
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
+        sb.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         startButton.render(sb);
         sb.end();
     }
