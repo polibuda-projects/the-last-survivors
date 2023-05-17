@@ -1,14 +1,17 @@
 package com.polibudaprojects.thelastsurvivors.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 import com.polibudaprojects.thelastsurvivors.player.FireWarrior;
@@ -19,36 +22,30 @@ import com.polibudaprojects.thelastsurvivors.player.Player;
 public class ChampionSelectState extends State {
 
     private final Texture background;
-    private final ImageButton mageButton;
     private final BitmapFont font = FontFactory.getFont(60);
-    private final ImageButton fireButton;
-    private final ImageButton nightButton;
     private final GlyphLayout textLayout;
+    private final Stage stage = new Stage(new ScreenViewport(cam));
     private Player selectedPlayer;
 
     public ChampionSelectState(StatesManager gsm) {
         super(gsm);
         background = Assets.get("background.png", Texture.class);
-        mageButton = new ImageButton(getDrawable("players/MageWarriorIcon.png"));
-        fireButton = new ImageButton(getDrawable("players/FireWarriorIcon.png"));
-        nightButton = new ImageButton(getDrawable("players/NightWarriorIcon.png"));
-        mageButton.setPosition(cam.position.x - mageButton.getWidth() / 2f - 300, cam.position.y - mageButton.getHeight() / 2f);
-        fireButton.setPosition(cam.position.x - fireButton.getWidth() / 2f, cam.position.y - fireButton.getHeight() / 2f);
-        nightButton.setPosition(cam.position.x - nightButton.getWidth() / 2f + 320, cam.position.y - nightButton.getHeight() / 2f);
-
-        stage.addActor(mageButton);
-        stage.addActor(fireButton);
-        stage.addActor(nightButton);
-
         textLayout = new GlyphLayout(font, "SELECT HERO");
+        createImageButtons();
     }
 
     private static TextureRegionDrawable getDrawable(String filename) {
         return new TextureRegionDrawable(new TextureRegion(Assets.get(filename, Texture.class)));
     }
 
-    @Override
-    public void handleInput() {
+    private void createImageButtons() {
+        ImageButton mageButton = new ImageButton(getDrawable("players/MageWarriorIcon.png"));
+        ImageButton fireButton = new ImageButton(getDrawable("players/FireWarriorIcon.png"));
+        ImageButton nightButton = new ImageButton(getDrawable("players/NightWarriorIcon.png"));
+        mageButton.setPosition(cam.position.x - mageButton.getWidth() / 2f - 300, cam.position.y - mageButton.getHeight() / 2f);
+        fireButton.setPosition(cam.position.x - fireButton.getWidth() / 2f, cam.position.y - fireButton.getHeight() / 2f);
+        nightButton.setPosition(cam.position.x - nightButton.getWidth() / 2f + 320, cam.position.y - nightButton.getHeight() / 2f);
+
         nightButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 selectedPlayer = new NightWarrior();
@@ -64,6 +61,15 @@ public class ChampionSelectState extends State {
                 selectedPlayer = new MageWarrior();
             }
         });
+
+        stage.addActor(mageButton);
+        stage.addActor(fireButton);
+        stage.addActor(nightButton);
+    }
+
+    @Override
+    public void handleInput() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class ChampionSelectState extends State {
     @Override
     public void update(float dt) {
         handleInput();
+        stage.act(dt);
         if (selectedPlayer != null) {
             gsm.setState(gsm.getPlay(selectedPlayer));
         }
@@ -86,5 +93,6 @@ public class ChampionSelectState extends State {
         sb.draw(background, 0, 0);
         font.draw(sb, textLayout, cam.position.x - (textLayout.width / 2), cam.position.y + 200);
         sb.end();
+        stage.draw();
     }
 }

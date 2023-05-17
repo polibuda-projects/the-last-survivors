@@ -15,18 +15,16 @@ public class PauseState extends State {
     private final Statistics statistics = Statistics.getInstance();
     private final Texture background = Assets.get("background.png", Texture.class);
     private final BitmapFont font = FontFactory.getFont(32);
+    private final Button resumeBtn;
+    private final Button exitBtn;
     private String stats;
 
     public PauseState(StatesManager gsm) {
         super(gsm);
-
-        Button resumeBtn = new Button("RESUME", gsm::returnToPreviousState);
-        Button exitBtn = new Button("EXIT", () -> gsm.setState(gsm.getStart()));
+        resumeBtn = new Button("RESUME", gsm::returnToPreviousState);
+        exitBtn = new Button("EXIT", () -> gsm.setState(gsm.getStart()));
         resumeBtn.setPosition(10, 10);
         exitBtn.setPosition(resumeBtn.getWidth() + 50, 10);
-
-        stage.addActor(resumeBtn);
-        stage.addActor(exitBtn);
     }
 
     @Override
@@ -62,6 +60,8 @@ public class PauseState extends State {
         sb.begin();
         sb.draw(background, 0, 0);
         font.draw(sb, stats, 10, Gdx.graphics.getHeight() - 10);
+        resumeBtn.render(sb);
+        exitBtn.render(sb);
         sb.end();
     }
 }

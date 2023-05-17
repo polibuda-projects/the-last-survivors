@@ -14,15 +14,14 @@ public class EndState extends State {
     private final Texture background = Assets.get("background.png", Texture.class);
     private final Texture gameOver = Assets.get("gameOver.png", Texture.class);
     private final BitmapFont font = FontFactory.getFont(32);
+    private final Button tryAgainBtn;
     private String stats;
 
     public EndState(StatesManager gsm) {
         super(gsm);
 
-        Button tryAgainBtn = new Button("TRY AGAIN?", () -> gsm.setState(gsm.getStart()));
+        tryAgainBtn = new Button("TRY AGAIN?", () -> gsm.setState(gsm.getStart()));
         tryAgainBtn.setPosition(cam.position.x - tryAgainBtn.getWidth() / 2f, 20);
-
-        stage.addActor(tryAgainBtn);
     }
 
     @Override
@@ -53,6 +52,7 @@ public class EndState extends State {
         sb.draw(background, 0, 0);
         sb.draw(gameOver, cam.position.x - gameOver.getWidth() / 2f, Gdx.graphics.getHeight() - gameOver.getHeight() + 50);
         font.draw(sb, stats, 120, Gdx.graphics.getHeight() - 150);
+        tryAgainBtn.render(sb);
         sb.end();
     }
 }

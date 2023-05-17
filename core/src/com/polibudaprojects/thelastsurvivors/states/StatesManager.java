@@ -1,6 +1,5 @@
 package com.polibudaprojects.thelastsurvivors.states;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.polibudaprojects.thelastsurvivors.player.Player;
 
@@ -22,22 +21,18 @@ public class StatesManager {
         previousState = this.state;
         state.reset();
         this.state = state;
-        Gdx.input.setInputProcessor(state.getStage());
     }
 
     public void returnToPreviousState() {
         state = previousState;
-        Gdx.input.setInputProcessor(state.getStage());
     }
 
     public void update(float dt) {
         state.update(dt);
-        state.getStage().act(dt);
     }
 
     public void render(SpriteBatch sb) {
         state.render(sb);
-        state.getStage().draw();
     }
 
     public State getStart() {

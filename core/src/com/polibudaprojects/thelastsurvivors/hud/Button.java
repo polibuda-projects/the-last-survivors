@@ -1,66 +1,76 @@
 package com.polibudaprojects.thelastsurvivors.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.math.Vector2;
 import com.polibudaprojects.thelastsurvivors.assets.Assets;
 import com.polibudaprojects.thelastsurvivors.assets.FontFactory;
 
-public class Button extends Actor {
+public class Button {
     private static final int PADDING = 50;
     private final Color hoverColor = new Color(0.7f, 0.7f, 0.7f, 1);
     private final Texture buttonTexture = Assets.get("button.png", Texture.class);
     private final BitmapFont font;
     private final GlyphLayout glyphLayout;
+    private final Runnable onClickAction;
+    private final Vector2 position = new Vector2();
     private boolean isHovered;
+    private boolean justTouched;
 
     public Button(String text, int size, Runnable onClickAction) {
         font = FontFactory.getFont(size, Color.BLACK);
         glyphLayout = new GlyphLayout(font, text);
-
-        setBounds(getX(), getY(), glyphLayout.width + PADDING, glyphLayout.height + PADDING);
-
-        addOnClickListener(onClickAction);
+        this.onClickAction = onClickAction;
     }
 
     public Button(String buttonText, Runnable onClickAction) {
         this(buttonText, 72, onClickAction);
     }
 
-    private void addOnClickListener(Runnable onClickAction) {
-        addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                onClickAction.run();
-            }
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                isHovered = true;
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                isHovered = false;
-            }
-        });
+    private void update() {
+        isHovered = isMouseOver();
+        handleClick();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+    private void handleClick() {
+        if (Gdx.input.justTouched() && isHovered) {
+            justTouched = true;
+        }
+        if (justTouched && !Gdx.input.isTouched()) {
+            justTouched = false;
+            onClickAction.run();
+        }
+    }
+
+    private boolean isMouseOver() {
+        float mouseX = Gdx.input.getX();
+        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+        return mouseX >= position.x && mouseX <= position.x + getWidth() &&
+                mouseY >= position.y && mouseY <= position.y + getHeight();
+    }
+
+    public void render(Batch batch) {
+        update();
         batch.setColor(isHovered ? hoverColor : Color.WHITE);
-        batch.draw(buttonTexture, getX(), getY(), getWidth(), getHeight());
-        font.draw(batch, glyphLayout, getX() + getWidth() / 2 - glyphLayout.width / 2, getY() + getHeight() / 2 + glyphLayout.height / 2);
-        super.draw(batch, parentAlpha);
+        batch.draw(buttonTexture, position.x, position.y, getWidth(), getHeight());
+        batch.setColor(Color.WHITE);
+        font.draw(batch, glyphLayout, position.x + getWidth() / 2 - glyphLayout.width / 2, position.y + getHeight() / 2 + glyphLayout.height / 2);
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
+    }
+
+    public float getWidth() {
+        return glyphLayout.width + PADDING;
+    }
+
+    public float getHeight() {
+        return glyphLayout.height + PADDING;
     }
 }
