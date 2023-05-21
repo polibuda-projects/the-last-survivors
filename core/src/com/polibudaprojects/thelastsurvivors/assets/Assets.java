@@ -31,6 +31,9 @@ public class Assets {
         assetManager.load("fireBullet.png", Texture.class);
         assetManager.load("sword_icon.png", Texture.class);
         assetManager.load("items/experience.atlas", TextureAtlas.class);
+        assetManager.load("shuriken.png", Texture.class);
+        assetManager.load("spike.png", Texture.class);
+        assetManager.load("spike_icon.png", Texture.class);
 
         assetManager.load("music/BackgroundTheLastSurvivors.mp3", Music.class);
         assetManager.load("music/brains.wav", Sound.class);

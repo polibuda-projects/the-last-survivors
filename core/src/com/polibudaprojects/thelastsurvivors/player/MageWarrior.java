@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
-import com.polibudaprojects.thelastsurvivors.weapons.Sword;
+import com.polibudaprojects.thelastsurvivors.weapons.ShurikenRing;
+import com.polibudaprojects.thelastsurvivors.weapons.Spikes;
 
 public class MageWarrior extends Player {
 
@@ -30,7 +31,12 @@ public class MageWarrior extends Player {
 
     @Override
     protected void addAdditionalWeapon() {
-        weapons.add(new Sword(this));
+        //todo change to random weapon adding
+        if (weapons.size() == 1) {
+            weapons.add(new Spikes(this));
+        } else if (weapons.size() == 2) {
+            weapons.add(new ShurikenRing(this));
+        }
     }
 
     @Override
