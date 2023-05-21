@@ -184,4 +184,8 @@ public class Monster {
     public Rectangle getHitbox() {
         return type.getHitbox(position, isFlipX());
     }
+
+    public Vector2 getPosition() {
+        return position;
+    }
 }

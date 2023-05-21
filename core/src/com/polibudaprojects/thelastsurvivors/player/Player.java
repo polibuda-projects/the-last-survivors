@@ -167,7 +167,7 @@ public abstract class Player {
                 score -= maxScore;
                 System.out.println("Reached " + level + " Level!!!");
             }
-            if (level == 2) {
+            if (level == 2 || level == 3) {
                 addAdditionalWeapon();
             }
         }

@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.polibudaprojects.thelastsurvivors.weapons.FireWand;
-import com.polibudaprojects.thelastsurvivors.weapons.Sword;
+import com.polibudaprojects.thelastsurvivors.weapons.*;
 
 public class FireWarrior extends Player {
 
@@ -30,7 +29,12 @@ public class FireWarrior extends Player {
 
     @Override
     protected void addAdditionalWeapon() {
-        weapons.add(new FireWand(this));
+        //todo change to random weapon adding
+        if (weapons.size() == 1) {
+            weapons.add(new FireWand(this));
+        } else if (weapons.size() == 2) {
+            weapons.add(new ShurikenRing(this));
+        }
     }
 
     @Override
