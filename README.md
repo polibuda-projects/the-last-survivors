@@ -11,6 +11,7 @@ Dive into the world of "The Last Survivors" and prove you have what it takes to 
 <img src="Resources/select.png">
 <img src="Resources/gameplay1.png">
 <img src="Resources/gameplay2.png">
+<img src="Resources/gameplay3.png">
 
 ## Setting up the production mode
 

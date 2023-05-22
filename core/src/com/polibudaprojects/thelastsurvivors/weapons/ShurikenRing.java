@@ -10,10 +10,10 @@ import com.polibudaprojects.thelastsurvivors.monsters.Monster;
 import com.polibudaprojects.thelastsurvivors.player.Player;
 
 public class ShurikenRing implements Weapon {
-    private static final int BASE_DAMAGE = 5;
+    private static final int BASE_DAMAGE = 3;
     private static final int MAX_LEVEL = 12;
     private final int RADIUS = 150;
-    private final float ROTATING_SPEED = 2.2f;
+    private final float ROTATING_SPEED = 1.5f;
     private final int SHURIKEN_NUMBER = 4;
     private final Sprite[] sprites;
     private final Texture icon;
